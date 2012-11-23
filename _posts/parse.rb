@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'fileutils'
 require 'digest/md5'
 require 'redcarpet'
@@ -9,12 +10,11 @@ FileUtils.mkdir_p(PYGMENTS_CACHE_DIR)
 class Redcarpet2Markdown < Redcarpet::Render::XHTML
 
   def block_code(code, lang)
+puts(code)
     lang = lang || "text"
     path = File.join(PYGMENTS_CACHE_DIR, "#{lang}-#{Digest::MD5.hexdigest code}.html")
     cache(path) do
-puts(code)
-puts(lang)
-      colorized = Pygments.highlight(code, :lexer => lang.downcase)
+      colorized = Pygments.highlight(code, lang.downcase)
       add_code_tags(colorized, lang)
     end
   end
@@ -35,21 +35,13 @@ puts(lang)
   end
 end
 
-class Jekyll::MarkdownConverter
+inp = File.read(ARGV[0])
 
-  def extensions
-    Hash[ *@config['redcarpet']['extensions'].map {|e| [e.to_sym, true] }.flatten ]
-  end
+outp = File.open(ARGV[1], 'w')
 
-  def markdown
-    @markdown ||= Redcarpet::Markdown.new(Redcarpet2Markdown.new(extensions), extensions)
-  end
+converter = Redcarpet::Markdown.new(Redcarpet2Markdown,
+	 :fenced_code_blocks => true)
 
-  def convert(content)
-    return super unless @config['markdown'] == 'redcarpet2'
-#    puts(content)
-#    puts(markdown.render(content))
-     markdown.render(content)
-  end
-
-end
+outp.print("<html><head><link href=\"./test.css\" type=\"text/css\" rel=\"stylesheet\" /></head><body>")
+outp.print(converter.render(inp))
+outp.print("</body></html>")
