@@ -23,12 +23,19 @@
   <div id="post">
 <h1 id="toc_0">Assignment 1</h1>
 
+<ul>
+<li>Stijn Adams</li>
+<li>Bram Gotink</li>
+<li>Michiel Staessen</li>
+<li>Geert Van Campenhout</li>
+</ul>
+
 <p><strong>All characters in this work are fictitious. Any resemblance to real persons, living or dead, is purely coincidental <a href="http://en.wikipedia.org/wiki/All_persons_fictitious_disclaimer">1</a></strong></p>
 
 <h2 id="toc_1">Introduction</h2>
 
 <p><strong>Mister B.</strong><br/>
-Mister B. is an experienced C-programmer at C-Coders. All the programs that are developed in this company are written in C. And Mister B. loves that. In his student years, Mister B. also came into contact with Java. However, he already knew the language C and he only learned Java because he had to. In his opinion, C is the best language and there&#39;s no need to discuss that.  </p>
+Mister B. is an experienced C-programmer at C-Coders. All the programs that are developed in this company are written in C. and Mister B. loves that. In his student years, Mister B. also came into contact with Java. However, he already knew the language C and only learned Java because he had to. In his opinion, C is the best language and there&#39;s no need to discuss that.  </p>
 
 <p><strong>Denis L.</strong><br/>
 Denis has just graduated from the university and is eager to start with a new chapter in his life: going to work. Today is his first day at work and he&#39;s meeting with Mister B, the leader of his assigned team. At the university, Denis came in contact with just one programming language, namely Java. How he got passed the interviews without any knowledge of C remains a mystery. But that&#39;s that. Today is the day that Denis can ask everything about C to Mister B. </p>
@@ -36,34 +43,34 @@ Denis has just graduated from the university and is eager to start with a new ch
 <h2 id="toc_2">Conversation</h2>
 
 <p><strong>Hey mister B, this may be a stupid question, but how do I create an object in C?</strong><br/>
-Simple answer, you can&#39;t. C is not an object-oriented language but a procedural one.  There are, however, certain structures in this language which allow you to create object-like structures. They only contain data, no methods or other typical object-oriented members.  </p>
+Simple answer, you don&#39;t. C is not an object-oriented language but a procedural one.  There are, however, certain structures in this language which allow you to create object-like structures. They only contain data though, so they don’t have methods or other typical object-oriented members.  </p>
 
 <p><strong>A procedural language, you say?</strong><br/>
-In a procedural programming, you typically break down a programming task into a collection of variables, data structures and subroutines. In object-oriented programming on the other hand, you break it down into objects that expose behaviour (methods) and data (variables) using interfaces. In an object-oriented language like Java, an instance of a class, operates on its own data structure. In C, all data is exposed<a href="http://en.wikipedia.org/wiki/Procedural_programming">2</a>.  </p>
+In a procedural programming language, you typically break down a programming task into a collection of variables, data structures and subroutines. In object-oriented programming on the other hand, this task is broken down into objects that expose behaviour (methods) and data (variables) using interfaces. In an object-oriented language like Java, an instance of a class, operates on its own data structure. In C, all data is exposed <a href="http://en.wikipedia.org/wiki/Procedural_programming">2</a>.  </p>
 
 <p><strong>You mentioned something about object-like structures?</strong><br/>
-Yeah, they&#39;re called structures and are defined using the keyword struct. Let me give an example.</p>
+Yeah, they&#39;re called structures and are defined using the keyword struct. Let me give you an example.</p>
 <div class="highlight"><pre><code class="C"><span class="k">struct</span> <span class="n">Address</span> <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">streetName</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">number</span><span class="p">,</span> <span class="n">postalCode</span><span class="p">;</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">city</span><span class="p">,</span> <span class="o">*</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">country</span><span class="p">;</span>
 <span class="p">};</span>
 </code></pre></div>
-<p>This piece of C code defines a structure containing strings and integers. You can easily create new variables of this structure type using</p>
+<p>This piece of C code defines a structure containing strings and integers. You can easily create new variables of this structure type using:</p>
 <div class="highlight"><pre><code class="C"><span class="k">struct</span> <span class="n">Address</span> <span class="n">homeAddress</span><span class="p">;</span>
 </code></pre></div>
-<p>However, this requires writing <span class="highlight"><code class="C"><span class="k">struct</span> <span class="n">Address</span></code></span> every time you want to declare a new variable of that type. You can also create the same structure using:</p>
+<p>However, this requires writing <span class="highlight"><code class="C"><span class="k">struct</span> <span class="n">Address</span></code></span> every time you want to declare a new variable of that type. In Java, you define types by creating classes. In C, you can types by using the typedef keyword:</p>
 <div class="highlight"><pre><code class="C"><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">streetName</span><span class="p">;</span>
     <span class="kt">int</span> <span class="n">number</span><span class="p">,</span> <span class="n">postalCode</span><span class="p">;</span>
     <span class="kt">char</span> <span class="o">*</span><span class="n">city</span><span class="p">,</span> <span class="o">*</span><span class="n">state</span><span class="p">,</span> <span class="o">*</span><span class="n">country</span><span class="p">;</span>
 <span class="p">}</span> <span class="n">Address</span><span class="p">;</span>
 </code></pre></div>
-<p>Creating new Address variables is now simply</p>
+<p>Creating new variables of type Address is now very simple.</p>
 <div class="highlight"><pre><code class="C"><span class="n">Address</span> <span class="n">homeAddress</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>What&#39;s with all the stars?</strong><br/>
-They are called pointers. Pointers are very common and are used almost everywhere because in C, you have direct access to the memory. A pointer is a variable that holds the location of the actual value in memory. They are like memory addresses but they aren&#39;t real memory addresses because most systems do memory translation.</p>
+They are called pointers. Pointers are very common and are used almost everywhere because in C, you have direct access to the memory. A pointer is a variable that holds the location of the memory cell containing the actual value. They are similar to memory addresses but are not the same because most systems use virtual memory.</p>
 
 <p>When you declare a pointer, it initially points to <span class="highlight"><code class="C"><span class="nb">NULL</span></code></span> (memory address <span class="highlight"><code class="C"><span class="mi">0</span></code></span>). You still have to make the pointer point to the actual data that you may still need to create. In order to do this, you can use the &#39;address-of&#39; operator, &#39;<span class="highlight"><code class="C"><span class="o">&amp;</span></code></span>&#39; or allocate memory on the heap. </p>
 <div class="highlight"><pre><code class="C"><span class="kt">int</span> <span class="n">number</span><span class="p">,</span> <span class="o">*</span><span class="n">pointer_to_number</span><span class="p">;</span>
@@ -75,7 +82,7 @@ They are called pointers. Pointers are very common and are used almost everywher
 </code></pre></div>
 <p>Here, the value of <span class="highlight"><code class="C"><span class="n">number</span></code></span> is changed to 3 using the pointer.</p>
 
-<p><strong>How can I access the fields of structures?</strong><br/>
+<p><strong>Okay, I’ve got a variable of a struct or a pointer to it but how can I access the fields of that structure?</strong><br/>
 The fields of a structure can be accessed using the &#39;dot&#39; operator, much like in Java:</p>
 <div class="highlight"><pre><code class="C"><span class="k">struct</span> <span class="n">Address</span> <span class="n">homeAddress</span><span class="p">;</span>
 <span class="kt">int</span> <span class="n">homeNumber</span> <span class="o">=</span> <span class="n">homeAddress</span><span class="p">.</span><span class="n">number</span><span class="p">;</span>
@@ -86,26 +93,24 @@ The fields of a structure can be accessed using the &#39;dot&#39; operator, much
 </code></pre></div>
 <p>As all data of a struct is public, the fields are accessed directly.</p>
 
-<p><strong>You said Address contains strings but if I understand correctly, there are only pointers to characters?</strong><br/>
-There is no &quot;String&quot; type in C. In C, a string is an array of characters, terminated with a &#39;null&#39; character, <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span>. This means that a character array of length 7 can only contain a string with 6 characters as the null character takes up 1 place.</p>
+<p><strong>You said the struct Address contains strings but if I understand correctly, there are only pointers to characters?</strong><br/>
+Correct! There is no &quot;String&quot; type in C. In C, a string is an array of characters, terminated with a &#39;null&#39; character, <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span>. This means that a character array of length 7 can only contain a string with 6 characters as the null character takes up 1 place.</p>
 
 <p><strong>Why is an array of characters terminated with <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span> ?</strong><br/>
-As C never does automatic bounds checks, it means the end of an array is unknown. To know the end of the string, character arrays are terminated with <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span>. This termination  allows easy use of strings, because the length of the string can be determined by checking for the <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span> character. By the way, arrays that contain elements of a different type are not automatically null-terminated.</p>
+As C never does automatic bounds checks, it means the end of an array is unknown. To mark the end of the string, character arrays are terminated with <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span>. This termination allows easy use of strings, because the length of the string can be determined by checking for the <span class="highlight"><code class="C"><span class="sc">&#39;\0&#39;</span></code></span> character. By the way, arrays that contain elements of a different type are not automatically null-terminated.</p>
 
-<p><strong>As C does not perform automatic bounds checks, how does it prevent everybody from writing beyond the end of an array?</strong><br/>
+<p><strong>As C does not perform automatic bounds checks, how does it prevent from writing beyond the end of an array?</strong><br/>
 Well simply said, it doesn&#39;t. The compiler will for example allow you to compile this piece of code that writes beyond the range of the <span class="highlight"><code class="C"><span class="n">overflowArray</span></code></span> array.</p>
-<div class="highlight"><pre><code class="C"><span class="kt">int</span> <span class="n">overflowArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
-<span class="kt">int</span> <span class="n">fixedArray</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
-    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
-        <span class="n">fixedArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">18</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
-        <span class="n">overflowArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
-        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">fixedArray</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
-    <span class="p">}</span>
+<div class="highlight"><pre><code class="C"><span class="kt">int</span> <span class="n">overflowArray</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">fixedArray</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">i</span><span class="p">;</span>
+<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">fixedArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">18</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">overflowArray</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">){</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">fixedArray</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+<span class="p">}</span>
 </code></pre></div>
 <p>This piece of code prints:</p>
 <div class="highlight"><pre><code class="Text">12 
@@ -120,11 +125,11 @@ Well simply said, it doesn&#39;t. The compiler will for example allow you to com
 9 
 </code></pre></div>
 <p>I wrote integers in <span class="highlight"><code class="C"><span class="n">overflowArray</span></code></span> while I was actually writing in and beyond <span class="highlight"><code class="C"><span class="n">fixedArray</span></code></span>.<br/>
-This is a very basic example of a buffer overflow. A buffer overflow occurs when     a program writes beyond the size of the buffer and thus overwrites memory that does not belong to the buffer anymore.<br/>
-The buffer overflow is one of the most common bugs in software. A lot of the iOS jailbreaks use this to acquire root privileges, enabling the program to alter the OS.</p>
+This is a very basic example of a buffer overflow. A buffer overflow occurs when a program writes beyond the size of the buffer and thus overwrites memory that does not belong to the buffer anymore.<br/>
+The buffer overflow is one of the most common bugs in software. Even worse, they are serious security issues. For instance, a lot of the iOS jailbreaks use this ‘trick’ to acquire root privileges, enabling the program to alter the OS.</p>
 
 <p><strong>Well, it seems to me that C is very basic compared to Java, no bounds checking on arrays... I like my <span class="highlight"><code class="Java"><span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">ArrayIndexOutOfBoundsException</span></code></span>!</strong><br/>
-<strong>Is C that much older than java? How was C created? <a href="http://en.wikipedia.org/wiki/C_(programming_language)">3</a></strong><br/>
+<strong>Is C that much older than java then? How was C created? <a href="http://en.wikipedia.org/wiki/C_(programming_language)">3</a></strong><br/>
 The programming language C was created by Dennis Ritchie between the years 1969 and 1973. At that time, Ritchie worked at AT&amp;T Bell Labs (New Jersey, USA). This research and development company is also known for the invention of the UNIX operating system family.</p>
 
 <p>The origin of C is by the way largely connected with this operating system family. UNIX was originally written in assembly language. When they decided to port the operating system to a PDP-11, a 16-bit minicomputer, they realised that their primary programming language at that time, namely B, couldn&#39;t take advantage of some important features of the PDP-11. This fact initiated the development of C.</p>
@@ -156,7 +161,7 @@ No, of course not. There are different stages in the evolution of the language. 
 
 <p>This standard was unchanged for years. And to be more precise: for 10 years. In 1999, the standard was revised and several new features, like for example new data types (long, long int, complex) and variable length arrays, were introduced. But also the support for one-line comment to begin with // was introduced. This last feature was seen in the programming language BCPL. This standard is worldwide known as C99.</p>
 
-<p>A last update, well at least until now, came in 2011 when the C11 standard was published. In this standard, the C standard is extended by new features like for example anonymous structures, atomic operations and multi-threading.</p>
+<p>A last update, well at least until now, came in 2011 when the C11 standard was published. In this standard, the C standard is extended with new features like for example anonymous structures, atomic operations and multi-threading.</p>
 
 <p><strong>Aah, interesting! Before, you said that C is the mother of all programming languages... Which languages are then derived from C?</strong><br/>
 The list is enormous. But the most known languages are probably C++, C#, Objective-C, PHP, JavaScript and... Java.</p>
@@ -169,17 +174,17 @@ Yes, Java! The syntax of Java is largely based on C&#39;s. But don&#39;t get me 
 <p>The advantage is that when you&#39;re Java code is compiled, you can run it on every machine that has a JVM installed. It does not matter if you compiled the code on a Mac and you want to run it on a Windows machine. This is not the case with C and its C compiler since the compiler will match C code to local machine instructions. These commands could (and do) differ between machines. Thus, compiled C code cannot run on a machine that has different machine instructions.</p>
 
 <p><strong>Oh, I see. And what is the contribution of C to the other languages that derive from it? Is it also solely the syntax?</strong><br/>
-Hmm, that differs from language to language. As said, the only similarity between Java and C is the syntax. The same can be said about JavaScript and PHP. The syntax that we&#39;re talking about is the structured programming syntax, like the if-statements and for- and while-loops. Well, actually, all the languages that I mentioned before inherit this syntax. </p>
+Hmm, that differs from language to language. As said, the only similarity between Java and C is their syntax. The same can be said about JavaScript and PHP. The syntax that we&#39;re talking about is the structured programming syntax, like the if-statements and for- and while-loops. Well, actually, all the languages that I mentioned before inherit this syntax. </p>
 
 <p>Languages like C++ and Objective-C are far more closely related to C than Java is. They were invented when object-oriented languages became more widely used and extend the C-language with object-oriented capabilities. </p>
 
 <p><strong>Wow, seems like we got a little sidetracked… Enough about C and its history. I thought you mentioned something about memory? How does that work in C?</strong><br/>
-A program can allocate memory in two regions: the stack or the heap. The stack has a fixed size, which is why you can can end up with a stack overflow error. The size of the heap is not fixed and can vary during execution. 
+A program can allocate memory in two regions: the stack or the heap. The stack has a fixed size, which is why you can end up with a stack overflow error. The size of the heap is not fixed and can thus vary during execution. 
 When you instantiate variables, they are automatically stored on the stack. When the function returns, they are freed. If you need a longer lifetime for a variable, you should allocate memory on the heap. This is done with the &#39;<span class="highlight"><code class="C"><span class="n">malloc</span></code></span>&#39; function, which returns a pointer to a chunk of memory of a given size.</p>
 <div class="highlight"><pre><code class="C"><span class="n">Address</span> <span class="o">*</span><span class="n">addr_ptr</span> <span class="o">=</span> <span class="p">(</span><span class="n">Address</span> <span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="n">Address</span><span class="p">));</span>
 <span class="n">addr_ptr</span><span class="o">-&gt;</span><span class="n">postal</span> <span class="o">=</span> <span class="mi">3000</span><span class="p">;</span>
 </code></pre></div>
-<p>Pointers are a powerful part of the C language. You can easily create very potent code, but you can also easily introduce bugs. One thing you mustn&#39;t forget is freeing the memory you&#39;ve allocated for the object when you no longer need it. This can be done using the &#39;<span class="highlight"><code class="C"><span class="n">free</span></code></span>&#39; function.</p>
+<p>Pointers are a powerful part of the C language. You can easily create very potent code, but you can also easily introduce bugs. One thing you mustn&#39;t forget is freeing the memory you&#39;ve allocated for the object when you no longer need it. This can be done using the &#39;<span class="highlight"><code class="C"><span class="n">free</span></code></span>&#39; function as in the example below.</p>
 <div class="highlight"><pre><code class="C"><span class="n">free</span><span class="p">(</span><span class="n">myAddr_ptr</span><span class="p">);</span>
 </code></pre></div>
 <p>If you don&#39;t do this, the memory will remain allocated, and eventually your computer will run out of memory. This is what is called a memory leak.</p>
@@ -187,13 +192,13 @@ When you instantiate variables, they are automatically stored on the stack. When
 <p>Another important fact to remember, is that the memory for your object allocated by <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> is not initialised. It still contains the data that was there before <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> was called. Reading variables from a freshly created <span class="highlight"><code class="C"><span class="n">Address</span><span class="o">*</span></code></span> results in undefined behaviour. Executing <span class="highlight"><code class="C"><span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">myAddrPtr</span><span class="o">-&gt;</span><span class="n">streetName</span><span class="p">);</span></code></span> will probably print jibberish to <span class="highlight"><code class="C"><span class="n">stdout</span></code></span>, or even result in a memory-related error. </p>
 
 <p><strong>Is &#39;(Address *)&#39; a cast and why do you need to cast that pointer?</strong><br/>
-Yes, it is. In C, you can cast types to other types. The reason for the cast is the <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> function. The declaration of <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> reads</p>
+Yes, it is. In C, you can cast types to other types. The reason for the cast is the <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> function. The declaration of <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> reads:</p>
 <div class="highlight"><pre><code class="C"><span class="kt">void</span> <span class="o">*</span><span class="n">malloc</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">size</span><span class="p">)</span>
 </code></pre></div>
 <p>In other words, it returns a pointer of type &#39;pointer to void&#39;. In the previous example, you declare a pointer of type &#39;pointer to Address&#39; and because of that, you technically need to cast it to that type. In fact, most compilers will do the casting automatically but doing the cast manually is generally considered good practice. For instance, C++ requires the cast and in older versions of C, <span class="highlight"><code class="C"><span class="n">malloc</span></code></span> returned <span class="highlight"><code class="C"><span class="kt">char</span> <span class="o">*</span></code></span>.</p>
 
 <p><strong>So I can just cast a &#39;pointer to void&#39; to anything I want?</strong>
-The short answer is yes. You can cast everything to something else. The compiler will give you a warning if you&#39;re casting a pointer to an integer type, and an error if you try to cast a struct variable to a primitive or vice versa.</p>
+The short answer is yes. You can cast everything to something else. The compiler will give you a warning if you&#39;re casting a pointer to an integer type, and an error if you try to cast a struct variable to a primitive or vice versa. Let me give you a few examples:</p>
 <div class="highlight"><pre><code class="C"><span class="n">Type</span> <span class="n">var</span><span class="p">,</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
 <span class="n">ptr</span> <span class="o">=</span> <span class="p">(</span><span class="n">Type</span> <span class="o">*</span><span class="p">)</span> <span class="n">var</span><span class="p">;</span>
 </code></pre></div>
@@ -219,7 +224,7 @@ The short answer is yes. You can cast everything to something else. The compiler
 <span class="go">cast.c:8:2: error: aggregate value used where an integer was expected</span>
 </code></pre></div>
 <p><strong>What&#39;s the difference between &#39;pointer to Address&#39; and &#39;pointer to void&#39; then?</strong><br/>
-Even though pointers have equal sizes, they don&#39;t point to values of equal sizes. For instance, a variable of type <span class="highlight"><code class="C"><span class="kt">char</span></code></span> doesn&#39;t take as many memory as a variable of type <span class="highlight"><code class="C"><span class="kt">int</span></code></span>. In C, pointers are also used to iterate over a collection of data. This is done by increasing the pointer with &#39;one&#39; but that one needs to be the exact size of the structure it is pointing to. This is the reason why pointers have different types, they need to know the size of the type they are pointing to. </p>
+Even though pointers have equal sizes in memory, they don&#39;t point to values of equal sizes. For instance, a variable of type <span class="highlight"><code class="C"><span class="kt">char</span></code></span> doesn&#39;t take as many memory as a variable of type <span class="highlight"><code class="C"><span class="kt">int</span></code></span>. In C, pointers are also frequently used to iterate over a collection of data. This is done by increasing the pointer with &#39;one&#39; but that one needs to be the exact size of the structure it is pointing to. This is the reason why pointers have different types, they need to know the size of the type they are pointing to.</p>
 <div class="highlight"><pre><code class="C"><span class="kt">int</span> <span class="o">*</span><span class="n">int_ptr</span><span class="p">;</span>
 <span class="kt">char</span> <span class="o">*</span><span class="n">char_ptr</span><span class="p">;</span>
 <span class="n">int_ptr</span><span class="o">++</span><span class="p">;</span>  <span class="c1">// equivalent to: int_ptr += sizeof(int);</span>
@@ -311,7 +316,7 @@ In C, this is possible:</p>
 </code></pre></div>
 <p>Calling <span class="highlight"><code class="C"><span class="n">test</span><span class="p">(</span><span class="n">address</span><span class="p">)</span></code></span> results in address being reset, and the <span class="highlight"><code class="C"><span class="n">postalCode</span></code></span> is set to <span class="highlight"><code class="C"><span class="mi">3000</span></code></span>. </p>
 
-<p><strong>I noticed you wrote if(addr) in the getPostal3 function above. Is that truly valid code? Shouldn&#39;t that be if(addr != NULL)?</strong><br/>
+<p><strong>I noticed that you wrote if(addr) in the getPostal3 function above. Is that truly valid code? Shouldn&#39;t that be if(addr != NULL)?</strong><br/>
 I understand your confusion, but this code is really valid. In Java you should write <span class="highlight"><code class="Java"><span class="k">if</span><span class="o">(</span><span class="n">addr</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span></code></span> to check whether <span class="highlight"><code class="Java"><span class="n">addr</span></code></span> is <span class="highlight"><code class="Java"><span class="kc">null</span></code></span> or not. In C you can do this by simply writing <span class="highlight"><code class="C"><span class="k">if</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span></code></span>. Thus it is possible to check no matter what type of object using <span class="highlight"><code class="C"><span class="k">if</span></code></span>, because the C language does not contain booleans. </p>
 
 <p><strong>No booleans? How do test-statements work then?</strong><br/>
@@ -447,11 +452,11 @@ The compiler then takes over and compiles the source code files into object file
 The linker takes all object files needed for the program, including library object files, and merges them into a single executable program.<br/>
 If desired, additional optimisations can be made on the produced executable file.</p>
 
-<p><strong>Java has packages. Can you do something similar in C?</strong><br/>
-In C, there is no such thing as packages, but programmers normally organise their code in a similar way using directories. Even in Java a package is mapped directly onto a directory in the file hierarchy.<br/>
+<p><strong>Another question just popped into my mind totally unrelated to preprocessors: Java has packages, can you do something similar in C?</strong><br/>
+In C, there is no such thing as packages, but programmers normally organise their code in a similar way using directories. Even in Java a package is just a directly but you don’t always notice that when you are working with a full blown IDE.<br/>
 C&#39;s modularity is actually very similar to that of Java. In Java, however, you break down your program in classes. In C, you also break down the program in smaller, more manageable parts but they do not need to be like classes. You can then use the preprocessor to include these parts in your program. The <span class="highlight"><code class="C"><span class="cp">#include</span></code></span> keyword is used for this as we already discussed.</p>
 
-<p><strong>Libraries?</strong><br/>
+<p><strong>And what about libraries?</strong><br/>
 Yes, just like Java, C comes with a predefined set of libraries. The linker looks for these libraries in predefined directories. On most UNIX-like systems, the header files are located in <span class="highlight"><code class="C"><span class="err">$</span><span class="n">INCLUDE_PATH</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">include</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">include</span></code></span>. The library files are located in <span class="highlight"><code class="C"><span class="err">$</span><span class="n">LD_LIBRARY_PATH</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">lib</span><span class="o">:/</span><span class="n">usr</span><span class="o">/</span><span class="n">lib</span><span class="o">:/</span><span class="n">lib</span></code></span>.
 You can add other directories to these paths by setting either the <span class="highlight"><code class="C"><span class="n">INCLUDE_PATH</span></code></span> or <span class="highlight"><code class="C"><span class="n">LD_LIBRARY_PATH</span></code></span>, depending on what you want to add. Another way to do this is by giving certain directives to the compiler. For the <span class="highlight"><code class="C"><span class="n">gcc</span></code></span> compiler,  you can add directories containing header files with the <span class="highlight"><code class="C"><span class="o">-</span><span class="n">I</span></code></span> directive, and directories filled with libraries with the <span class="highlight"><code class="C"><span class="o">-</span><span class="n">L</span></code></span> directive.</p>
 
@@ -461,7 +466,7 @@ This is what we call &quot;static linking&quot;. This is possible in C, but &quo
 By using dynamically linked libraries, the user is required to install the right libraries first. This problem is solved in most UNIX/*NIX systems, where the package manager just lists these libraries as dependencies of the program, but when programs are distributed via a website, this can still be a problem.
 The advantages are overwhelming. Every program on the computer always uses the same version of the library, and the library is only stored once on the system. If the library is updated, every program gets the update immediately.</p>
 
-<p><strong>To start running a program in C, you also have to write a main method like in Java: <span class="highlight"><code class="Java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){}</span></code></span> ?</strong><br/>
+<p><strong>Do you also have to write a main method like in Java to start running a program written in C? And is the method similar to the one used in Java, namely <span class="highlight"><code class="Java"><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">){}</span></code></span> ?</strong><br/>
 C programs are run indeed using a main method that is similar to that of Java that you mentioned but there are some subtle differences. First of all as we already discussed there are no Strings in C and the size of an array is unknown, so the main method in C has an int and a pointer to a char pointer as arguments, its header looks like this:</p>
 <div class="highlight"><pre><code class="C"><span class="kt">int</span> <span class="n">main</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
 </code></pre></div>
@@ -481,11 +486,11 @@ C programs are run indeed using a main method that is similar to that of Java th
 <p>This means that the name of the program itself is also taken into account as an argument.
 The second main difference is that the main method in C returns an int, while in Java the main method returns nothing (void return type).</p>
 
-<p><strong>Yes I noticed that in the main header, what would you want to know when a program is terminated?</strong><br/>
-The <span class="highlight"><code class="C"><span class="kt">int</span></code></span> that is returned shows how the program terminated, successful or unsuccessful. When the program terminated successful the return value should be <span class="highlight"><code class="C"><span class="mi">0</span></code></span>, otherwise the value should be non-zero. To help programmers not to use an incorrect value <span class="highlight"><code class="C"><span class="n">stdlib</span><span class="p">.</span><span class="n">h</span></code></span> provides two global variables called <span class="highlight"><code class="C"><span class="n">EXIT_SUCCESS</span></code></span> and <span class="highlight"><code class="C"><span class="n">EXIT_FAILURE</span></code></span>. These variables can be used perfectly as return value of the main method.</p>
+<p><strong>Yes I noticed that in the <span class="highlight"><code class="C"><span class="n">main</span></code></span> header? What would you want to know when a program is terminated?</strong><br/>
+The <span class="highlight"><code class="C"><span class="kt">int</span></code></span> that is returned shows how the program terminated: successful or unsuccessful. When the program terminated successful the return value should be <span class="highlight"><code class="C"><span class="mi">0</span></code></span>, otherwise the value should be non-zero. To help programmers not to use an incorrect value <span class="highlight"><code class="C"><span class="n">stdlib</span><span class="p">.</span><span class="n">h</span></code></span> provides two global variables called <span class="highlight"><code class="C"><span class="n">EXIT_SUCCESS</span></code></span> and <span class="highlight"><code class="C"><span class="n">EXIT_FAILURE</span></code></span>. These variables can be used perfectly as return value of the main method.</p>
 
-<p><strong>You mentioned global variables at the end. In Java I define variables that are needed throughout the entire program by creating a Constants class that contains all these variables as public static final variables, as there are no classes in C, you can just define variables outside any function to define them as global variables?</strong><br/>
-That is absolutely correct, you can define variables right away in source or header files to define global variables. The global variable will be known from the declaration point until the end of the source file. If it is declared in a header file, it can be used in other files too by including the header file.
+<p><strong>You mentioned global variables. In Java, I usually define variables that are needed throughout the entire program by creating a Constants class that contains all these variables as public static final variables. As there are no classes in C, you can just define variables outside any function to define them as global variables?</strong><br/>
+That is absolutely correct! You can define variables right away in source or header files to define global variables. The global variable will be known from the declaration point until the end of the source file. If it is declared in a header file, it can be used in other files too by including the header file.
 When you want to use variables in file1 that are declared in file2, the <span class="highlight"><code class="C"><span class="k">extern</span></code></span> keyword can be used to declare the variables from file2 in file1.</p>
 
 <p>file1:</p>
@@ -514,7 +519,7 @@ Well, C does not support inheritance out of the box, but what you can do, is reu
 </code></pre></div>
 <p>Of course this is not real inheritance, this is just a simple technique to allow programmers to extend structs using other structs.</p>
 
-<p><strong>Okay, but what are the advantages of programming in C? Why should I learn it?</strong><br/>
+<p><strong>Okay, there are a lot differences between C and Java... But why has C-Coders Company chosen for using this particular language? What are the advantages of programming in C? Why should I learn it?</strong><br/>
 There are a lot of reasons to learn C. As I already told you, C is a very old programming language. And why this may seems a disadvantage at first, it is actually a big advantage. New programming languages tend to change frequently and brutally by for example the addition or deletion of keywords. An old programming language on the other hand, is stable and static: brute changes hardly occur anymore. </p>
 
 <p>Moreover, since C is so old, there already exists a lot of source code. You can&#39;t not only learn from this source code, but also use it (libraries). And, as you know, every language contains some issues. But since C already exists for over thirty years, all these issues are well documented and tutorials for workarounds are widely available on the web. Speaking of tutorials, the amount of tutorials you can use to learn C will be gigantic.</p>
@@ -539,7 +544,7 @@ C is mainly used for system programming. This includes, as I already briefly men
 
 <p>Another use is the development of embedded systems. As you may or may not know, the current trend is to include a CPU in every device: TV, water boiler, you name it. These devices must communicate with the hardware and have a very little memory capacity. C is the perfect language for these systems: you can directly access and manage the hardware and memory.</p>
 
-<p>Oh, and before I forget to mention it: have you played or do you play video games? If so, then the chances are fairly big that this game was written in C. </p>
+<p>Oh, and before I forget to mention it: have you played or do you play video games? If so, then the chances are fairly big that this game was written in C, C++ or C#. </p>
 
 <p><strong>How come?</strong><br/>
 Well, how would you feel if the game lags for a second at the moment you fired a bullet? You would turn the game off, right?</p>
@@ -550,7 +555,7 @@ Of course not. And that&#39;s the main reason why C is used to write games in: t
 <p><strong>Wow, it seems that I&#39;ve already been in touch multiple times with C: my Mac, my smartphone, games…</strong>
 And it won&#39;t stop there, I guess. Device drivers are also are also mainly written in C. You can use the basic elements of your computer by using C. And that&#39;s exactly what these devices need.</p>
 
-<p><strong>Every programming language has some reserved keywords, so does C. What are they? And are there any special ones?</strong><br/>
+<p><strong>I think that these advantages speak for themselves. Okay, I really want to learn the language now. Where should I start? Oh, wait! Every programming language has some reserved keywords, right? So C has also those. What are they? And are there any special ones in comparison with Java?</strong><br/>
 C has 37 keywords, at least the version C99. For me, there aren&#39;t any special ones between them. Take a look yourself and ask me if some keyword isn&#39;t clear to you. Here they are: </p>
 
 <table>
@@ -628,8 +633,9 @@ Note that this definition requires variables of type <span class="highlight"><co
 <span class="p">}</span> <span class="n">color</span><span class="p">;</span>
 </code></pre></div>
 <p><strong>And now for something completely different. I&#39;ve got this function that requires a callback as argument. In Java, I&#39;d create an interface with one function and give an instance of that interface. How do you do this in C, where you have no objects, no real inheritance and no interfaces?</strong><br/>
-Easy! You give a function pointer.<br/>
-<strong>A function pointer?</strong><br/>
+Easy! You give a function pointer.  </p>
+
+<p><strong>A function pointer?</strong><br/>
 Yet another fun characteristic of C! Not only can you point to data structures, you can also point to functions! For example:</p>
 <div class="highlight"><pre><code class="C"><span class="kt">void</span> <span class="p">(</span><span class="o">*</span><span class="n">function_pointer</span><span class="p">)(</span><span class="kt">int</span> <span class="o">*</span><span class="n">data</span><span class="p">);</span>
 </code></pre></div>
@@ -726,6 +732,8 @@ The Java compiler doesn&#39;t compile to an executable. It creates Java bytecode
 <li>Some API&#39;s differ between the different systems. You can use the <span class="highlight"><code class="C"><span class="cp">#ifdef</span></code></span> preprocessor directive to change which code is actually compiled, as we discussed earlier. Important API&#39;s that differ between POSIX/UNIX/*NIX and Windows/DOS are the threads and subprocesses api, any I/O apart from what&#39;s found in <span class="highlight"><code class="C"><span class="o">&lt;</span><span class="n">stdio</span><span class="p">.</span><span class="n">h</span><span class="o">&gt;</span></code></span>, synchronisation api … <a href="http://blogs.msdn.com/b/csliu/archive/2009/03/20/windows-unix-and-ansi-c-api-comparison.aspx">8</a></li>
 <li>Do not assume that all arguments of a function are evaluated in the same order! If this could prove a problem, evaluate the arguments yourself, store the result in the stack, and use these stored values in the function.</li>
 </ul>
+
+<p><strong>Thank you so much for your time and insights, mister B! I really appreciate it.</strong> </p>
 
 </div>
 
