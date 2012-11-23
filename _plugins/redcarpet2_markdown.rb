@@ -12,16 +12,40 @@ class Redcarpet2Markdown < Redcarpet::Render::XHTML
     lang = lang || "text"
     path = File.join(PYGMENTS_CACHE_DIR, "#{lang}-#{Digest::MD5.hexdigest code}.html")
     cache(path) do
-puts(code)
-puts(lang)
       colorized = Pygments.highlight(code, :lexer => lang.downcase)
-      add_code_tags(colorized, lang)
+      add_code_tags_pre(colorized, lang)
     end
   end
 
-  def add_code_tags(code, lang)
-    code.sub(/<pre>/, "<pre><code class=\"#{lang}\">").
+  def codespan(code)
+    return super unless code[0..1].downcase == "c " || code[0..4].downcase == "java "
+
+    if code[0..4].downcase == "java "
+      lang = "Java"
+      rcode = code[5..-1]
+    else
+      lang = "C"
+      rcode = code[2..-1]
+    end
+
+    path = File.join(PYGMENTS_CACHE_DIR, "#{lang}-#{Digest::MD5.hexdigest rcode}.html")
+    cache(path) do
+      colorized = Pygments.highlight(rcode, :lexer => lang.downcase)
+      add_code_tags(colorized, lang).chomp
+    end
+  end
+
+  def add_code_tags_pre(code, lang)
+    code.sub(/<pre>/, "<pre><code class=\"#{lang.capitalize}\">").
          sub(/<\/pre>/, "</code></pre>")
+  end
+
+  def add_code_tags(code, lang)
+    code.sub(/<pre>/, "<code class=\"#{lang.capitalize}\">").
+         sub(/<\/pre>/, "</code>").
+         sub(/<div class="highlight">/, "<span class=\"highlight\">").
+         sub(/\s*<\/div>/, "</span>").
+         sub(/\n/, "")
   end
 
   def cache(path)
