@@ -1,0 +1,9 @@
+{
+  "name": "CPL2",
+  "description": "CPL DSL",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "sequelize": "1.x"
+  }
+}
