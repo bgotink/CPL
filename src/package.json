@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "sequelize": "1.x"
+    "sequelize": "1.x",
+     "sqlite3": "2.x"
   }
 }

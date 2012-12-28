@@ -1,7 +1,8 @@
 #!/usr/local/bin/node
 //var Sequelize = require("sequelize");
-var fs = require("fs");
-var scope = require("./scope.js");
+var fs    = require('fs')
+  , db    = require('./db')
+  , scope = require('./scope');
 
 if (typeof print === 'undefined') {
   print = console.log;

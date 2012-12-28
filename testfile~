@@ -1,5 +1,0 @@
-Country{ name: "Belgium", code: "BE" }
-	.City{ name: "Brussels" }
-		.Airport{ name: "Zaventem" }
-
-FlightDescription{}
