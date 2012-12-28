@@ -1,0 +1,20 @@
+{
+  "development": {
+    "username": "cpl",
+    "password": "cpl",
+    "database": "cpl_dev",
+    "host": "localhost"
+  },
+  "test": {
+    "username": "cpl",
+    "password": "cpl",
+    "database": "cpl_test",
+    "host": "localhost"
+  },
+  "production": { 
+    "username": "cpl",
+    "password": "cpl",
+    "database": "cpl_prod",
+    "host": "localhost"
+  }
+}
