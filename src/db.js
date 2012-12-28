@@ -1,8 +1,11 @@
-var Sequelize = require('sequelize');
+var Sequelize = require('sequelize')
+  , fs = require('fs');
+
+var dbFile = __dirname + '/../data/db.sqlite';
 
 var sequelize = new Sequelize('cpl', 'cpl', null, {
     dialect: 'sqlite',
-    storage: '../data/dsl.db',
+    storage: dbFile,
     logging: false
 });
 
