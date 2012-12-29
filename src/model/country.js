@@ -8,10 +8,10 @@ function AirportCreator(airport, city) {
 	if(!airport.longitude) throw "longitude attribute of airport missing";
     
     this.airport = db.Airport.build(airport, ['name', 'code', 'latitude', 'longitude']);
-    city.country.chain.add(this.airport.save());
+    db.applyLater(this.airport, 'save');
     
     this.city = city;
-    print("Airport " + airport.name + " created.");
+    print("Airport " + airport.name + " created in " + city.city.name);
 };
 
 AirportCreator.prototype.Airport = function(args) {
@@ -26,18 +26,18 @@ function CityCreator(city, country) {
 	if(!city.name) throw "name attribute of city missing";
 
     this.city = db.City.build(city, ['name']);
-    country.chain.add(this.city.save());
+    db.applyLater(this.city, 'save');
     
     this.country = country;
     this.airports = [];
-    print("City " + city.name + " created");
+    print("City " + city.name + " created in " + country.country.name);
 }
 
 CityCreator.prototype.Airport = function(args) {
     var airport = new AirportCreator(args, this);
     
     this.airports.push(airport);
-    this.country.chain.add(this.city.addAirport(airport.airport));
+    db.applyLater(this.city, 'addAirport', airport.airport);
     
     return airport;
 }
@@ -52,10 +52,7 @@ function CountryCreator(country) {
     
     this.country = db.Country.build(country, ['name', 'code']);
     
-    this.chain = new Sequelize.Utils.QueryChainer();
-    db.chain.add(this.chain.runSerially({ skipOnError: true }));
-    
-    this.chain.add(this.country.save());
+    db.applyLater(this.country, 'save');
     
     this.cities = [];
     print("Country " + country.name + " created");
@@ -64,7 +61,7 @@ function CountryCreator(country) {
 CountryCreator.prototype.City = function(args) {
     var city = new CityCreator(args, this);
     this.cities.push(city);
-    this.chain.add(this.country.addCity(city.city));
+    db.applyLater(this.country, 'addCity', city.city);
     return city;
 }
 

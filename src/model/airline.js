@@ -7,7 +7,7 @@ var AirlineCreator = function(airline) {
 
     this.airline = db.Airline.build(airline, ['name', 'code']);
     
-    db.chain.add(this.airline.save());
+    db.applyLater(this.airline, 'save');
     
     print("Airline with name: " + airline.name + " and code: " + airline.code + " created");
 }

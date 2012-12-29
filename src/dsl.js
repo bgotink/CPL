@@ -22,7 +22,7 @@ var DSLRunner = (function(sc){
   return function(callback) {
       var fArgs = Object.keys(sc), 
           f     = new Function(fArgs.join(', '), callback);
-      //print("f: " + f.toString());
+      print("f: " + f.toString());
       return f.apply(sc, map(fArgs, function(a) { return sc[a]; }));
   };
 })(scope);
@@ -45,12 +45,11 @@ db.sync().success(function() {
     );
     
     print("Storing all entries");
-    db.chain
-        .runSerially({skipOnError: true})
-        .success(function() {
-            print("Succesfully stored all entries in file " + process.argv[2]);
-        })
-        .error(print);
+    db.runAll().success(
+        function() {
+            print("Successfully stored in db");
+        }
+    ).error(print);
 }).error(function(error) {
     console.log('Database Schema synchronization failed (' + error + ').');
 });
