@@ -286,6 +286,9 @@ SeatClass.hasMany(Price);
 
 
 module.exports = sequelize;
+
+module.exports.chain = new Sequelize.Utils.QueryChainer();
+
 module.exports.Country = Country;
 module.exports.City = City;
 module.exports.Airport = Airport;

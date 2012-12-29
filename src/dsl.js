@@ -1,7 +1,8 @@
 #!/usr/local/bin/node
-var fs    = require('fs')
-  , db    = require('./db')
-  , scope = require('./scope');
+var fs        = require('fs')
+  , db        = require('./db')
+  , scope     = require('./scope')
+  , Sequelize = require('sequelize');
 
 if (typeof print === 'undefined') {
   print = console.log;
@@ -42,6 +43,14 @@ db.sync().success(function() {
             .replace(/\)(\s*[^\s.])/g, ');$1')
             .replace(/\)\s*$/, ');')
     );
+    
+    print("Storing all entries");
+    db.chain
+        .runSerially({skipOnError: true})
+        .success(function() {
+            print("Succesfully stored all entries in file " + process.argv[2]);
+        })
+        .error(print);
 }).error(function(error) {
     console.log('Database Schema synchronization failed (' + error + ').');
 });
