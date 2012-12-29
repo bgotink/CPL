@@ -22,7 +22,7 @@ var DSLRunner = (function(sc){
   return function(callback) {
       var fArgs = Object.keys(sc), 
           f     = new Function(fArgs.join(', '), callback);
-      //print("f: " + f.toString());
+      print("f: " + f.toString());
       return f.apply(sc, map(fArgs, function(a) { return sc[a]; }));
   };
 })(scope);
@@ -33,9 +33,9 @@ if (process.argv.length < 2) {
 
 DSLRunner(
     fs.readFileSync(process.argv[2]).toString()
-        .replace(/\n/g, '')
         .replace(/{/g, '({')
         .replace(/}/g, '})')
-        .replace(/\)\s*([^\s.])/g, ');$1')
+        .replace(/\)(\s*[^\s.])/g, ');$1')
+        .replace(/\)\s*$/, ');')
 );
 
