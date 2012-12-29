@@ -133,11 +133,10 @@ AircraftType{model: "737", manufacturer: "Boeing"}
 	.Seat{row: 14, letter: "F"}
 	.Seat{row: 15, letter: "F"}
 
-SeatClass{name: "Economy", code: "boeingE"}
-SeatClass{name: "First", code: "boeingF"}
-SeatClass{name: "Suite", code: "airbusS"}
-SeatClass{name: "Business", code: "airbusB"}
-SeatClass{name: "Economy", code: "airbusE"}
+SeatClass{name: "Economy", code: "E"}
+SeatClass{name: "First", code: "F"}
+SeatClass{name: "Suite", code: "S"}
+SeatClass{name: "Business", code: "B"}
 
 FlightDescription{flight_number: "1", distance: 1000, departure_time: "tododeptime", arrival_time: "todoarrtime"}
 	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}
