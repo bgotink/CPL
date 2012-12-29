@@ -30,6 +30,10 @@ var FlightDescriptionPeriodCreator = function(flightDescriptionPeriod) {
     	throw "validFrom attribute of flightDescriptionPeriod is missing";
     if(!flightDescriptionPeriod.validTo)
     	throw "validTo attribute of flightDescriptionPeriod is missing";
+    if(!flightDescriptionPeriod.dayOfMonth)
+    	throw "dayOfMonth attribute of flightDescriptionPeriod is missing";
+    if(!flightDescriptionPeriod.dayOfWeek)
+    	throw "dayOfWeek attribute of flightDescriptionPeriod is missing";
     this.flightDescriptionPeriod = flightDescriptionPeriod;
     this.prices = [];
     this.dateExceptions = [];
