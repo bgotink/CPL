@@ -1,0 +1,36 @@
+var Sequelize = require('sequelize');
+
+// SQLite Config
+var dbFile = __dirname + '/../data/db.sqlite';
+
+if (!FileSystem.existsSync(Path.dirname(dbFile))) {
+    FileSystem.mkdirSync(Path.dirname(dbFile));
+}
+module.exports = new Sequelize('cpl', 'cpl', null, {
+    dialect: 'sqlite',
+    storage: dbFile,
+    logging: false
+});
+
+/*
+// PostgreSQL config
+module.exports = new Sequelize('cpl', 'cpl', 'cpl', {
+    dialect:    'postgres',
+    logging:    false,
+
+    protocol:   'tcp',
+    username:   'cpl',
+    password:   'cpl',
+    host:       'localhost',
+    port:       5432,
+    database:   'cpl'
+});
+*/
+
+// MySQL config
+/*
+module.exports = new Sequelize('cpl', 'cpl', 'cpl', {
+    dialect: 'mysql',
+    logging: false
+});
+*/

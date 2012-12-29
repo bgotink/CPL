@@ -11,6 +11,9 @@ node_modules/*
 # Database File #
 data/db.sqlite
 
+# Config File #
+src/config.js
+
 # OS generated files #
 ######################
 .DS_Store
@@ -21,4 +24,3 @@ data/db.sqlite
 Icon?
 ehthumbs.db
 Thumbs.db
-

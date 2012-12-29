@@ -1,18 +1,7 @@
 var Sequelize   = require('sequelize')
   , FileSystem  = require('fs')
-  , Path        = require('path');
-
-var dbFile = __dirname + '/../data/db.sqlite';
-
-if (!FileSystem.existsSync(Path.dirname(dbFile))) {
-    FileSystem.mkdirSync(Path.dirname(dbFile));
-}
-
-var sequelize = new Sequelize('cpl', 'cpl', null, {
-    dialect: 'sqlite',
-    storage: dbFile,
-    logging: false
-});
+  , Path        = require('path')
+  , sequelize   = require('./config');
 
 /*******************
  ****  COUNTRY  ****
@@ -26,6 +15,7 @@ var Country = sequelize.define('Country', {
     },
     code: {
         type: Sequelize.STRING,
+        unique: true,
         validate: {
             is: ["[A-Z]{2}"]
         }
@@ -59,12 +49,13 @@ var Airport = sequelize.define('Airport', {
     },
     code: {
         type: Sequelize.STRING,
+        unique: true,
         validate: {
             is: ["[A-Z]{3-4}"]
         }
     },
     latitude: {
-        type: sequelize.FLOAT,
+        type: Sequelize.FLOAT,
         validate: {
             // Geen idee of dit automatisch gaat voor float types...
             isFloat: true,
@@ -72,7 +63,7 @@ var Airport = sequelize.define('Airport', {
         }
     },
     longitude: {
-        type: sequelize.FLOAT,
+        type: Sequelize.FLOAT,
         validate: {
             // Geen idee of dit automatisch gaat voor float types...
             isFloat: true,
@@ -91,6 +82,7 @@ var Airline = sequelize.define('Airline', {
     },
     code: {
         type: Sequelize.STRING,
+        unique: true,
         validate: {
             is: ["[A-Z]{2-3}"]
         }
