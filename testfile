@@ -8,6 +8,9 @@ Airline{}
 AircraftType{model: "A380", manufacturer: "Airbus"}
 	.Seat{row: 3, letter: "A"}
 
+AircraftType{model: "A380"}
+	.Seat{row: 3, letter: "A"}
+
 SeatClass{}
 Price{}
 FlightDescriptionPeriod{}
