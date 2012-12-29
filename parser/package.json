@@ -1,0 +1,9 @@
+{
+  "name": "airport-parser",
+  "description": "Airport.csv parser to create Airports file",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "csv": "0.x"
+  }
+}
