@@ -1,7 +1,12 @@
-var Sequelize = require('sequelize')
-  , fs = require('fs');
+var Sequelize   = require('sequelize')
+  , FileSystem  = require('fs')
+  , Path        = require('path');
 
 var dbFile = __dirname + '/../data/db.sqlite';
+
+if (!FileSystem.existsSync(Path.dirname(dbFile))) {
+    FileSystem.mkdirSync(Path.dirname(dbFile));
+}
 
 var sequelize = new Sequelize('cpl', 'cpl', null, {
     dialect: 'sqlite',
@@ -52,10 +57,10 @@ var Airport = sequelize.define('Airport', {
             notEmpty: true
         }
     },
-    iata: {
+    code: {
         type: Sequelize.STRING,
         validate: {
-            is: ["[A-Z]{3}"]
+            is: ["[A-Z]{3-4}"]
         }
     },
     latitude: {
@@ -84,10 +89,10 @@ var Airline = sequelize.define('Airline', {
             notEmpty: true
         }
     },
-    iata: {
+    code: {
         type: Sequelize.STRING,
         validate: {
-            is: ["[A-Z]{2}"]
+            is: ["[A-Z]{2-3}"]
         }
     }
 });
