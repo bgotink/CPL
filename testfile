@@ -4,7 +4,10 @@ Country{ name: "Belgium", code: "BE" }
 
 FlightDescription{}
 Airline{}
-AircraftType{}
+
+AircraftType{model: "A380", manufacturer: "Airbus"}
+	.Seat{row: 3, letter: "A"}
+
 SeatClass{}
 Price{}
 FlightDescriptionPeriod{}
