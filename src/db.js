@@ -285,19 +285,6 @@ FlightDescriptionPeriod.hasMany(Price);
 SeatClass.hasMany(Price);
 
 
-
-
-
-/***************************
- ****  SYNCHRONISATION  ****
- ***************************/
-// sync with the actual database
-sequelize.sync().success(function() {
-    console.log('Database Schema successfully synced.');
-}).error(function(error) {
-    console.log('Database Schema synchronization failed (' + error + ').');
-});
-
 module.exports = sequelize;
 module.exports.Country = Country;
 module.exports.City = City;
