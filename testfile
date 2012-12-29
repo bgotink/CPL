@@ -1,17 +1,18 @@
 Country{ name: "Belgium", code: "BE" }
 	.City{ name: "Brussels" }
-		.Airport{ name: "Zaventem" }
+		.Airport{ name: "Zaventem", code: "BRU", latitude: 50.901389, longitude: 4.484444 }
+	.City{ name: "London" }
 
-FlightDescription{}
-Airline{}
+
+Airline{name: "Brussels Airlines", code: "BRUA"}
 
 AircraftType{model: "A380", manufacturer: "Airbus"}
 	.Seat{row: 3, letter: "A"}
+	.Seat{row: 4, letter: "C"}
 
-AircraftType{model: "A380"}
-	.Seat{row: 3, letter: "A"}
+AircraftType{model: "A123123213", manufacturer: "Airbus"}
+	.Seat{row: 3,letter: "B"}
 
-SeatClass{}
-Price{}
-FlightDescriptionPeriod{}
-Flight{}
+FlightDescription{flight_number: "1", distance: 1000, departure_time: "bla", arrival_time: "blabla"}
+
+SeatClass{name: "Economy", code: "E"}

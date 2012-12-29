@@ -25,7 +25,7 @@ exports.FlightDescription = function(args) {
 
 
 ////// FlightDescriptionPeriod
-var FlightDescriptionPeriodCreator = function(flightDescriptionPeriod) {
+var FlightDescriptionPeriodCreator = function(flightDescriptionPeriod, flightDescription) {
     if(!flightDescriptionPeriod.validFrom)
     	throw "validFrom attribute of flightDescriptionPeriod is missing";
     if(!flightDescriptionPeriod.validTo)
@@ -34,6 +34,7 @@ var FlightDescriptionPeriodCreator = function(flightDescriptionPeriod) {
     	throw "dayOfMonth attribute of flightDescriptionPeriod is missing";
     if(!flightDescriptionPeriod.dayOfWeek)
     	throw "dayOfWeek attribute of flightDescriptionPeriod is missing";
+	this.flightDescription = flightDescription;
     this.flightDescriptionPeriod = flightDescriptionPeriod;
     this.prices = [];
     this.dateExceptions = [];
@@ -54,11 +55,20 @@ FlightDescriptionPeriodCreator.prototype.DateException = function(args) {
 }
 
 FlightDescriptionPeriodCreator.prototype.FlightDescriptionPeriod = function(args) {
-    return this.flightDescriptionPeriod.FlightDescriptionPeriod(args);
+    return this.flightDescription.FlightDescriptionPeriod(args);
 }
 
 
 ////// Price
+var PriceCreator = function(price, flightDescriptionPeriod) {
+	if(!price.price) throw "price attribute of price is missing";
+	if(!price.seatClass) throw "seatClass attribute of price is missing";
+	//TODO checken of de meegegeven seatClass al bestaat in de database
+	this.flightDescriptionPeriod = flightDescriptionPeriod;
+    this.price = price;
+    print("Price " + price.price + " for seatClass " + price.seatClass + " created");
+}
+
 PriceCreator.prototype.FlightDescriptionPeriod = function(args) {
 	return this.flightDescriptionPeriod.FlightDescriptionPeriod(args);
 }
@@ -68,18 +78,19 @@ PriceCreator.prototype.Price = function(args) {
 }
 
 PriceCreator.prototype.DateException = function(args) {
-    return this.flightDescriptionPeriod.Exception(args);
-}
-
-var PriceCreator = function(price) {
-	if(!price.price) throw "price attribute of price is missing";
-	if(!price.seatClass) throw "seatClass attribute of price is missing";
-	//TODO checken of de meegegeven seatClass al bestaat in de database
-    this.price = price;
-    print("Price " + price.price + " for seatClass " + price.seatClass + " created");
+    return this.flightDescriptionPeriod.DateException(args);
 }
 
 ////// DateException
+var DateExceptionCreator = function(dateException, flightDescriptionPeriod) {
+	if(!dateException.day) throw "day attribute of dateException is missing";
+	if(!dateException.month) throw "month attribute of dateException is missing";
+	//TODO nakijken of de meegegeven dag in een bestaande periode valt
+	this.flightDescriptionPeriod = flightDescriptionPeriod;
+    this.dateException = dateException;
+    print("DateException for " + dateException.day + " " + dateException.month + " created");
+}
+
 DateExceptionCreator.prototype.FlightDescriptionPeriod = function(args) {
 	return this.flightDescriptionPeriod.FlightDescriptionPeriod(args);
 }
@@ -89,13 +100,5 @@ DateExceptionCreator.prototype.Price = function(args) {
 }
 
 DateExceptionCreator.prototype.DateException = function(args) {
-    return this.flightDescriptionPeriod.Exception(args);
-}
-
-var DateExceptionCreator = function(dateException) {
-	if(!dateException.day) throw "day attribute of dateException is missing";
-	if(!dateException.month) throw "month attribute of dateException is missing";
-	//TODO nakijken of de meegegeven dag in een bestaande periode valt
-    this.dateException = dateException;
-    print("DateException for " + dateException.day + " " + dateException.month + " created");
+    return this.flightDescriptionPeriod.DateException(args);
 }
