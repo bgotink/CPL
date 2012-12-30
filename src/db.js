@@ -126,11 +126,17 @@ var AircraftType = sequelize.define('AircraftType', {
 });
 
 var Seat = sequelize.define('Seat', {
-    number: {
+    row: {
         type: Sequelize.INTEGER,
         validate: {
             isInt: true,
             min: 0
+        }
+    },
+    letter: {
+        type: Sequelize.STRING,
+        validate: {
+            is: ["[A-Z]"]
         }
     }
 });

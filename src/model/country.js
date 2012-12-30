@@ -1,5 +1,4 @@
-var Sequelize   = require('sequelize')
-  , db          = require('../db')
+var db          = require('../db')
   , Utils       = require('../utils');
 
 function AirportCreator(airport, city) {
