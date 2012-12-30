@@ -47,8 +47,8 @@ db.sync().success(function() {
         fs.readFileSync(process.argv[2]).toString()
             .replace(/{/g, '({')
             .replace(/}/g, '})')
-            .replace(/\)(\s*[^\s.])/g, ').finishLine();$1')
-            .replace(/\)\s*$/, ').finishLine();')
+            .replace(/}\)(\s*[^\s.])/g, '}).finishLine();$1')
+            .replace(/}\)\s*$/, '}).finishLine();')
     );
     print("Created structure in " + ((+new Date) - start) + 'ms');
     start = +new Date;
