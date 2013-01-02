@@ -1,3 +1,6 @@
+var db      = require('../db')
+  , Utils   = require('../utils');
+
 ////// FlightDescription
 var FlightDescriptionCreator = function(flightDescription) {
     if(!flightDescription.flight_number)

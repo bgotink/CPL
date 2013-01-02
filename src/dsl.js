@@ -20,14 +20,19 @@ Object.defineProperty(
     }
 );
 
+var oldToString = Object.prototype.toString;
+Object.prototype.toString = function () {
+    return '[' + Object.keys(this).join(', ') + ']';
+}
+
 var DSLRunner = (function(sc){
   var prepareFunctionBody = function(fn) {
     return '(' + fn.toString().replace(/\s+$/, '') + ')()';
   };
   
   return function(callback) {
-      var fArgs = Object.keys(sc), 
-          f     = new Function(fArgs.join(', '), callback);
+      var fArgs = Object.keys(sc)
+        , f     = new Function(fArgs.join(', '), callback);
       print("f: " + f.toString());
       return f.apply(sc, fArgs.map(function(a) { return sc[a]; }));
   };
