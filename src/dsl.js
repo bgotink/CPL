@@ -20,6 +20,10 @@ Object.defineProperty(
     }
 );
 
+Object.prototype.toString = function () {
+    return '[' + Object.keys(this).join(', ') + ']';
+}
+
 var DSLRunner = function(callback) {
     var fArgs = Object.keys(scope)
       , f     = new Function(fArgs.join(', '), callback);
@@ -45,25 +49,37 @@ var execChainer = new Utils.Chainer(false);
 execChainer.applyLater(db, 'sync');
 
 // Load the database
-var countries, cities, airports
-  , airlines, flights;
+var tmp = {};
 execChainer.applyLater(null, function () {
     print('Database Schema successfully synced.');
     return db.Country.findAll();
 });
 execChainer.applyLater(null, function (c) {
     print('Found ' + c.length + ' countries in the database');
-    countries = c;
+    tmp.countries = {};
+    c.forEach(function(country) {
+        tmp.countries[country.id] = scope.Country(country);
+    });
     return db.City.findAll();
 });
 execChainer.applyLater(null, function (c) {
     print('Found ' + c.length + ' cities in the database');
-    cities = c;
+    tmp.cities = {};
+    c.forEach(function(city) {
+        var country = tmp.countries[city.CountryId];
+        tmp.cities[city.id] = country.City(city);
+    });
+    delete tmp['countries'];
     return db.Airport.findAll();
 });
 execChainer.applyLater(null, function (a) {
     print('Found ' + a.length + ' airports in the database');
-    airports = a;
+    tmp.airports = {};
+    a.forEach(function (airport) {
+        var city = tmp.cities[airport.CityId];
+        tmp.airports = city.Airport(airport);
+    });
+    delete tmp['cities'];
     return db.Airline.findAll();
 });
 
