@@ -236,12 +236,10 @@ var DatesBetweenExcept = function(from, to, pattern, exceptions){
 		throw "from is later than to";
 	}
 	var result = [];
-	var i = 0;
 	while(x<to){
 		//console.log("x: " + x);
 		if(checkWithPattern(x, pattern) && isNoException(x, exceptions)){
-			result[i] = new Date(x);
-			i++;
+			result.push(new Date(x));
 		}		
 		x.setDate(x.getDate()+1);
 	}
