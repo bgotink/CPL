@@ -168,8 +168,63 @@ module.exports.Chainer = Chainer;
  ***************************/
 
 var DatePatternParser = function (string) {
-	var partsOfStr = string.split(',');
+	var partsOfStr = string.replace(/,\s+/g, ',')
+		.toLowerCase().split(',');
 	print(partsOfStr);
+	var monday = 0;
+	var tuesday = 0;
+	var wednesday = 0;
+	var thursday = 0;
+	var friday = 0;
+	var saturday = 0;
+	var sunday = 0;
+	partsOfStr.forEach(function(part) {
+    	switch (part) {
+			case "mon":
+			case "monday":
+				monday = 1;
+				break;
+			case "tue":
+			case "tuesday":
+				tuesday = 1;
+				break;
+			case "wed":
+			case "wednesday":
+				wednesday = 1;
+				break;
+			case "thu":
+			case "thursday":
+				thursday = 1;
+				break;
+			case "fri":
+			case "friday":
+				friday = 1;
+				break;
+			case "sat":
+			case "saturday":
+				saturday = 1;
+				break;
+			case "sun":
+			case "sunday":
+				sunday = 1;
+				break;
+		}
+	});
+	print(	"Mon: " + monday + 
+			", Tue: " + tuesday +
+			", Wed: " + wednesday +
+			", Thu: " + thursday +
+			", Fri: " + friday +
+			", Sat: " + saturday +
+			", Sun: " + sunday);
+	var result = (1 << 0)*monday
+				 + (1 << 1)*tuesday
+				 + (1 << 2)*wednesday
+				 + (1 << 3)*thursday
+				 + (1 << 4)*friday
+				 + (1 << 5)*saturday
+				 + (1 << 6)*sunday;
+	return result;
 }
 
 module.exports.DatePatternParser = DatePatternParser;
