@@ -26,7 +26,7 @@ var DSLRunner = function(callback) {
     
     print("f: " + f.toString());
     return f.apply(
-        sc,
+        null,
         fArgs.map(
             function(a) {
                 return scope[a];
