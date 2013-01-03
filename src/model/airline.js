@@ -47,6 +47,10 @@ SeatCreator.prototype.Layout = function(args) {
     return this.seatClass.Layout(args);
 }
 
+SeatCreator.prototype.AircraftLayout = function(args) {
+    return this.seatClass.AircraftLayout(args);
+}
+
 var SeatClassCreator = function(seatClass, aircraftLayout) {
     if (!seatClass.name) throw "name not set for seat class";
     if (!seatClass.code) throw "code not set for seat class";
@@ -101,6 +105,10 @@ SeatClassCreator.prototype.SeatClass = function(args) {
 
 SeatClassCreator.prototype.Layout = function(args) {
     return this.aircraftLayout.Layout(args);
+}
+
+SeatClassCreator.prototype.AircraftLayout = function(args) {
+    return this.aircraftLayout.AircraftLayout(args);
 }
 
 SeatClassCreator.prototype.Seat = function(args) {
@@ -182,11 +190,15 @@ AircraftLayoutCreator.prototype.Layout = function(args) {
     this.airline.Layout(args);
 }
 
+AircraftLayoutCreator.prototype.AircraftLayout = function(args) {
+    this.airline.AircraftLayout(args);
+}
+
 AircraftLayoutCreator.prototype.SeatClass = function(args) {
     var seatClass = this.seatClasses.get(args);
     
     if (seatClass) {
-        seatClass.checkDO();
+        seatClass.checkDO(args);
         return seatClass;
     }
     
@@ -262,6 +274,8 @@ AirlineCreator.prototype.Layout = function(args) {
     
     return layout;
 }
+
+AirlineCreator.prototype.AircraftLayout = AirlineCreator.prototype.Layout;
 
 var airlines = new Utils.MultiIndexedSet(['code']);
 

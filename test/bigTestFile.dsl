@@ -15,13 +15,12 @@ Country{ name: "Netherlands", code: "NL"}
 		.Airport{ name: "Amsterdam Airport Schiphol", code: "AMS", latitude: 52.308056, longitude: 4.764167}
 
 Airline{ name: "Brussels Airlines", code: "BEL"}
-Airline{ name: "Wizz Air", code: "WZZ"}
-Airline{ name: "KLM", code: "KLM"}
-Airline{ name: "Belgian Air Force", code: "BAF"}
-Airline{ name: "Britisch Airways", code: "BAW"}
-Airline{ name: "American Airlines", code: "AAL"}
 
-AircraftType{model: "A380", manufacturer: "Airbus"}
+AircraftModel{ name: "A380", manufacturer: "Airbus", code: "A380-800" }
+
+Airline{ code: "BEL" }
+  .AircraftLayout{ name: "A380-2Classed", modelCode: "A380-800" }
+   .SeatClass{ name: "Economy", code: "A" }
 	.Seat{row: 1, letter: "A"}
 	.Seat{row: 2, letter: "A"}
 	.Seat{row: 3, letter: "A"}
@@ -37,6 +36,7 @@ AircraftType{model: "A380", manufacturer: "Airbus"}
 	.Seat{row: 13, letter: "A"}
 	.Seat{row: 14, letter: "A"}
 	.Seat{row: 15, letter: "A"}
+   .SeatClass{ name: "Business", code: "B" }
 	.Seat{row: 1, letter: "K"}
 	.Seat{row: 2, letter: "K"}
 	.Seat{row: 3, letter: "K"}
@@ -53,7 +53,11 @@ AircraftType{model: "A380", manufacturer: "Airbus"}
 	.Seat{row: 14, letter: "K"}
 	.Seat{row: 15, letter: "K"}
 
-AircraftType{model: "737", manufacturer: "Boeing"}
+AircraftModel{ name: "737", manufacturer: "Boeing", code: "Boeing737" }
+
+Airline{ code: "BEL" }
+  .AircraftLayout{ name: "737-2Classed", modelCode: "Boeing737" }
+   .SeatClass{ name: "Economy", code: "A" }
 	.Seat{row: 1, letter: "A"}
 	.Seat{row: 2, letter: "A"}
 	.Seat{row: 3, letter: "A"}
@@ -69,6 +73,7 @@ AircraftType{model: "737", manufacturer: "Boeing"}
 	.Seat{row: 13, letter: "A"}
 	.Seat{row: 14, letter: "A"}
 	.Seat{row: 15, letter: "A"}
+   .SeatClass{ name: "Business", code: "B" }
 	.Seat{row: 1, letter: "B"}
 	.Seat{row: 2, letter: "B"}
 	.Seat{row: 3, letter: "B"}
@@ -84,6 +89,7 @@ AircraftType{model: "737", manufacturer: "Boeing"}
 	.Seat{row: 13, letter: "B"}
 	.Seat{row: 14, letter: "B"}
 	.Seat{row: 15, letter: "B"}
+   .SeatClass{ code: "A" }
 	.Seat{row: 7, letter: "C"}
 	.Seat{row: 8, letter: "C"}
 	.Seat{row: 9, letter: "C"}
@@ -132,12 +138,7 @@ AircraftType{model: "737", manufacturer: "Boeing"}
 	.Seat{row: 13, letter: "F"}
 	.Seat{row: 14, letter: "F"}
 	.Seat{row: 15, letter: "F"}
-
-SeatClass{name: "Economy", code: "E"}
-SeatClass{name: "First", code: "F"}
-SeatClass{name: "Suite", code: "S"}
-SeatClass{name: "Business", code: "B"}
-
+/*
 FlightDescription{flight_number: "1", distance: 1000, departure_time: "tododeptime", arrival_time: "todoarrtime"}
 	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}
 		.Price{price: 200, seatClass: "boeingE"}
@@ -161,3 +162,4 @@ FlightDescription{flight_number: "3", distance: 3000, departure_time: "tododepti
 		.DateException{day: "tododay", month: "todomonth"}
 		.DateException{day: "tododay", month: "todomonth"}
 		.Price{price: 700, seatClass: "boeingF"}
+*/
