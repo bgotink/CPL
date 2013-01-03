@@ -71,7 +71,13 @@ var Airport = sequelize.define('Airport', {
         }
     }
     // City, see "ASSOCIATIONS" block
+	// Departures, see "ASSOCIATIONS" block
+	// Arrivals, see "ASSOCIATIONS" block
 });
+
+/*******************
+ ****  AIRLINE  ****
+ *******************/
 
 var Airline = sequelize.define('Airline', {
     name: {
@@ -87,7 +93,23 @@ var Airline = sequelize.define('Airline', {
             is: ["[A-Z]{2-3}"]
         }
     }
+	// AircraftLayouts, see "ASSOCIATIONS" block
 });
+
+/**************************
+ ****  AircraftLayout  ****
+ **************************/
+
+var AircraftLayout = sequelize.define('AircraftLayout', {
+	// Airline, see "ASSOCIATIONS" block
+	// AircraftModel, see "ASSOCIATIONS" block
+	// FlightDescriptions, see "ASSOCIATIONS" block
+	// SeatClasses, see "ASSOCIATIONS" block
+});
+
+/*******************
+ **** SEATCLASS ****
+ *******************/
 
 var SeatClass = sequelize.define('SeatClass', {
     name: {
@@ -102,9 +124,16 @@ var SeatClass = sequelize.define('SeatClass', {
             notEmpty: true
         }
     }
+	// AircraftLayout, see "ASSOCIATIONS" block
+	// Seats, see "ASSOCIATIONS" block
+	// Prices, see "ASSOCIATIONS" block
 });
 
-var AircraftType = sequelize.define('AircraftType', {
+/************************
+ ****  AIRCRAFTMODEL  ****
+ ************************/
+
+var AircraftModel = sequelize.define('AircraftModel', {
     manufacturer: {
         type: Sequelize.STRING,
         validate: {
@@ -123,7 +152,12 @@ var AircraftType = sequelize.define('AircraftType', {
             is: ["[A-Z0-9-]*"]
         }
     }
+	// AircraftLayouts, see "ASSOCIATIONS" block
 });
+
+/*******************
+ ****   SEAT    ****
+ *******************/
 
 var Seat = sequelize.define('Seat', {
     row: {
@@ -139,7 +173,12 @@ var Seat = sequelize.define('Seat', {
             is: ["[A-Z]"]
         }
     }
+	// SeatClass, see "ASSOCIATIONS" block
 });
+
+/*****************************
+ ****  FLIGHTDESCRIPTION  ****
+ *****************************/
 
 var FlightDescription = sequelize.define('FlightDescription', {
     number: {
@@ -148,12 +187,35 @@ var FlightDescription = sequelize.define('FlightDescription', {
             isInt: true,
             min: 0
         }
+    },
+	distance: {
+        type: Sequelize.FLOAT,
+        validate: {
+            isFloat: true,
+            min: 0
+        }
+    },
+    departureTime: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+	arrivalTime: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
     }
     // From, see "ASSOCIATIONS" block
     // To, see "ASSOCIATIONS" block
     // Periods, see "ASSOCIATIONS" block
-    // Airline, see "ASSOCIATIONS" block
+    // Aircraftlayout, see "ASSOCIATIONS" block
 });
+
+/***********************************
+ ****  FLIGHTDESCRIPTIONPERIOD  ****
+ ***********************************/
 
 var FlightDescriptionPeriod = sequelize.define('FlightDescriptionPeriod', {
     from: {
@@ -167,9 +229,37 @@ var FlightDescriptionPeriod = sequelize.define('FlightDescriptionPeriod', {
         validate: {
             isDate: true
         }
-    }
-    // TODO: Date Pattern
+    },
+	datePattern: {
+		type: Sequelize.INTEGER,
+		validate: {
+			isInt: true,
+            min: 0
+		}
+	}
+    // FlightDescription, see "ASSOCIATIONS" block
+	// Flights, see "ASSOCIATIONS" block
+	// DateExceptions, see "ASSOCIATIONS" block
+	// Prices, see "ASSOCIATIONS" block
 });
+
+/*************************
+ ****  DATEEXCEPTION  ****
+ *************************/
+
+var DateException = sequelize.define('DateException', {
+    date: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    }
+	// FlightDescriptionPeriod, see "ASSOCIATIONS" block
+});
+
+/******************
+ ****  FLIGHT  ****
+ ******************/
 
 var Flight = sequelize.define('Flight', {
     date: {
@@ -177,17 +267,36 @@ var Flight = sequelize.define('Flight', {
         validate: {
             isDate: true
         }
+    },
+	actualDepartureTime: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+	actualArrivalTime: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
     }
+	// FlightDescriptionPeriod, see "ASSOCIATIONS" block
 });
 
+/*****************
+ ****  PRICE  ****
+ *****************/
+
 var Price = sequelize.define('Price', {
-    date: {
+    price: {
         type: Sequelize.FLOAT,
         validate: {
             isFloat: true,
             min: 0
         }
     }
+	// FlightDescriptionPeriod, see "ASSOCIATIONS" block
+	// SeatClass, see "ASSOCIATIONS" block
 });
 
 
@@ -211,12 +320,28 @@ Country.hasMany(City);
 City.hasMany(Airport);
 
 /*
- * Will create  AircraftType::getSeats(),
- *              AircraftType::setSeats(),
- *              AircraftType::addSeat(),
- *              AircraftType::removeSeat()
+ * Will create  Airline::getAircraftLayouts(),
+ *              Airline::setAircraftLayouts(),
+ *              Airline::addAircraftLayout(),
+ *              Airline::removeAircraftLayout()
  */
-AircraftType.hasMany(Seat);
+Airline.hasMany(AircraftLayout);
+
+/*
+ * Will create  AircraftModel::getAircraftLayouts(),
+ *              AircraftModel::setAircraftLayouts(),
+ *              AircraftModel::addAircraftLayout(),
+ *              AircraftModel::removeAircraftLayout()
+ */
+AircraftModel.hasMany(AircraftLayout);
+
+/*
+ * Will create  AircraftLayout::getSeatClasses(),
+ *              AircraftLayout::setSeatClasses(),
+ *              AircraftLayout::addSeatClass(),
+ *              AircraftLayout::removeSeatClass()
+ */
+AircraftLayout.hasMany(SeatClass);
 
 /*
  * Will create  SeatClass::getSeats(),
@@ -235,14 +360,6 @@ SeatClass.hasMany(Seat);
 FlightDescription.hasMany(FlightDescriptionPeriod, {as: 'Periods'});
 
 /*
- * Will create  Airline::getFlightDescriptions(),
- *              Airline::setFlightDescriptions(),
- *              Airline::addFlightDescription(),
- *              Airline::removeFlightDescription()
- */
-Airline.hasMany(FlightDescription);
-
-/*
  * Will create  Airport::getDepartures(),
  *              Airport::setDepartures(),
  *              Airport::addDeparture(),
@@ -259,12 +376,20 @@ Airport.hasMany(FlightDescription, {as: 'Departures', foreignKey: 'FromId'});
 Airport.hasMany(FlightDescription, {as: 'Arrivals', foreignKey: 'ToId'});
 
 /*
+ * Will create  AircraftLayout::getFlightDescriptions(),
+ *              AircraftLayout::setFlightDescriptions(),
+ *              AircraftLayout::addFlightDescription(),
+ *              AircraftLayout::removeFlightDescription()
+ */
+AircraftLayout.hasMany(FlightDescription);
+
+/*
  * Will create  FlightDescription::getFlights(),
  *              FlightDescription::setFlights(),
  *              FlightDescription::addFlight(),
  *              FlightDescription::removeFlight()
  */
-FlightDescription.hasMany(Flight);
+FlightDescriptionPeriod.hasMany(Flight);
 
 /*
  * Will create  FlightDescriptionPeriod::getPrices(),
@@ -273,6 +398,14 @@ FlightDescription.hasMany(Flight);
  *              FlightDescriptionPeriod::removePrice()
  */
 FlightDescriptionPeriod.hasMany(Price);
+
+/*
+ * Will create  FlightDescriptionPeriod::getDateExceptions(),
+ *              FlightDescriptionPeriod::setDateExceptions(),
+ *              FlightDescriptionPeriod::addDateException(),
+ *              FlightDescriptionPeriod::removeDateException()
+ */
+FlightDescriptionPeriod.hasMany(DateException);
 
 /*
  * Will create  SeatClass::getPrices(),
