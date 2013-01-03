@@ -134,7 +134,7 @@ var countries = new Utils.MultiIndexedSet(['code', 'name']);
 
 exports.Country = function(args) {
 	return new CountryCreator(args);
-};exports.Country._debug = countries;
+};
 
 exports.Country.get = function(obj) {
     return countries.get(obj);
