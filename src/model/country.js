@@ -35,15 +35,32 @@ AirportCreator.prototype.getDO = function () {
     return this.airport;
 }
 
+AirportCreator.prototype.checkDO = function(airport) {
+    if (airport.code && airport.code !== this.airport.code) {
+        throw "Airport codes don't match";
+    }
+    if (airport.name && airport.name !== this.airport.name) {
+        throw "Airport names don't match for code " + this.airport.code;
+    }
+    if (airport.latitude && airport.latitude !== this.airport.latitude) {
+        throw "Airport latitudes don't match for code " + this.airport.code;
+    }
+    if (airport.longitue && airport.longitude !== this.airport.longitude) {
+        throw "Airport longitudes don't match for code " + this.airport.code;
+    }
+}
+
 function CityCreator(city, country) {
 	if(!city.name) throw "name attribute of city missing";
 
     if (city.id) {
         this.city = city;
+        this._changed = false;
         print("City " + city.name + " loaded from database");
     } else {
         this.city = db.City.build(city, ['name']);
         db.applyLater(this.city, 'save', []);
+        this._changed = true;
         print("City " + city.name + " created in " + country.country.name);
     }
     
@@ -62,9 +79,18 @@ function CityCreator(city, country) {
 }
 
 CityCreator.prototype.Airport = function(args) {
-    var airport = new AirportCreator(args, this);
+    var airport;
     
+    airport = this.getAirport(args);
+    if (airport) {
+        airport.checkDO(args);
+        return airport;
+    }
+    
+    airport = new AirportCreator(args, this);
     this.airports.push(airport);
+
+    this._changed |= !(args.CityId && args.CityId === this.city.id);
     
     return airport;
 }
@@ -78,7 +104,9 @@ CityCreator.prototype.finishLine = function() {
 }
 
 CityCreator.prototype.store = function() {
-    this.airports.store();
+    if (this._changed) {
+        this.airports.store();
+    }
 }
 
 CityCreator.prototype.getAirport = function(code) {
@@ -89,16 +117,24 @@ CityCreator.prototype.getDO = function() {
     return this.city;
 }
 
+CityCreator.prototype.checkDO = function (args) {
+    if (args.name !== this.city.name) {
+        throw "City name doesn't match";
+    }
+}
+
 function CountryCreator(country) {
 	if(!country.name) throw "name attribute of country missing";
 	if(!country.code) throw "code attribute of country missing";
     
     if (country.id) {
         this.country = country;
+        this._changed = false;
         print("Country " + country.name + " loaded from database");
     } else {
         this.country = db.Country.build(country, ['name', 'code']);
         db.applyLater(this.country, 'save', []);
+        this._changed = true;
         print("Country " + country.name + " created");
     }
     countries.push(this);
@@ -117,9 +153,19 @@ function CountryCreator(country) {
 }
 
 CountryCreator.prototype.City = function(args) {
-    var city = new CityCreator(args, this);
+    var city;
+    
+    city = this.getCity(args);
+    if (city) {
+        city.checkDO(args);
+        return city;
+    }
+    
+    city = new CityCreator(args, this);
     this.cities.push(city);
-    //db.applyLater(this.country, 'addCity', city.city);
+
+    this._changed |= !(args.CountryId && args.CountryId === this.country.id);
+
     return city;
 }
 
@@ -128,7 +174,9 @@ CountryCreator.prototype.getCity = function (obj) {
 }
 
 CountryCreator.prototype.finishLine = function(args) {
-    this.cities.store();
+    if (this._changed) {
+        this.cities.store();
+    }
     
     this.cities.forEach(
         function(city) {
@@ -141,13 +189,31 @@ CountryCreator.prototype.getDO = function() {
     return this.country;
 }
 
-var countries = new Utils.MultiIndexedSet(['code', 'name']);
+CountryCreator.prototype.checkDO = function(country) {
+    if (country.code && country.code !== this.country.code) {
+        throw "Country codes don't match";
+    }
+    if (country.name && country.name !== this.country.name) {
+        throw "Names don't match for country code " + this.country.code;
+    }
+}
 
+var countries = new Utils.MultiIndexedSet(['code', 'name']);
+var airports = new Utils.MultiIndexedSet(['code']);
 
 exports.Country = function(args) {
+    var country = countries.get(args);
+    if (country) {
+        country.checkDO(args);
+        return country;
+    }
 	return new CountryCreator(args);
 };
 
-exports.Country.get = function(obj) {
-    return countries.get(obj);
+exports.Country.get = function(args) {
+    return countries.get(args);
+}
+
+exports.Airport = function(args) {
+    return airports.get(args);
 }
