@@ -1,6 +1,6 @@
-/*
- * MultiIndexedSet
- */
+/*************************
+ **** MultiIndexedSet ****
+ *************************/
  
 var MultiIndexedSet = function(indices) {
     this.indices = indices;
@@ -56,9 +56,9 @@ MultiIndexedSet.prototype.forEach = function(fun) {
 
 module.exports.MultiIndexedSet = MultiIndexedSet;
 
-/*
- * DBCollection
- */
+/**********************
+ **** DBCollection ****
+ **********************/
  
 var DBCollection = function (rootObj, setFunc, applyLater, indices) {
     MultiIndexedSet.call(this, indices);
@@ -88,9 +88,10 @@ DBCollection.prototype.store = function () {
 
 module.exports.DBCollection = DBCollection;
 
-/*
- * Chainer
- */
+/*****************
+ **** Chainer ****
+ *****************/
+
 var Chainer = function (debug) {
     this.todo = [];
     this.debug = !!debug;
@@ -161,3 +162,14 @@ Chainer.prototype.runAll = function() {
 }
 
 module.exports.Chainer = Chainer;
+
+/***************************
+ **** DatePatternParser ****
+ ***************************/
+
+var DatePatternParser = function (string) {
+	var partsOfStr = string.split(',');
+	print(partsOfStr);
+}
+
+module.exports.DatePatternParser = DatePatternParser;
