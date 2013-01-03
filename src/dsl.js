@@ -20,23 +20,20 @@ Object.defineProperty(
     }
 );
 
-var oldToString = Object.prototype.toString;
-Object.prototype.toString = function () {
-    return '[' + Object.keys(this).join(', ') + ']';
-}
-
-var DSLRunner = (function(sc){
-  var prepareFunctionBody = function(fn) {
-    return '(' + fn.toString().replace(/\s+$/, '') + ')()';
-  };
-  
-  return function(callback) {
-      var fArgs = Object.keys(sc)
-        , f     = new Function(fArgs.join(', '), callback);
-      print("f: " + f.toString());
-      return f.apply(sc, fArgs.map(function(a) { return sc[a]; }));
-  };
-})(scope);
+var DSLRunner = function(callback) {
+    var fArgs = Object.keys(scope)
+      , f     = new Function(fArgs.join(', '), callback);
+    
+    print("f: " + f.toString());
+    return f.apply(
+        sc,
+        fArgs.map(
+            function(a) {
+                return scope[a];
+            }
+        )
+    );
+};
 
 if (process.argv.length < 2) {
     print("Error: please provide an argument");
@@ -50,13 +47,29 @@ execChainer.applyLater(db, 'sync');
 // Load the database
 var countries, cities, airports
   , airlines, flights;
-//execChainer.applyLater()
+execChainer.applyLater(null, function () {
+    print('Database Schema successfully synced.');
+    return db.Country.findAll();
+});
+execChainer.applyLater(null, function (c) {
+    print('Found ' + c.length + ' countries in the database');
+    countries = c;
+    return db.City.findAll();
+});
+execChainer.applyLater(null, function (c) {
+    print('Found ' + c.length + ' cities in the database');
+    cities = c;
+    return db.Airport.findAll();
+});
+execChainer.applyLater(null, function (a) {
+    print('Found ' + a.length + ' airports in the database');
+    airports = a;
+    return db.Airline.findAll();
+});
 
-// Execute!
+// Execute the DSL
 var start;
 execChainer.applyLater(null, function() {
-    print('Database Schema successfully synced.');
-
     // Unleash the beast!
     start = +new Date;
     DSLRunner(
@@ -73,7 +86,7 @@ execChainer.applyLater(null, function() {
     return db.runAll();
 });
 
-// Initialize the database
+// Run, Forrest, Run!
 execChainer.runAll().success(function() {
     print("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {

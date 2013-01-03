@@ -99,8 +99,7 @@ var Chainer = function (debug) {
 var Sequelize = require('sequelize');
 
 Chainer.prototype.applyLater = function(obj, func, params) {
-    params = params || [];
-    if (!Array.isArray(params))
+    if (params && !Array.isArray(params))
         params = [params];
     this.todo.push({ obj: obj, func: func, params: params});
 }
@@ -136,9 +135,16 @@ Chainer.prototype.runAll = function() {
                 toCall = func.func;
             }
             
-            toCall.apply(func.obj, func.params).success(
+            var params;
+            if (func.params) {
+                params = func.params;
+            } else {
+                params = arguments;
+            }
+            
+            toCall.apply(func.obj, params).success(
                 function() {
-                    exec();
+                    exec.apply(null, arguments);
                 }
             ).error(
                 function(e) {
