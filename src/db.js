@@ -148,6 +148,7 @@ var AircraftModel = sequelize.define('AircraftModel', {
     },
     code: {
         type: Sequelize.STRING,
+		unique: true,
         validate: {
             is: ["[A-Z0-9-]*"]
         }
