@@ -12,7 +12,7 @@ function AirportCreator(airport, city) {
         print("Airport " + airport.name + " loaded from database");
     } else {
         this.airport = db.Airport.build(airport, ['name', 'code', 'latitude', 'longitude']);
-        db.applyLater(this.airport, 'save');
+        db.applyLater(this.airport, 'save', []);
         print("Airport " + airport.name + " created in " + city.city.name);
     }
     
@@ -43,7 +43,7 @@ function CityCreator(city, country) {
         print("City " + city.name + " loaded from database");
     } else {
         this.city = db.City.build(city, ['name']);
-        db.applyLater(this.city, 'save');
+        db.applyLater(this.city, 'save', []);
         print("City " + city.name + " created in " + country.country.name);
     }
     
@@ -98,7 +98,7 @@ function CountryCreator(country) {
         print("Country " + country.name + " loaded from database");
     } else {
         this.country = db.Country.build(country, ['name', 'code']);
-        db.applyLater(this.country, 'save');
+        db.applyLater(this.country, 'save', []);
         print("Country " + country.name + " created");
     }
     countries.push(this);
