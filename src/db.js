@@ -101,6 +101,12 @@ var Airline = sequelize.define('Airline', {
  **************************/
 
 var AircraftLayout = sequelize.define('AircraftLayout', {
+    name: {
+        type: Sequelize.STRING,
+        validate: {
+            notEmpty: true
+        }
+    }
 	// Airline, see "ASSOCIATIONS" block
 	// AircraftModel, see "ASSOCIATIONS" block
 	// FlightDescriptions, see "ASSOCIATIONS" block
@@ -140,7 +146,7 @@ var AircraftModel = sequelize.define('AircraftModel', {
             notEmpty: true
         }
     },
-    model: {
+    name: {
         type: Sequelize.STRING,
         validate: {
             notEmpty: true
@@ -432,7 +438,7 @@ module.exports.Country = Country;
 module.exports.City = City;
 module.exports.Airport = Airport;
 module.exports.Airline = Airline;
-module.exports.AircraftType = AircraftModel;
+module.exports.AircraftModel = AircraftModel;
 module.exports.AircraftLayout = AircraftLayout;
 module.exports.Seat = Seat;
 module.exports.SeatClass = SeatClass;

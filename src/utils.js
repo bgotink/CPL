@@ -76,14 +76,20 @@ DBCollection.prototype.get = MultiIndexedSet.prototype.get;
 DBCollection.prototype.forEach = MultiIndexedSet.prototype.forEach;
 
 DBCollection.prototype.store = function () {
+    if (this.__stored) return;
+    this.__stored = true;
+
     var self = this;
-    var collectionDOs = this._v.map(
-        function (k) {
-            return k.getDO();
-        }
-    );
-    
-    this.applyLater(this.rootObj, this.setFunc, [collectionDOs]);
+    this.applyLater(null, function() {
+        var collectionDOs = self._v.map(
+            function (k) {
+                return k.getDO();
+            }
+        );
+        
+        self.__stored = false;
+        return self.rootObj[self.setFunc](collectionDOs);
+    });
 }
 
 module.exports.DBCollection = DBCollection;

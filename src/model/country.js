@@ -16,6 +16,8 @@ function AirportCreator(airport, city) {
         print("Airport " + airport.name + " created in " + city.city.name);
     }
     
+    airports.push(this);
+    
     this.city = city;
 };
 
@@ -214,6 +216,6 @@ exports.Country.get = function(args) {
     return countries.get(args);
 }
 
-exports.Airport = function(args) {
+exports.findAirport = function(args) {
     return airports.get(args);
 }
