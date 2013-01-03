@@ -7,11 +7,16 @@ function AirportCreator(airport, city) {
 	if(!airport.latitude) throw "latitude attribute of airport missing";
 	if(!airport.longitude) throw "longitude attribute of airport missing";
     
-    this.airport = db.Airport.build(airport, ['name', 'code', 'latitude', 'longitude']);
-    db.applyLater(this.airport, 'save');
+    if (airport.id) {
+        this.airport = airport;
+        print("Airport " + airport.name + " loaded from database");
+    } else {
+        this.airport = db.Airport.build(airport, ['name', 'code', 'latitude', 'longitude']);
+        db.applyLater(this.airport, 'save');
+        print("Airport " + airport.name + " created in " + city.city.name);
+    }
     
     this.city = city;
-    print("Airport " + airport.name + " created in " + city.city.name);
 };
 
 AirportCreator.prototype.Airport = function(args) {
@@ -33,8 +38,14 @@ AirportCreator.prototype.getDO = function () {
 function CityCreator(city, country) {
 	if(!city.name) throw "name attribute of city missing";
 
-    this.city = db.City.build(city, ['name']);
-    db.applyLater(this.city, 'save');
+    if (city.id) {
+        this.city = city;
+        print("City " + city.name + " loaded from database");
+    } else {
+        this.city = db.City.build(city, ['name']);
+        db.applyLater(this.city, 'save');
+        print("City " + city.name + " created in " + country.country.name);
+    }
     
     this.country = country;
     this.airports = new Utils.DBCollection(
@@ -48,8 +59,6 @@ function CityCreator(city, country) {
     this.Airport.get = function (code) {
         return self.getAirport(code);
     }
-    
-    print("City " + city.name + " created in " + country.country.name);
 }
 
 CityCreator.prototype.Airport = function(args) {
@@ -84,10 +93,15 @@ function CountryCreator(country) {
 	if(!country.name) throw "name attribute of country missing";
 	if(!country.code) throw "code attribute of country missing";
     
-    this.country = db.Country.build(country, ['name', 'code']);
+    if (country.id) {
+        this.country = country;
+        print("Country " + country.name + " loaded from database");
+    } else {
+        this.country = db.Country.build(country, ['name', 'code']);
+        db.applyLater(this.country, 'save');
+        print("Country " + country.name + " created");
+    }
     countries.push(this);
-    
-    db.applyLater(this.country, 'save');
     
     this.cities = new Utils.DBCollection(
         this.country,
@@ -100,8 +114,6 @@ function CountryCreator(country) {
     this.City.get = function (obj) {
         return self.getCity(obj);
     }
-    
-    print("Country " + country.name + " created");
 }
 
 CountryCreator.prototype.City = function(args) {

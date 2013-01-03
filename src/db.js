@@ -284,46 +284,14 @@ SeatClass.hasMany(Price);
 
 module.exports = sequelize;
 
-var chain = [];
+var Utils = require('./utils')
+  , chain = new Utils.Chainer(true);
+  
 module.exports.applyLater = function(obj, func, params) {
-    params = params || [];
-    if (!Array.isArray(params))
-        params = [params];
-    chain.push({ obj: obj, func: func, params: params});
+    return chain.applyLater(obj, func, params);
 }
 module.exports.runAll = function() {
-    var _chain = chain.reverse();
-    
-    var start = +new Date, prev = start;
-    var i = 0;
-    
-    var exec = function() {
-        var func = _chain.pop();
-        if (i % 100 == 0) {
-            var now = +new Date;
-            print("" + i + "\t: " + (now - start) + "ms"
-                        +"\tdiff:" + (now - prev) + "ms");
-            prev = now;
-        }
-        ++i;
-        
-        if (func) {
-            func.obj[func.func].apply(func.obj, func.params).success(
-                function() {
-                    exec();
-                }
-            ).error(
-                function(e) {
-                    eventEmitter.emit('error', e);
-                }
-            )
-        } else {
-            eventEmitter.emit('success');
-        }
-    }
-    
-    var eventEmitter = new Sequelize.Utils.CustomEventEmitter(exec);
-    return eventEmitter.run();
+    return chain.runAll();
 }
 
 module.exports.Country = Country;

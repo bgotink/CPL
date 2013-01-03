@@ -42,12 +42,23 @@ if (process.argv.length < 2) {
     print("Error: please provide an argument");
 }
 
-// Initialize the database
-db.sync().success(function() {
+var execChainer = new Utils.Chainer(false);
+
+// synchronize the database
+execChainer.applyLater(db, 'sync');
+
+// Load the database
+var countries, cities, airports
+  , airlines, flights;
+//execChainer.applyLater()
+
+// Execute!
+var start;
+execChainer.applyLater(null, function() {
     print('Database Schema successfully synced.');
 
     // Unleash the beast!
-    var start = +new Date;
+    start = +new Date;
     DSLRunner(
         fs.readFileSync(process.argv[2]).toString()
             .replace(/{/g, '({')
@@ -59,11 +70,12 @@ db.sync().success(function() {
     start = +new Date;
     
     print("Storing all entries");
-    db.runAll().success(
-        function() {
-            print("Successfully stored in db in " + ((+new Date) - start) + "ms");
-        }
-    ).error(print);
+    return db.runAll();
+});
+
+// Initialize the database
+execChainer.runAll().success(function() {
+    print("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {
-    console.log('Database Schema synchronization failed (' + error + ').');
+    print('Database Schema synchronization failed (' + error + ').');
 });

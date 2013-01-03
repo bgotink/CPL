@@ -87,3 +87,71 @@ DBCollection.prototype.store = function () {
 }
 
 module.exports.DBCollection = DBCollection;
+
+/*
+ * Chainer
+ */
+var Chainer = function (debug) {
+    this.todo = [];
+    this.debug = !!debug;
+}
+
+var Sequelize = require('sequelize');
+
+Chainer.prototype.applyLater = function(obj, func, params) {
+    params = params || [];
+    if (!Array.isArray(params))
+        params = [params];
+    this.todo.push({ obj: obj, func: func, params: params});
+}
+
+Chainer.prototype.runAll = function() {
+    var _chain = this.todo.reverse();
+    this.todo = [];
+    
+    var start = +new Date, prev = start;
+    var i = 0, debug = this.debug;
+    
+    var exec = function() {
+        var func = _chain.pop();
+        if (debug) {
+            if (i % 100 == 0) {
+                var now = +new Date;
+                print("" + i + "\t: " + (now - start) + "ms"
+                            + "\tdiff:" + (now - prev) + "ms");
+                prev = now;
+            }
+            ++i;
+        }
+        
+        if (func) {
+            var toCall;
+            if (func.obj) {
+                if (typeof func.func !== "function") {
+                    toCall = func.obj[func.func];
+                } else {
+                    toCall = func.func;
+                }
+            } else {
+                toCall = func.func;
+            }
+            
+            toCall.apply(func.obj, func.params).success(
+                function() {
+                    exec();
+                }
+            ).error(
+                function(e) {
+                    eventEmitter.emit('error', e);
+                }
+            )
+        } else {
+            eventEmitter.emit('success');
+        }
+    }
+    
+    var eventEmitter = new Sequelize.Utils.CustomEventEmitter(exec);
+    return eventEmitter.run();
+}
+
+module.exports.Chainer = Chainer;
