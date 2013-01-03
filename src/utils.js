@@ -174,8 +174,104 @@ module.exports.Chainer = Chainer;
  ***************************/
 
 var DatePatternParser = function (string) {
-	var partsOfStr = string.split(',');
-	print(partsOfStr);
+	var partsOfStr = string.replace(/,\s+/g, ',')
+		.toLowerCase().split(',');
+	var monday = 0;
+	var tuesday = 0;
+	var wednesday = 0;
+	var thursday = 0;
+	var friday = 0;
+	var saturday = 0;
+	var sunday = 0;
+	partsOfStr.forEach(function(part) {
+    	switch (part) {
+			case "mon":
+			case "monday":
+				monday = 1;
+				break;
+			case "tue":
+			case "tuesday":
+				tuesday = 1;
+				break;
+			case "wed":
+			case "wednesday":
+				wednesday = 1;
+				break;
+			case "thu":
+			case "thursday":
+				thursday = 1;
+				break;
+			case "fri":
+			case "friday":
+				friday = 1;
+				break;
+			case "sat":
+			case "saturday":
+				saturday = 1;
+				break;
+			case "sun":
+			case "sunday":
+				sunday = 1;
+				break;
+		}
+	});
+	var result = (1 << 0)*sunday
+				 + (1 << 1)*monday
+				 + (1 << 2)*tuesday
+				 + (1 << 3)*wednesday
+				 + (1 << 4)*thursday
+				 + (1 << 5)*friday
+				 + (1 << 6)*saturday;
+	return result;
 }
 
 module.exports.DatePatternParser = DatePatternParser;
+
+/****************************
+ **** DatesBetweenExcept ****
+ ****************************/
+
+var DatesBetweenExcept = function(from, to, pattern, exceptions){
+	var x = new Date(from);
+	/*console.log("from: " + from);
+	console.log("to: " + to);
+	console.log("pattern: " + pattern);
+	console.log("exceptions: " + exceptions);
+	console.log("x: " + x);*/
+	if(from > to){
+		throw "from is later than to";
+	}
+	var result = [];
+	while(x<to){
+		//console.log("x: " + x);
+		if(checkWithPattern(x, pattern) && isNoException(x, exceptions)){
+			result.push(new Date(x));
+		}		
+		x.setDate(x.getDate()+1);
+	}
+	return result;
+}
+
+var checkWithPattern = function(date, pattern){
+	//getDay() method of date returns a value between 0 and 6, 0 being sunday
+	var dayOfWeek = date.getDay();
+	var check = (pattern >> dayOfWeek) & 1;
+	//console.log("check " + dayOfWeek + ": " + check + "(" + (pattern >> dayOfWeek) + ")");
+	if(check === 1){
+		return true;
+	} else{
+		return false;
+	}
+}
+
+var isNoException = function(date, exceptions){
+	for(var i=0;i<exceptions.length;i++){
+		if((date.getDate() === exceptions[i].getDate()) && 
+			(date.getMonth() === exceptions[i].getMonth())){
+			return false;
+		}
+	}
+	return true;
+}
+
+module.exports.DatesBetweenExcept = DatesBetweenExcept;
