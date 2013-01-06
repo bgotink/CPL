@@ -3,7 +3,7 @@ var db              = require('../db')
   , Airport         = require('./country').findAirport
   , Airline         = require('./airline').Airline.get;
 
-var FlightDescription = function(args) {
+var FlightDescriptionCreator = function(args) {
     if (!args.distance) throw "distance not set";
     if (!args.arrivalTime) throw "arrival time not set";
     if (!args.departureTime) throw "departure time not set";
@@ -13,6 +13,9 @@ var FlightDescription = function(args) {
         this.description = args;
         this._changed = false;
         print("description for flight " + args.flightNumber + " loaded from database");
+        
+        this._from = args.FromId; this._to = args.ToId;
+        this._airline = args.AirlineId; this._layout = args.AircraftLayoutId;
     } else {
         if (!args.from) throw "from not set";
         if (!args.to) throw "to not set";
@@ -40,6 +43,9 @@ var FlightDescription = function(args) {
         db.applyLater(this.description, 'setLayout', model.model);
         
         print("description for flight " + args.flightNumber + " loaded from database");
+        
+        this._from = from.id; this._to = to.id;
+        this._airline = airline.id; this._layout = model.id;
     }
     
     flightDescriptions.push(this);
@@ -50,4 +56,52 @@ var FlightDescription = function(args) {
         db.applyLater,
         []
     );
+}
+
+FlightDescriptionCreator.prototype.getDO = function () {
+    return this.description;
+}
+
+FlightDescriptionCreator.prototype.checkDO = function (args) {
+    if (args.flightNumber !== this.description.flightNumber) {
+        throw "flight numbers don't match";
+    }
+    if (args.distance && args.distance !== this.description.distance) {
+        throw "distances don't match";
+    }
+    if (args.arrivalTime && args.arrivalTime !== this.description.arrivalTime) {
+        throw "arrival times don't match";
+    }
+    if (args.departureTime && args.departureTime !== this.description.departureTime) {
+        throw "departure times don't match";
+    }
+    // FIXME check airline, aicraft layout, from and to somehow...
+    /*
+    solution: overload constructor: allow usage of constructor with more arguments,
+    being the from, to, airline, layout etc
+    TODO also fix this problem for the layout, where the aircraft model is simply
+    assumed to be correct
+    TODO rewrite the index function below: when used for set, this is a fully
+    functional DO, when used for get, this hasn't passed through the constructor
+    (yet), so desc._airline doesn't work, desc.description is wrong etc, etc
+    */
+}
+
+var flightDescriptions = new Utils.MultiIndexedSet(
+    [
+    function (desc) {
+        return desc._airline + "-__-" + desc.description.flightNumber;
+    }
+    ]
+);
+
+module.exports.FlightDescription = function (args) {
+    var desc = flightDescriptions.get(args);
+    
+    if (desc) {
+        desc.checkDO(args);
+        return desc;
+    }
+    
+    return new FlightDescriptionCreator(args);
 }

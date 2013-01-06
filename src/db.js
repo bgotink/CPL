@@ -372,7 +372,7 @@ FlightDescription.hasMany(FlightDescriptionPeriod, {as: 'Periods'});
  *              Airport::addDeparture(),
  *              Airport::removeDeparture()
  */
-//Airport.hasMany(FlightDescription, {as: 'Departures', foreignKey: 'FromId'});
+Airport.hasMany(FlightDescription, {as: 'Departures', foreignKey: 'FromId'});
 FlightDescription.belongsTo(Airport, {as: 'From'});
 
 /*
@@ -381,7 +381,7 @@ FlightDescription.belongsTo(Airport, {as: 'From'});
  *              Airport::addArrival(),
  *              Airport::removeArrival()
  */
-//Airport.hasMany(FlightDescription, {as: 'Arrivals', foreignKey: 'ToId'});
+Airport.hasMany(FlightDescription, {as: 'Arrivals', foreignKey: 'ToId'});
 FlightDescription.belongsTo(Airport, {as: 'To'});
 
 /*
