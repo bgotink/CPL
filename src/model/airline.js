@@ -72,7 +72,7 @@ var SeatClassCreator = function(seatClass, aircraftLayout) {
         this.seatClass,
         'setSeats',
         db.applyLater,
-        []
+        [ function (seat) { return seat.letter + seat.row; } ]
     );
 }
 
@@ -287,3 +287,9 @@ exports.Airline = function(args) {
     }
 	return new AirlineCreator(args);
 };
+
+exports.Airline.get = function(args) {
+    var airline = airlines.get(args);
+    if (airline) airline.checkDO(args);
+    return airline;
+}

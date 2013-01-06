@@ -10,7 +10,12 @@ var MultiIndexedSet = function(indices) {
     var self = this;
     indices.forEach(
         function(e) {
-            self.values[e] = [];
+            if (typeof e === 'function') {
+                e._idx_id = '__idx' + (++(self._idx_ids));
+                self.values[e._idx_id] = [];
+            } else {
+                self.values[e] = [];
+            }
         }
     );
 }
@@ -20,14 +25,28 @@ MultiIndexedSet.prototype.add = function(obj) {
       , objDO = obj.getDO ? obj.getDO() : obj;
     this.indices.forEach(
         function(idx) {
-            if (typeof objDO[idx] === "undefined") {
-                throw "index " + idx + " of object not set";
+            if (idx._idx_id) {
+                var objIdx = idx.call(objDO, objDO);
+                
+                if (typeof objIdx === "undefined") {
+                    throw "function index " + idx + " gives illegal result.";
+                }
+                if (typeof self.values[idx._idx_id][objIdx] !== "undefined") {
+                    throw "collection already contains an object where function index "
+                        + idx + " = " + objIdx;
+                }
+                
+                self.values[idx._idx_id][objIdx] = obj;
+            } else {
+                if (typeof objDO[idx] === "undefined") {
+                    throw "index " + idx + " of object not set";
+                }
+                if (typeof self.values[idx][objDO[idx]] !== "undefined") {
+                    throw "collection already contains an object where " + idx + " = " + objDO[idx];
+                }
+                
+                self.values[idx][objDO[idx]] = obj;
             }
-            if (typeof self.values[idx][objDO[idx]] !== "undefined") {
-                throw "collection already contains an object where " + idx + " = " + objDO[idx];
-            }
-            
-            self.values[idx][objDO[idx]] = obj;
         }
     );
     self._v.push(obj);
@@ -42,8 +61,15 @@ MultiIndexedSet.prototype.get = function(obj) {
         function(idx) {
             if (found !== false) return;
 
-            if (typeof obj[idx] !== "undefined") {
-                found = self.values[idx][obj[idx]];
+            if (idx._idx_id) {
+                var objIdx = idx.call(obj, obj);
+                if (typeof objIdx !== "undefined") {
+                    found = self.values[idx._idx_id][objIdx];
+                }
+            } else {
+                if (typeof obj[idx] !== "undefined") {
+                    found = self.values[idx][obj[idx]];
+                }
             }
         }
     );
@@ -174,7 +200,7 @@ module.exports.Chainer = Chainer;
  ***************************/
 
 var DatePatternParser = function (string) {
-	var partsOfStr = string.replace(/,\s+/g, ',')
+	var partsOfStr = string.replace(/\s*,\s*/g, ',')
 		.toLowerCase().split(',');
 	var monday = 0;
 	var tuesday = 0;
@@ -232,18 +258,13 @@ module.exports.DatePatternParser = DatePatternParser;
  ****************************/
 
 var DatesBetweenExcept = function(from, to, pattern, exceptions){
-	var x = new Date(from);
-	/*console.log("from: " + from);
-	console.log("to: " + to);
-	console.log("pattern: " + pattern);
-	console.log("exceptions: " + exceptions);
-	console.log("x: " + x);*/
 	if(from > to){
 		throw "from is later than to";
 	}
+    
+	var x = new Date(from);
 	var result = [];
 	while(x<to){
-		//console.log("x: " + x);
 		if(checkWithPattern(x, pattern) && isNoException(x, exceptions)){
 			result.push(new Date(x));
 		}		

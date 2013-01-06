@@ -77,10 +77,54 @@ execChainer.applyLater(null, function (a) {
     tmp.airports = {};
     a.forEach(function (airport) {
         var city = tmp.cities[airport.CityId];
-        tmp.airports = city.Airport(airport);
+        tmp.airports[airport.id] = city.Airport(airport);
     });
     delete tmp['cities'];
+    return db.AircraftModel.findAll();
+});
+execChainer.applyLater(null, function (a) {
+    print('Found ' + a.length + ' aircraft models in the database');
+    tmp.aircraftModels = {};
+    a.forEach(function (model) {
+        tmp.aircraftModels[model.id] = scope.AircraftModel(model);
+    });
     return db.Airline.findAll();
+});
+execChainer.applyLater(null, function (a) {
+    print('Found ' + a.length + ' airlines in the database');
+    tmp.airlines = {};
+    a.forEach(function (airline) {
+        tmp.airlines[airline.id] = scope.Airline(airline);
+    });
+    return db.AircraftLayout.findAll();
+});
+execChainer.applyLater(null, function (l) {
+    print('Found ' + l.length + ' aircraft layouts in the database');
+    tmp.aircraftLayouts = {};
+    l.forEach(function (layout) {
+        var airline = tmp.airlines[layout.AirlineId];
+        tmp.aircraftLayouts[layout.id] = airline.Layout(layout);
+    });
+    delete tmp['airlines'];
+    return db.SeatClass.findAll();
+});
+execChainer.applyLater(null, function (s) {
+    print('Found ' + s.length + ' seat classes in the database');
+    tmp.seatClasses = {};
+    s.forEach(function (seatClass) {
+        var layout = tmp.aircraftLayouts[seatClass.AircraftLayoutId];
+        tmp.seatClasses[seatClass.id] = layout.SeatClass(seatClass);
+    });
+    return db.Seat.findAll();
+});
+execChainer.applyLater(null, function (s) {
+    print('Found ' + s.length + ' seats in the database');
+    tmp.seats = {};
+    s.forEach(function (seat) {
+        var seatClass = tmp.seatClasses[seat.SeatClassId];
+        tmp.seats[seat.id] = seatClass.Seat(seat);
+    });
+    return db.FlightDescription.findAll();
 });
 
 // Execute the DSL

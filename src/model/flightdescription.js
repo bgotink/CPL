@@ -1,107 +1,53 @@
-var db      = require('../db')
-  , Utils   = require('../utils');
+var db              = require('../db')
+  , Utils           = require('../utils')
+  , Airport         = require('./country').findAirport
+  , Airline         = require('./airline').Airline.get;
 
-////// FlightDescription
-var FlightDescriptionCreator = function(flightDescription) {
-    if(!flightDescription.flight_number)
-    	throw "flight_number attribute of flightDescription is missing";
-    if(!flightDescription.distance)
-    	throw "distance attribute of flightDescription is missing";
-    if(!flightDescription.departure_time)
-    	throw "departure_time attribute of flightDescription is missing";
-    if(!flightDescription.arrival_time)
-    	throw "arrival_time attribute of flightDescription is missing";
-    this.flightDescription = flightDescription;
-    this.flightDescriptionPeriods = [];
-    print("FlightDescription with number " + flightDescription.flight_number + " created");
-}
-
-FlightDescriptionCreator.prototype.FlightDescriptionPeriod = function(args) {
-    var flightDescriptionPeriod = new FlightDescriptionPeriodCreator(args, this)
-    this.flightDescriptionPeriods.push(flightDescriptionPeriod);
-    return flightDescriptionPeriod;
-}
-
-exports.FlightDescription = function(args) {
-	return new FlightDescriptionCreator(args);
-};
-
-
-////// FlightDescriptionPeriod
-var FlightDescriptionPeriodCreator = function(flightDescriptionPeriod, flightDescription) {
-    if(!flightDescriptionPeriod.validFrom)
-    	throw "validFrom attribute of flightDescriptionPeriod is missing";
-    if(!flightDescriptionPeriod.validTo)
-    	throw "validTo attribute of flightDescriptionPeriod is missing";
-    if(!flightDescriptionPeriod.dayOfMonth)
-    	throw "dayOfMonth attribute of flightDescriptionPeriod is missing";
-    if(!flightDescriptionPeriod.dayOfWeek)
-    	throw "dayOfWeek attribute of flightDescriptionPeriod is missing";
-	this.flightDescription = flightDescription;
-    this.flightDescriptionPeriod = flightDescriptionPeriod;
-    this.prices = [];
-    this.dateExceptions = [];
-    print("FlightDescriptionPeriod from " + flightDescriptionPeriod.validFrom + 
-    		" until " + flightDescriptionPeriod.validTo + " created");
-}
-
-FlightDescriptionPeriodCreator.prototype.Price = function(args) {
-    var price = new PriceCreator(args, this)
-    this.prices.push(price);
-    return price;
-}
-
-FlightDescriptionPeriodCreator.prototype.DateException = function(args) {
-    var dateException = new DateExceptionCreator(args, this)
-    this.dateExceptions.push(dateException);
-    return dateException;
-}
-
-FlightDescriptionPeriodCreator.prototype.FlightDescriptionPeriod = function(args) {
-    return this.flightDescription.FlightDescriptionPeriod(args);
-}
-
-
-////// Price
-var PriceCreator = function(price, flightDescriptionPeriod) {
-	if(!price.price) throw "price attribute of price is missing";
-	if(!price.seatClass) throw "seatClass attribute of price is missing";
-	//TODO checken of de meegegeven seatClass al bestaat in de database
-	this.flightDescriptionPeriod = flightDescriptionPeriod;
-    this.price = price;
-    print("Price " + price.price + " for seatClass " + price.seatClass + " created");
-}
-
-PriceCreator.prototype.FlightDescriptionPeriod = function(args) {
-	return this.flightDescriptionPeriod.FlightDescriptionPeriod(args);
-}
-
-PriceCreator.prototype.Price = function(args) {
-    return this.flightDescriptionPeriod.Price(args);
-}
-
-PriceCreator.prototype.DateException = function(args) {
-    return this.flightDescriptionPeriod.DateException(args);
-}
-
-////// DateException
-var DateExceptionCreator = function(dateException, flightDescriptionPeriod) {
-	if(!dateException.day) throw "day attribute of dateException is missing";
-	if(!dateException.month) throw "month attribute of dateException is missing";
-	//TODO nakijken of de meegegeven dag in een bestaande periode valt
-	this.flightDescriptionPeriod = flightDescriptionPeriod;
-    this.dateException = dateException;
-    print("DateException for " + dateException.day + " " + dateException.month + " created");
-}
-
-DateExceptionCreator.prototype.FlightDescriptionPeriod = function(args) {
-	return this.flightDescriptionPeriod.FlightDescriptionPeriod(args);
-}
-
-DateExceptionCreator.prototype.Price = function(args) {
-    return this.flightDescriptionPeriod.Price(args);
-}
-
-DateExceptionCreator.prototype.DateException = function(args) {
-    return this.flightDescriptionPeriod.DateException(args);
+var FlightDescription = function(args) {
+    if (!args.distance) throw "distance not set";
+    if (!args.arrivalTime) throw "arrival time not set";
+    if (!args.departureTime) throw "departure time not set";
+    if (!args.flightNumber) throw "flight number not set";
+    
+    if (args.id) {
+        this.description = args;
+        this._changed = false;
+        print("description for flight " + args.flightNumber + " loaded from database");
+    } else {
+        if (!args.from) throw "from not set";
+        if (!args.to) throw "to not set";
+        if (!args.airline) throw "airline not set";
+        if (!args.aircraftLayout) throw "aircraft model not set";
+        
+        this.description = db.FlightDescription.build(args, ['distance', 'arrivalTime', 'departureTime', 'flightNumber']);
+        db.applyLater(this.description, 'save', []);
+        this._changed = true;
+        
+        var from, to, airline, layout;
+        from = Airport({ code: args.from });
+        if (!from) throw "unexistent airport code: " + args.from;
+        to = Airport({ code: args.to });
+        if (!to) throw "unexistent airport code: " + args.to;
+        
+        db.applyLater(this.description, 'setFrom', from.airport);
+        db.applyLater(this.description, 'setTo', to.airport);
+        
+        airline = Airline({ code: args.airline });
+        if (!airline) throw "unexistent airline code: " + args.airline;
+        model = airline.AircraftLayout({name: args.aircraftLayout});
+        if (!model) throw "unexistent aircraft model " + args.aircraftLayout + " for airline " + args.airline;
+        
+        db.applyLater(this.description, 'setLayout', model.model);
+        
+        print("description for flight " + args.flightNumber + " loaded from database");
+    }
+    
+    flightDescriptions.push(this);
+    
+    this.periods = new Utils.DBCollection(
+        this.description,
+        'setPeriods',
+        db.applyLater,
+        []
+    );
 }

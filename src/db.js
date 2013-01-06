@@ -188,7 +188,7 @@ var Seat = sequelize.define('Seat', {
  *****************************/
 
 var FlightDescription = sequelize.define('FlightDescription', {
-    number: {
+    flightNumber: {
         type: Sequelize.INTEGER,
         validate: {
             isInt: true,
@@ -217,7 +217,7 @@ var FlightDescription = sequelize.define('FlightDescription', {
     // From, see "ASSOCIATIONS" block
     // To, see "ASSOCIATIONS" block
     // Periods, see "ASSOCIATIONS" block
-    // Aircraftlayout, see "ASSOCIATIONS" block
+    // AircraftLayout, see "ASSOCIATIONS" block
 });
 
 /***********************************
@@ -372,7 +372,8 @@ FlightDescription.hasMany(FlightDescriptionPeriod, {as: 'Periods'});
  *              Airport::addDeparture(),
  *              Airport::removeDeparture()
  */
-Airport.hasMany(FlightDescription, {as: 'Departures', foreignKey: 'FromId'});
+//Airport.hasMany(FlightDescription, {as: 'Departures', foreignKey: 'FromId'});
+FlightDescription.belongsTo(Airport, {as: 'From'});
 
 /*
  * Will create  Airport::getArrivals(),
@@ -380,7 +381,8 @@ Airport.hasMany(FlightDescription, {as: 'Departures', foreignKey: 'FromId'});
  *              Airport::addArrival(),
  *              Airport::removeArrival()
  */
-Airport.hasMany(FlightDescription, {as: 'Arrivals', foreignKey: 'ToId'});
+//Airport.hasMany(FlightDescription, {as: 'Arrivals', foreignKey: 'ToId'});
+FlightDescription.belongsTo(Airport, {as: 'To'});
 
 /*
  * Will create  AircraftLayout::getFlightDescriptions(),
