@@ -195,6 +195,30 @@ Chainer.prototype.runAll = function() {
 
 module.exports.Chainer = Chainer;
 
+/********************
+ **** TimeParser ****
+ ********************/
+var __now = 0;
+var TimeParser = function (string) {
+    if (typeof string === 'string') {
+        var parts = string.match(/(\d{1,2})[: .uh](\d{2})m?/);
+        if (parts.length === 0) {
+            throw "Invalid date: " + string;
+        }
+        var date = new Date(__now);
+        date.setHours(parts[1]);
+        date.setMinutes(parts[2]);
+        return date;    
+    } else {
+        var date = new Date(__now);
+        date.setHours(string.getHours());
+        date.setMinutes(string.getMinutes());
+        return date;
+    }
+}
+
+module.exports.parseTime = TimeParser;
+
 /***************************
  **** DatePatternParser ****
  ***************************/

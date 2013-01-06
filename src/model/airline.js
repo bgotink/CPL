@@ -127,21 +127,20 @@ SeatClassCreator.prototype.Seat = function(args) {
     return seat;
 }
 
-var AircraftLayoutCreator = function(layout, airline) {
+var AircraftLayoutCreator = function(layout, airline, pModel) {
     if (!layout.name) throw "name not set for AircraftLayout";
     if (!layout.modelCode && !layout.AircraftModelId) throw "modelcode not set for AircraftLayout";
     
     if (layout.id) {
         this.layout = layout;
         this._changed = false;
+        this._model = pModel;
         print("Aircraft layout " + layout.name + " loaded from database");
     } else {
         this.layout = db.AircraftLayout.build(layout, ['name']);
         db.applyLater(this.layout, 'save', []);
         print("Aircraft model " + layout.name + " created for airline " + airline.airline.name);
-    }
-    
-    if (!this.layout.AircraftModelId) {
+
         var model = AircraftModel({ code: layout.modelCode });
         
         if (!model) {
@@ -149,6 +148,7 @@ var AircraftLayoutCreator = function(layout, airline) {
         }
         
         model._Layout(this);
+        this._model = model;
     }
     
     this.airline = airline;
@@ -183,6 +183,9 @@ AircraftLayoutCreator.prototype.getDO = function() {
 AircraftLayoutCreator.prototype.checkDO = function(args) {
     if (args.name !== this.layout.name) {
         throw "Aircraft layout names don't match";
+    }
+    if (args.modelCode && args.modelCode !== this._model.getDO().code) {
+        throw "Aircraft models don't match";
     }
 }
 
@@ -259,7 +262,7 @@ AirlineCreator.prototype.finishLine = function() {
     )
 }
 
-AirlineCreator.prototype.Layout = function(args) {
+AirlineCreator.prototype.Layout = function(args, model) {
     var layout = this.layouts.get(args);
     
     if (layout) {
@@ -267,7 +270,7 @@ AirlineCreator.prototype.Layout = function(args) {
         return layout;
     }
     
-    layout = new AircraftLayoutCreator(args, this);
+    layout = new AircraftLayoutCreator(args, this, model);
     this.layouts.push(layout);
     
     this._changed |= !(args.AirlineId && args.AirlineId === this.airline.id);

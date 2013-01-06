@@ -28,7 +28,7 @@ var DSLRunner = function(callback) {
     var fArgs = Object.keys(scope)
       , f     = new Function(fArgs.join(', '), callback);
     
-    print("f: " + f.toString());
+    //print("f: " + f.toString());
     return f.apply(
         null,
         fArgs.map(
@@ -103,9 +103,9 @@ execChainer.applyLater(null, function (l) {
     tmp.aircraftLayouts = {};
     l.forEach(function (layout) {
         var airline = tmp.airlines[layout.AirlineId];
-        tmp.aircraftLayouts[layout.id] = airline.Layout(layout);
+        var model = tmp.aircraftModels[layout.AircraftModelId];
+        tmp.aircraftLayouts[layout.id] = airline.Layout(layout, model);
     });
-    delete tmp['airlines'];
     return db.SeatClass.findAll();
 });
 execChainer.applyLater(null, function (s) {
@@ -125,6 +125,19 @@ execChainer.applyLater(null, function (s) {
         tmp.seats[seat.id] = seatClass.Seat(seat);
     });
     return db.FlightDescription.findAll();
+});
+execChainer.applyLater(null, function (flightDesc) {
+    print('Found ' + flightDesc.length + ' flight descriptions in the database');
+    tmp.flightDescriptions = {};
+    flightDesc.forEach(function (description) {
+        var from    = tmp.airports[description.FromId]
+          , to      = tmp.airports[description.ToId]
+          , layout  = tmp.aircraftLayouts[description.AircraftLayoutId]
+          , airline = tmp.airlines[layout.getDO().AirlineId];
+        tmp.flightDescriptions[description.id]
+                        = scope.FlightDescription(description, from, to, airline, layout);
+    });
+    return db.FlightDescriptionPeriod.findAll();
 });
 
 // Execute the DSL
