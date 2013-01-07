@@ -1,3 +1,16 @@
+if (!Array.prototype.contains) {
+    Object.defineProperty(
+        Array.prototype,
+        "contains",
+        {
+            enumerable: false,
+            writable: true,
+            configurable: false,
+            value: function(e) { return this.indexOf(e) !== -1; }
+        }
+    );
+}
+
 /*************************
  **** MultiIndexedSet ****
  *************************/
@@ -80,6 +93,10 @@ MultiIndexedSet.prototype.forEach = function(fun) {
     this._v.forEach(fun);
 }
 
+MultiIndexedSet.prototype.map = function(fun) {
+    return this._v.map(fun);
+}
+
 module.exports.MultiIndexedSet = MultiIndexedSet;
 
 /**********************
@@ -100,6 +117,7 @@ DBCollection.prototype.add = MultiIndexedSet.prototype.add;
 DBCollection.prototype.push = MultiIndexedSet.prototype.push;
 DBCollection.prototype.get = MultiIndexedSet.prototype.get;
 DBCollection.prototype.forEach = MultiIndexedSet.prototype.forEach;
+DBCollection.prototype.map = MultiIndexedSet.prototype.map;
 
 DBCollection.prototype.store = function () {
     if (this.__stored) return;

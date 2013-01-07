@@ -15,7 +15,7 @@ var PriceCreator = function (args, period, pSeatClass) {
     } else {
         this.price = db.Price.build(args, ['price']);
         db.applyLater(this.price, 'save', []);
-        print("Price with value " + args.price + " created");
+        print("Price with value " + args.price + " created for seat class " + args.seatClass);
         
         var layout = period.description._layout;
         this.seatClass = layout.SeatClass({ code: args.seatClass });
@@ -47,6 +47,10 @@ PriceCreator.prototype.Price = function (args) {
 
 PriceCreator.prototype.DateException = function (args) {
     return this.period.DateException(args);
+}
+
+PriceCreator.prototype.Period = function (args) {
+    return this.period.Period(args);
 }
 
 var DateExceptionCreator = function (args, period) {
@@ -178,11 +182,30 @@ PeriodCreator.prototype.checkDO = function(args) {
 }
 
 PeriodCreator.prototype.finishLine = function () {
-    // FIXME check that ALL SeatClasses have a price set before the line ends!!
     return this.description.finishLine();
 }
 
 PeriodCreator.prototype.store = function () {
+    var seatClasses = this.description._layout.seatClasses.map(
+        function (sC) {
+            return sC.getDO().code;
+        }
+    );
+    
+    var classes_priceSet = this.prices.map(
+        function (price) {
+            return price.getDO().__SeatClassId;
+        }
+    );
+    
+    if (seatClasses.some(
+        function (e) {
+            return !classes_priceSet.contains(e);
+        }
+            )) {
+        throw "not all seat classes have a price set for period " + this.getDO().validFrom;
+    }
+    
     if (this._dchanged) {
         this.dateExceptions.store();
     }
@@ -332,6 +355,8 @@ FlightDescriptionCreator.prototype.checkDO = function (args) {
 }
 
 FlightDescriptionCreator.prototype.finishLine = function () {
+    // FIXME check whether the periods overlap!!!
+    
     if (this._changed) {
         this.periods.store();
     }
