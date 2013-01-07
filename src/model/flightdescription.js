@@ -3,6 +3,49 @@ var db              = require('../db')
   , Airport         = require('./country').findAirport
   , Airline         = require('./airline').Airline.get;
 
+var DateExceptionCreator = function (args, period) {
+    if (!args.date) throw "date not set for DateException";
+    
+    if (args.id) {
+        this.dateException = args;
+        print("Date exception " + args.date + " loaded from database");
+    } else {
+        args.date = Utils.parseDate(args.date);
+        
+        this.dateException = db.DateException.build(args, ['date']);
+        db.applyLater(this.dateException, 'save', []);
+        print("Date exception " + args.date + " created");
+    }
+    
+    this.period = period;
+}
+
+DateExceptionCreator.prototype.getDO = function () {
+    return this.dateException;
+}
+
+DateExceptionCreator.prototype.checkDO = function (args) {
+    if (Utils.parseDate(args.date).getTime() !== this.dateException.date.getTime()) {
+        throw "date doesn't match for date exception";
+    }
+}
+
+DateExceptionCreator.prototype.finishLine = function () {
+    return this.period.finishLine();
+}
+
+DateExceptionCreator.prototype.DateException = function (args) {
+    return this.period.DateException(args);
+}
+
+DateExceptionCreator.prototype.Period = function (args) {
+    return this.period.Period(args);
+}
+
+DateExceptionCreator.prototype.Price = function (args) {
+    return this.period.Price(args);
+}
+
 var PeriodCreator = function (args, description) {
     if (!args.validFrom) throw "validFrom not set";
     if (!args.validTo) throw "validTo not set";
@@ -36,21 +79,29 @@ var PeriodCreator = function (args, description) {
         this.period,
         'setPrices',
         db.applyLater,
-        []
+        ['__SeatClassId']
     );
     
     this.dateExceptions = new Utils.DBCollection(
         this.period,
         'setDateExceptions',
         db.applyLater,
-        ['date']
+        [
+        function (dE) {
+            return Utils.parseDate(dE.date).getTime();
+        }
+        ]
     );
     
     this.flights = new Utils.DBCollection(
         this.period,
         'setFlights',
         db.applyLater,
-        ['date']
+        [
+        function (flight) {
+            return Utils.parseDate(flight.date).getTime();
+        }
+        ]
     );
 }
 
@@ -84,12 +135,31 @@ PeriodCreator.prototype.finishLine = function () {
     return this.description.finishLine();
 }
 
+PeriodCreator.prototype.store = function () {
+    if (this._changed) {
+        this.dateExceptions.store();
+    }
+}
+
 PeriodCreator.prototype.Period = function (args) {
     return this.description.Period(args);
 }
 
-PeriodCreator.prototype.store = function () {
-    // TODO
+PeriodCreator.prototype.DateException = function (args) {
+    var dateException = this.dateExceptions.get(args);
+    
+    if (dateException) {
+        dateException.checkDO(args);
+        return dateException;
+    }
+    
+    dateException = new DateExceptionCreator(args, this);
+    this.dateExceptions.push(dateException);
+    
+    this._changed |= !(args.FlightDescriptionPeriodId
+                        && args.FlightDescriptionPeriodId === this.period.id);
+    
+    return dateException;
 }
 
 var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLayout) {

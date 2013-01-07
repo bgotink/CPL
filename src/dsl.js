@@ -146,7 +146,15 @@ execChainer.applyLater(null, function (periods) {
         var description = tmp.flightDescriptions[period.FlightDescriptionId];
         tmp.flightDescriptionPeriods[period.id] = description.Period(period);
     });
-    return db.Flight.findAll();
+    return db.DateException.findAll();
+});
+execChainer.applyLater(null, function (dateExceptions) {
+    print('Found ' + dateExceptions.length + ' date exceptions in the database');
+    dateExceptions.forEach(function (dateException) {
+        var period = tmp.flightDescriptionPeriods[dateException.FlightDescriptionPeriodId];
+        period.DateException(dateException);
+    });
+    return db.Price.findAll();
 });
 
 // Execute the DSL
