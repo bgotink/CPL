@@ -1,0 +1,80 @@
+P : "First Class"
+J : "Business Class"
+W : "Premium Economy Class"
+Y : "Economy Class"
+
+*** A	B	C	D	E	F	G	H	J	K
+1	P	-	-	-	-	-	-	-	-	P				
+2	P	-	-	-	-	P	-	-	-	P
+3	P	-	-	-	-	P	-	-	-	P
+4	P	-	-	-	-	P	-	-	-	P
+5	P	-	-	-	-	P	-	-	-	P
+
+11	J	J	-	-	J	J	-	-	J	J
+12	J	J	-	-	J	J	-	-	J	J
+13	J	J	-	-	J	J	-	-	J	J
+
+15	J	J	-	-	-	-	-	-	J	J
+16	J	J	-	-	J	J	-	-	J	J
+17	J	J	-	-	J	J	-	-	J	J
+18	J	J	-	-	J	J	-	-	J	J
+19	J	J	-	-	J	J	-	-	J	J
+20	J	J	-	-	J	J	-	-	J	J
+21	J	J	-	-	J	J	-	-	J	J
+22	J	J	-	-	J	J	-	-	J	J
+	
+24	W	W	-	W	W	W	-	-	W	W
+25	W	W	-	W	W	W	-	-	W	W
+26	W	W	-	W	W	W	-	-	W	W
+27	W	W	-	W	W	W	-	-	W	W
+28	W	W	-	W	W	W	-	-	W	W
+
+32	W	W	-	W	W	W	-	-	W	W
+33	W	W	-	W	W	W	-	-	W	W
+34	-	-	-	W	W	W	-	-	-	-
+
+35	-	-	-	W	W	W	-	-	W	W
+36	-	-	-	W	W	W	-	-	W	W
+
+48	Y	Y	Y	-	-	-	-	-	-	-
+49	Y	Y	Y	-	-	-	-	-	-	-
+50	Y	Y	Y	-	-	-	-	-	-	-
+51	Y	Y	Y	-	-	-	-	Y	Y	Y	
+52	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+53	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+54	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+55	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+56	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+57	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+58	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+59	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+60	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+61	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+62	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+63	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+64	Y	Y	Y	-	-	-	-	Y	Y	Y
+65	Y	Y	Y	-	-	-	-	-	-	-
+	
+66	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+67	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+68	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+69	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+70	Y	Y	Y	-	Y	Y	Y	Y	Y	Y
+71	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+72	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+73	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+74	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+75	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+76	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+77	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+	
+79	-	Y	Y	-	-	-	-	Y	Y	-
+80	Y	Y	Y	-	-	-	-	Y	Y	Y
+81	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+82	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+83	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+84	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+85	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+86	Y	Y	Y	Y	Y	Y	Y	Y	Y	Y
+87	-	-	-	Y	Y	Y	Y	-	-	-	
+88	-	-	-	Y	Y	Y	Y	-	-	-
