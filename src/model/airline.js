@@ -74,6 +74,13 @@ var SeatClassCreator = function(seatClass, aircraftLayout) {
         db.applyLater,
         [ function (seat) { return seat.letter + seat.row; } ]
     );
+    
+    this.prices = new Utils.DBCollection(
+        this.seatClass,
+        'setPrices',
+        db.applyLater,
+        []
+    );
 }
 
 SeatClassCreator.prototype.finishLine = function() {
@@ -127,6 +134,19 @@ SeatClassCreator.prototype.Seat = function(args) {
     return seat;
 }
 
+SeatClassCreator.prototype._Price = function (args) {
+    this.prices.push(args);
+    
+    if (args.SeatClassId) {
+        return;
+    }
+    
+    this._changed |= !(args.getDO().SeatClassId === this.seatClass.id);
+    if (this._changed) {
+        this.prices.store();
+    }
+}
+
 var AircraftLayoutCreator = function(layout, airline, pModel) {
     if (!layout.name) throw "name not set for AircraftLayout";
     if (!layout.modelCode && !layout.AircraftModelId) throw "modelcode not set for AircraftLayout";
@@ -147,9 +167,10 @@ var AircraftLayoutCreator = function(layout, airline, pModel) {
             throw "aircraft model with code  " + layout.modelCode + " doesn't exist";
         }
         
-        model._Layout(this);
         this._model = model;
     }
+    
+    this._model._Layout(this);
     
     this.airline = airline;
     this.seatClasses = new Utils.DBCollection(

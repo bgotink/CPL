@@ -3,6 +3,52 @@ var db              = require('../db')
   , Airport         = require('./country').findAirport
   , Airline         = require('./airline').Airline.get;
 
+var PriceCreator = function (args, period, pSeatClass) {
+    if (!args.price) throw "price not set for Price";
+    if (!args.SeatClassId && !args.seatClass) throw "seat class not set for Price";
+    
+    if (args.id) {
+        this.price = args;
+        print("Price with value " + args.price + " loaded from database");
+        
+        this.seatClass = pSeatClass;
+    } else {
+        this.price = db.Price.build(args, ['price']);
+        db.applyLater(this.price, 'save', []);
+        print("Price with value " + args.price + " created");
+        
+        var layout = period.description._layout;
+        this.seatClass = layout.SeatClass({ code: args.seatClass });
+    }
+    
+    this.price.__SeatClassId = this.seatClass.getDO().code;
+    this.period = period;
+    
+    this.seatClass._Price(this);
+}
+
+PriceCreator.prototype.getDO = function () {
+    return this.price;
+}
+
+PriceCreator.prototype.checkDO = function (args) {
+    if (args.price !== this.price.price) {
+        throw "prices not equal"
+    }
+}
+
+PriceCreator.prototype.finishLine = function () {
+    return this.period.finishLine();
+}
+
+PriceCreator.prototype.Price = function (args) {
+    return this.period.Price(args);
+}
+
+PriceCreator.prototype.DateException = function (args) {
+    return this.period.DateException(args);
+}
+
 var DateExceptionCreator = function (args, period) {
     if (!args.date) throw "date not set for DateException";
     
@@ -53,7 +99,7 @@ var PeriodCreator = function (args, description) {
     
     if (args.id) {
         this.period = args;
-        this._changed = false;
+        this._dchanged = this._pchanged = false;
         print("Loaded FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo + " from database");
     } else {
         if (typeof args.datePattern === 'string') {
@@ -68,7 +114,7 @@ var PeriodCreator = function (args, description) {
         
         this.period = db.FlightDescriptionPeriod.build(args, ['validFrom', 'validTo', 'datePattern']);
         db.applyLater(this.period, 'save', []);
-        this._changed = true;
+        this._dchanged = this._pchanged = true;
         
         print("Created FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo);
     }
@@ -132,12 +178,16 @@ PeriodCreator.prototype.checkDO = function(args) {
 }
 
 PeriodCreator.prototype.finishLine = function () {
+    // FIXME check that ALL SeatClasses have a price set before the line ends!!
     return this.description.finishLine();
 }
 
 PeriodCreator.prototype.store = function () {
-    if (this._changed) {
+    if (this._dchanged) {
         this.dateExceptions.store();
+    }
+    if (this._pchanged) {
+        this.prices.store();
     }
 }
 
@@ -156,10 +206,32 @@ PeriodCreator.prototype.DateException = function (args) {
     dateException = new DateExceptionCreator(args, this);
     this.dateExceptions.push(dateException);
     
-    this._changed |= !(args.FlightDescriptionPeriodId
+    this._dchanged |= !(args.FlightDescriptionPeriodId
                         && args.FlightDescriptionPeriodId === this.period.id);
     
     return dateException;
+}
+
+PeriodCreator.prototype.Price = function (args, pSeatClass) {
+    if (pSeatClass) {
+        args.__SeatClassId = pSeatClass.getDO().code;
+    } else {
+        args.__SeatClassId = args.seatClass;
+    }
+    var price = this.prices.get(args);
+    
+    if (price) {
+        price.checkDO(args);
+        return price;
+    }
+    
+    price = new PriceCreator(args, this, pSeatClass);
+    this.prices.push(price);
+    
+    this._pchanged |= !(args.FlightDescriptionPeriodId
+                        && args.FlightDescriptionPeriodId === this.period.id);
+    
+    return price;
 }
 
 var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLayout) {

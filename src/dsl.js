@@ -156,6 +156,15 @@ execChainer.applyLater(null, function (dateExceptions) {
     });
     return db.Price.findAll();
 });
+execChainer.applyLater(null, function (prices) {
+    print('Found ' + prices.length + ' prices in the database');
+    prices.forEach(function (price) {
+        var period = tmp.flightDescriptionPeriods[price.FlightDescriptionPeriodId]
+          , seatClass = tmp.seatClasses[price.SeatClassId];
+        period.Price(price, seatClass);
+    });
+    return db.Flight.findAll();
+});
 
 // Execute the DSL
 var start;

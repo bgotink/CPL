@@ -142,10 +142,9 @@ Airline{ code: "BEL" }
 FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", arrivalTime: "11:20", from: "BRU", to: "LHR", airline: "BEL", aircraftLayout: "A380-2Classed"}
     .Period{ validFrom: "7 jan 1991", validTo: "23 mar 1991", datePattern: "mon,tue,thu" }
 		.DateException{ date: "2 mar 1991" }
-
-/*		.Price{price: 200, seatClass: "boeingE"}
-		.Price{price: 700, seatClass: "boeingF"}
-	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}
+        .Price{price: 200, seatClass: "A"}
+		.Price{price: 700, seatClass: "B"}
+/*	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}
 		.Price{price: 1500, seatClass: "airbusS"}
 		.DateException{day: "tododay", month: "todomonth"}
 		.Price{price: 700, seatClass: "airbusB"}

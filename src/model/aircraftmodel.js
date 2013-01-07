@@ -26,6 +26,7 @@ var AircraftModelCreator = function(args) {
         db.applyLater,
         []
     );
+    this._lchanged = false;
     
     aircraftModels.push(this);
 }
@@ -53,8 +54,8 @@ AircraftModelCreator.prototype._Layout = function(layout) {
         return;
     }
     
-    this._changed |= !(layout.AircraftModelId === this.aircraftModel.id);
-    if (this._changed) {
+    this._lchanged |= !(layout.getDO().AircraftModelId === this.aircraftModel.id);
+    if (this._lchanged) {
         this.aircraftLayouts.store();
     }
 }
