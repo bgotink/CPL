@@ -225,13 +225,13 @@ var FlightDescription = sequelize.define('FlightDescription', {
  ***********************************/
 
 var FlightDescriptionPeriod = sequelize.define('FlightDescriptionPeriod', {
-    from: {
+    validFrom: {
         type: Sequelize.DATE,
         validate: {
             isDate: true
         }
     },
-    to: {
+    validTo: {
         type: Sequelize.DATE,
         validate: {
             isDate: true

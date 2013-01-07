@@ -219,6 +219,22 @@ var TimeParser = function (string) {
 
 module.exports.parseTime = TimeParser;
 
+/********************
+ **** DateParser ****
+ ********************/
+var DateParser = function(str) {
+    var date = new Date(str);
+    if (date.toString() === 'Invalid Date') {
+        throw "Invalid date: " + str;
+    }
+    date.setHours(0);
+    date.setMinutes(0);
+    date.setSeconds(0);
+    return date;
+}
+
+module.exports.parseDate = DateParser;
+
 /***************************
  **** DatePatternParser ****
  ***************************/
@@ -263,6 +279,8 @@ var DatePatternParser = function (string) {
 			case "sunday":
 				sunday = 1;
 				break;
+            default:
+                throw "Unkonwn day of the week: " + part;
 		}
 	});
 	var result = (1 << 0)*sunday
@@ -275,7 +293,7 @@ var DatePatternParser = function (string) {
 	return result;
 }
 
-module.exports.DatePatternParser = DatePatternParser;
+module.exports.parseDatePattern = DatePatternParser;
 
 /****************************
  **** DatesBetweenExcept ****
@@ -285,6 +303,9 @@ var DatesBetweenExcept = function(from, to, pattern, exceptions){
 	if(from > to){
 		throw "from is later than to";
 	}
+    if (typeof pattern === 'string') {
+        pattern = DatePatternParser(pattern);
+    }
     
 	var x = new Date(from);
 	var result = [];

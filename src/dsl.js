@@ -139,6 +139,15 @@ execChainer.applyLater(null, function (flightDesc) {
     });
     return db.FlightDescriptionPeriod.findAll();
 });
+execChainer.applyLater(null, function (periods) {
+    print('Found ' + periods.length + ' flight description periods in the database');
+    tmp.flightDescriptionPeriods = {};
+    periods.forEach(function (period) {
+        var description = tmp.flightDescriptions[period.FlightDescriptionId];
+        tmp.flightDescriptionPeriods[period.id] = description.Period(period);
+    });
+    return db.Flight.findAll();
+});
 
 // Execute the DSL
 var start;

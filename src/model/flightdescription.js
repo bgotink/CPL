@@ -3,6 +3,95 @@ var db              = require('../db')
   , Airport         = require('./country').findAirport
   , Airline         = require('./airline').Airline.get;
 
+var PeriodCreator = function (args, description) {
+    if (!args.validFrom) throw "validFrom not set";
+    if (!args.validTo) throw "validTo not set";
+    if (!args.datePattern) throw "datePattern not set";
+    
+    if (args.id) {
+        this.period = args;
+        this._changed = false;
+        print("Loaded FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo + " from database");
+    } else {
+        if (typeof args.datePattern === 'string') {
+            args.datePattern = Utils.parseDatePattern(args.datePattern);
+        }
+        if (typeof args.validFrom === 'string') {
+            args.validFrom = Utils.parseDate(args.validFrom);
+        }
+        if (typeof args.validTo === 'string') {
+            args.validTo = Utils.parseDate(args.validTo);
+        }
+        
+        this.period = db.FlightDescriptionPeriod.build(args, ['validFrom', 'validTo', 'datePattern']);
+        db.applyLater(this.period, 'save', []);
+        this._changed = true;
+        
+        print("Created FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo);
+    }
+    
+    this.description = description;
+    
+    this.prices = new Utils.DBCollection(
+        this.period,
+        'setPrices',
+        db.applyLater,
+        []
+    );
+    
+    this.dateExceptions = new Utils.DBCollection(
+        this.period,
+        'setDateExceptions',
+        db.applyLater,
+        ['date']
+    );
+    
+    this.flights = new Utils.DBCollection(
+        this.period,
+        'setFlights',
+        db.applyLater,
+        ['date']
+    );
+}
+
+PeriodCreator.prototype.getDO = function() {
+    return this.period;
+}
+
+PeriodCreator.prototype.checkDO = function(args) {
+    if (typeof args.datePattern === 'string') {
+        args.datePattern = Utils.parseDatePattern(args.datePattern);
+    }
+    if (typeof args.validFrom === 'string') {
+        args.validFrom = Utils.parseDate(args.validFrom);
+    }
+    if (typeof args.validTo === 'string') {
+        args.validTo = Utils.parseDate(args.validTo);
+    }
+    
+    if (args.validFrom && args.validFrom.getTime() !== this.period.validFrom.getTime()) {
+        throw "Valid-from doesn't match for FlightDescriptionPeriod";
+    }
+    if (args.validTo && args.validTo.getTime() !== this.period.validTo.getTime()) {
+        throw "Valid-to doesn't match for FlightDescriptionPeriod";
+    }
+    if (args.datePattern && args.datePattern !== this.period.datePattern) {
+        throw "date pattern doesn't match for FlightDescriptionPeriod";
+    }
+}
+
+PeriodCreator.prototype.finishLine = function () {
+    return this.description.finishLine();
+}
+
+PeriodCreator.prototype.Period = function (args) {
+    return this.description.Period(args);
+}
+
+PeriodCreator.prototype.store = function () {
+    // TODO
+}
+
 var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLayout) {
     if (!args.distance) throw "distance not set";
     if (!args.arrivalTime) throw "arrival time not set";
@@ -56,7 +145,11 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLay
         this.description,
         'setPeriods',
         db.applyLater,
-        []
+        [
+        function (e) {
+            return Utils.parseDate(e.validFrom).getTime();
+        }
+        ]
     );
 }
 
@@ -96,6 +189,32 @@ FlightDescriptionCreator.prototype.checkDO = function (args) {
     }
 }
 
+FlightDescriptionCreator.prototype.finishLine = function () {
+    if (this._changed) {
+        this.periods.store();
+    }
+    
+    this.periods.forEach(function(e) {
+        e.store();
+    });
+}
+
+FlightDescriptionCreator.prototype.Period = function (args) {
+    var period = this.periods.get(args);
+    
+    if (period) {
+        period.checkDO(args);
+        return period;
+    }
+    
+    period = new PeriodCreator(args, this);
+    this.periods.push(period);
+    
+    this._changed |= !(args.FlightDescriptionId && args.FlightDescriptionId === this.description.id);
+    
+    return period;
+}
+
 var flightDescriptions = new Utils.MultiIndexedSet(
     [
     function (desc) {
@@ -103,8 +222,6 @@ var flightDescriptions = new Utils.MultiIndexedSet(
                 ? (desc._airline.getDO ? desc._airline.getDO().code : desc._airline.code) 
                 : desc.airline;
         var r = airline + "-__-" + desc.flightNumber;
-        print(r);
-        print(desc._layout ? 'add' : 'get');
         return r;
     }
     ]
