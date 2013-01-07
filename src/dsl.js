@@ -20,10 +20,6 @@ Object.defineProperty(
     }
 );
 
-Object.prototype.toString = function () {
-    return '[' + Object.keys(this).join(', ') + ']';
-}
-
 var DSLRunner = function(callback) {
     var fArgs = Object.keys(scope)
       , f     = new Function(fArgs.join(', '), callback);

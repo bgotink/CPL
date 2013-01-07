@@ -144,11 +144,16 @@ FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", ar
 		.DateException{ date: "2 mar 1991" }
         .Price{price: 200, seatClass: "A"}
 		.Price{price: 700, seatClass: "B"}
-	.Period{ validFrom: "24 mar 1991", validTo: "6 jan 1992", datePattern: "mon,wed,fri"}
+	.Period{ validFrom: "24 mar 1991", validTo: "6 jan 1992", datePattern: "mon,wed,fri" }
 		.Price{price: 1500, seatClass: "B"}
 		.DateException{ date: "24 dec 1991" }
         .DateException{ date: "25 dec 1991" }
 		.Price{price: 700, seatClass: "A"}
+    .Period{ validFrom: "7 jan 1991", validTo: "6 jan 1992", datePattern: "sat,sun" }
+        .DateException{ date: "24 dec 1991" }
+        .DateException{ date: "25 dec 1991" }
+        .Price{ price: 1000, seatClass: "B" }
+        .Price{ price: 400, seatClass: "A" }
 
 /*FlightDescription{flight_number: "2", distance: 2000, departure_time: "tododeptime", arrival_time: "todoarrtime"}
 	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}

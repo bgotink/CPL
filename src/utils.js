@@ -33,6 +33,7 @@ var MultiIndexedSet = function(indices) {
     );
 }
 
+MultiIndexedSet.prototype.push = 
 MultiIndexedSet.prototype.add = function(obj) {
     var self = this
       , objDO = obj.getDO ? obj.getDO() : obj;
@@ -64,8 +65,6 @@ MultiIndexedSet.prototype.add = function(obj) {
     );
     self._v.push(obj);
 }
-
-MultiIndexedSet.prototype.push = MultiIndexedSet.prototype.add;
 
 MultiIndexedSet.prototype.get = function(obj) {
     var self = this;
@@ -358,4 +357,4 @@ var isNoException = function(date, exceptions){
 	return true;
 }
 
-module.exports.DatesBetweenExcept = DatesBetweenExcept;
+module.exports.datesBetweenExcept = DatesBetweenExcept;

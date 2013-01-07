@@ -53,6 +53,12 @@ PriceCreator.prototype.Period = function (args) {
     return this.period.Period(args);
 }
 
+PriceCreator.prototype.toString = function () {
+    return "Price: " + this.price.price
+                     + " for seat class " + this.price.__SeatClassId
+                     + " for period " + this.period;
+}
+
 var DateExceptionCreator = function (args, period) {
     if (!args.date) throw "date not set for DateException";
     
@@ -76,7 +82,7 @@ DateExceptionCreator.prototype.getDO = function () {
 
 DateExceptionCreator.prototype.checkDO = function (args) {
     if (Utils.parseDate(args.date).getTime() !== this.dateException.date.getTime()) {
-        throw "date doesn't match for date exception";
+        throw "date doesn't match for date exception " + this;
     }
 }
 
@@ -94,6 +100,10 @@ DateExceptionCreator.prototype.Period = function (args) {
 
 DateExceptionCreator.prototype.Price = function (args) {
     return this.period.Price(args);
+}
+
+DateExceptionCreator.prototype.toString = function () {
+    return this.period + " exception " + this.getDO().date;
 }
 
 var PeriodCreator = function (args, description) {
@@ -171,13 +181,13 @@ PeriodCreator.prototype.checkDO = function(args) {
     }
     
     if (args.validFrom && args.validFrom.getTime() !== this.period.validFrom.getTime()) {
-        throw "Valid-from doesn't match for FlightDescriptionPeriod";
+        throw "Valid-from doesn't match for FlightDescriptionPeriod " + this;
     }
     if (args.validTo && args.validTo.getTime() !== this.period.validTo.getTime()) {
-        throw "Valid-to doesn't match for FlightDescriptionPeriod";
+        throw "Valid-to doesn't match for FlightDescriptionPeriod " + this;
     }
     if (args.datePattern && args.datePattern !== this.period.datePattern) {
-        throw "date pattern doesn't match for FlightDescriptionPeriod";
+        throw "date pattern doesn't match for FlightDescriptionPeriod " + this;
     }
 }
 
@@ -205,6 +215,17 @@ PeriodCreator.prototype.store = function () {
             )) {
         throw "not all seat classes have a price set for period " + this.getDO().validFrom;
     }
+    
+    this.allDates = Utils.datesBetweenExcept(
+        this.period.validFrom,
+        this.period.validTo,
+        this.period.datePattern,
+        this.dateExceptions.map(
+            function (dE) {
+                return dE.getDO().date;
+            }
+        )
+    );
     
     if (this._dchanged) {
         this.dateExceptions.store();
@@ -255,6 +276,12 @@ PeriodCreator.prototype.Price = function (args, pSeatClass) {
                         && args.FlightDescriptionPeriodId === this.period.id);
     
     return price;
+}
+
+PeriodCreator.prototype.toString = function () {
+    return this.description + " [from: " + this.period.validFrom
+                            + ", to: " + this.period.validTo
+                            + ", pattern: " + this.period.pattern + "]";
 }
 
 var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLayout) {
@@ -312,7 +339,7 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLay
         db.applyLater,
         [
         function (e) {
-            return Utils.parseDate(e.validFrom).getTime();
+            return Utils.parseDate(e.validFrom).getTime() + "-" + e.datePattern;
         }
         ]
     );
@@ -331,32 +358,34 @@ FlightDescriptionCreator.prototype.checkDO = function (args) {
     }
     
     if (args.distance && args.distance !== this.description.distance) {
-        throw "distances don't match";
+        throw "distances don't match for flight description " + this;
     }
     if (args.arrivalTime 
                 && Utils.parseTime(args.arrivalTime).getTime() !== Utils.parseTime(this.description.arrivalTime).getTime()) {
-        throw "arrival times don't match";
+        throw "arrival times don't match for flight description " + this;
     }
     if (args.departureTime 
                 && Utils.parseTime(args.departureTime).getTime() !== Utils.parseTime(this.description.departureTime).getTime()) {
-        throw "departure times don't match";
+        throw "departure times don't match for flight description " + this;
     }
     
     if (args.from && args.from !== this._from.getDO().code) {
-        throw "departure airports don't match";
+        throw "departure airports don't match for flight description " + this;
     }
     if (args.to && args.to !== this._to.getDO().code) {
-        throw "arrival airports don't match";
+        throw "arrival airports don't match for flight description " + this;
     }
     
     if (args.aircraftLayout && args.aircraftLayout !== this._layout.getDO().name) {
-        throw "aircraft layout doesn't match";
+        throw "aircraft layout doesn't match for flight description " + this;
     }
 }
 
+FlightDescriptionCreator.prototype.toString = function () {
+    return this._airline.getDO().code + "" + this.description.flightNumber;
+}
+
 FlightDescriptionCreator.prototype.finishLine = function () {
-    // FIXME check whether the periods overlap!!!
-    
     if (this._changed) {
         this.periods.store();
     }
@@ -364,9 +393,28 @@ FlightDescriptionCreator.prototype.finishLine = function () {
     this.periods.forEach(function(e) {
         e.store();
     });
+    
+    var allDates = [], self = this;
+    this.periods.forEach(
+        function (period) {
+            var periodDates = period.allDates;
+            
+            periodDates.forEach(
+                function (date) {
+                    if (allDates.contains(date.getTime())) {
+                        throw "date " + date + " occurs in multiple periods for flight " + self;
+                    }
+                    allDates.push(date.getTime());
+                }
+            );
+        }
+    );
 }
 
 FlightDescriptionCreator.prototype.Period = function (args) {
+    if (typeof args.datePattern === 'string') {
+        args.datePattern = Utils.parseDatePattern(args.datePattern);
+    }
     var period = this.periods.get(args);
     
     if (period) {
