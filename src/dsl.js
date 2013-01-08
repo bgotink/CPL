@@ -129,10 +129,9 @@ execChainer.applyLater(null, function (flightDesc) {
     flightDesc.forEach(function (description) {
         var from    = tmp.airports[description.FromId]
           , to      = tmp.airports[description.ToId]
-          , layout  = tmp.aircraftLayouts[description.AircraftLayoutId]
-          , airline = tmp.airlines[layout.getDO().AirlineId];
+          , airline = tmp.airlines[description.AirlineId];
         tmp.flightDescriptions[description.id]
-                        = scope.FlightDescription(description, from, to, airline, layout);
+                        = scope.FlightDescription(description, from, to, airline);
     });
     return db.FlightDescriptionPeriod.findAll();
 });
@@ -140,8 +139,9 @@ execChainer.applyLater(null, function (periods) {
     Log.info('Found ' + periods.length + ' flight description periods in the database');
     tmp.flightDescriptionPeriods = {};
     periods.forEach(function (period) {
-        var description = tmp.flightDescriptions[period.FlightDescriptionId];
-        tmp.flightDescriptionPeriods[period.id] = description.Period(period);
+        var description = tmp.flightDescriptions[period.FlightDescriptionId]
+          , layout = tmp.aircraftLayouts[period.AircraftLayoutId];
+        tmp.flightDescriptionPeriods[period.id] = description.Period(period, layout);
     });
     return db.DateException.findAll();
 });
@@ -163,7 +163,6 @@ execChainer.applyLater(null, function (prices) {
     return db.Flight.findAll();
 });
 
-// Execute the DSL
 var start;
 execChainer.applyLater(null, function(flights) {
     // first store the flights

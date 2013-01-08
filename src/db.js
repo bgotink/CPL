@@ -215,10 +215,10 @@ var FlightDescription = sequelize.define('FlightDescription', {
             isDate: true
         }
     }
+    // Airline, see "ASSOCIATIONS" block
     // From, see "ASSOCIATIONS" block
     // To, see "ASSOCIATIONS" block
     // Periods, see "ASSOCIATIONS" block
-    // AircraftLayout, see "ASSOCIATIONS" block
 });
 
 /***********************************
@@ -249,6 +249,7 @@ var FlightDescriptionPeriod = sequelize.define('FlightDescriptionPeriod', {
 	// Flights, see "ASSOCIATIONS" block
 	// DateExceptions, see "ASSOCIATIONS" block
 	// Prices, see "ASSOCIATIONS" block
+    // AircraftLayout, see "ASSOCIATIONS" block
 });
 
 /*************************
@@ -336,6 +337,15 @@ City.hasMany(Airport);
 Airline.hasMany(AircraftLayout);
 
 /*
+ * Will create  Airline::getFlightDescriptions(),
+ *              Airline::setFlightDescriptions(),
+ *              Airline::addFlightDescription(),
+ *              Airline::removeFlightDescription()
+ */
+Airline.hasMany(FlightDescription);
+FlightDescription.belongsTo(Airline);
+
+/*
  * Will create  AircraftModel::getAircraftLayouts(),
  *              AircraftModel::setAircraftLayouts(),
  *              AircraftModel::addAircraftLayout(),
@@ -386,13 +396,13 @@ Airport.hasMany(FlightDescription, {as: 'Arrivals', foreignKey: 'ToId'});
 FlightDescription.belongsTo(Airport, {as: 'To', foreignKey: 'ToId'});
 
 /*
- * Will create  AircraftLayout::getFlightDescriptions(),
- *              AircraftLayout::setFlightDescriptions(),
- *              AircraftLayout::addFlightDescription(),
- *              AircraftLayout::removeFlightDescription()
+ * Will create  AircraftLayout::getFlightDescriptionPeriods(),
+ *              AircraftLayout::setFlightDescriptionPeriods(),
+ *              AircraftLayout::addFlightDescriptionPeriod(),
+ *              AircraftLayout::removeFlightDescriptionPeriod()
  */
-AircraftLayout.hasMany(FlightDescription);
-FlightDescription.belongsTo(AircraftLayout);
+AircraftLayout.hasMany(FlightDescriptionPeriod);
+FlightDescriptionPeriod.belongsTo(AircraftLayout);
 
 /*
  * Will create  FlightDescription::getFlights(),

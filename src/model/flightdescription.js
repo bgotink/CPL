@@ -17,7 +17,7 @@ var PriceCreator = function (args, period, pSeatClass) {
         db.applyLater(this.price, 'save', []);
         print("Price with value " + args.price + " created for seat class " + args.seatClass);
         
-        var layout = period.description._layout;
+        var layout = period._layout;
         this.seatClass = layout.SeatClass({ code: args.seatClass });
     }
     
@@ -106,7 +106,7 @@ DateExceptionCreator.prototype.toString = function () {
     return this.period + " exception " + this.getDO().date;
 }
 
-var PeriodCreator = function (args, description) {
+var PeriodCreator = function (args, description, pLayout) {
     if (!args.validFrom) throw "validFrom not set";
     if (!args.validTo) throw "validTo not set";
     if (!args.datePattern) throw "datePattern not set";
@@ -114,8 +114,11 @@ var PeriodCreator = function (args, description) {
     if (args.id) {
         this.period = args;
         this._dchanged = this._pchanged = false;
+        this._layout = pLayout;
         print("Loaded FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo + " from database");
     } else {
+        if (!args.aircraftLayout) throw "aircraft model not set";
+        
         if (typeof args.datePattern === 'string') {
             args.datePattern = Utils.parseDatePattern(args.datePattern);
         }
@@ -129,6 +132,18 @@ var PeriodCreator = function (args, description) {
         this.period = db.FlightDescriptionPeriod.build(args, ['validFrom', 'validTo', 'datePattern']);
         db.applyLater(this.period, 'save', []);
         this._dchanged = this._pchanged = true;
+        
+        var layout =
+        this._layout = description._airline.AircraftLayout({name: args.aircraftLayout});
+        if (!layout) {
+            throw "unexistent aircraft model "
+                    + args.aircraftLayout
+                    + " for airline "
+                    + args.airline;
+        }
+        
+        // FIXME this is inefficient, change to layout._FDPeriod or something
+        db.applyLater(this.period, 'setAircraftLayout', layout.getDO());
         
         print("Created FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo);
     }
@@ -189,6 +204,10 @@ PeriodCreator.prototype.checkDO = function(args) {
     if (args.datePattern && args.datePattern !== this.period.datePattern) {
         throw "date pattern doesn't match for FlightDescriptionPeriod " + this;
     }
+    
+    if (args.aircraftLayout && args.aircraftLayout !== this._layout.getDO().name) {
+        throw "aircraft layout doesn't match for flight description " + this;
+    }
 }
 
 PeriodCreator.prototype.finishLine = function () {
@@ -210,7 +229,7 @@ PeriodCreator.prototype._Flight = function (args) {
 }
 
 PeriodCreator.prototype.store = function () {
-    var seatClasses = this.description._layout.seatClasses.map(
+    var seatClasses = this._layout.seatClasses.map(
         function (sC) {
             return sC.getDO().code;
         }
@@ -353,7 +372,7 @@ PeriodCreator.prototype.toString = function () {
                             + ", pattern: " + this.period.datePattern + "]";
 }
 
-var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLayout) {
+var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline) {
     if (!args.distance) throw "distance not set";
     if (!args.arrivalTime) throw "arrival time not set";
     if (!args.departureTime) throw "departure time not set";
@@ -365,12 +384,11 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLay
         print("description for flight " + args.flightNumber + " loaded from database");
         
         this._from = pFrom; this._to = pTo;
-        this._airline = pAirline; this._layout = pAircraftLayout;
+        this._airline = pAirline;
     } else {
         if (!args.from) throw "from not set";
         if (!args.to) throw "to not set";
         if (!args.airline) throw "airline not set";
-        if (!args.aircraftLayout) throw "aircraft model not set";
         
         this.description = db.FlightDescription.build(args, ['distance', 'flightNumber']);
         this.description.arrivalTime = Utils.parseTime(args.arrivalTime);
@@ -378,26 +396,24 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLay
         db.applyLater(this.description, 'save', []);
         this._changed = true;
         
-        var from, to, airline, layout;
+        var from, to, airline;
         from = Airport({ code: args.from });
         if (!from) throw "unexistent airport code: " + args.from;
         to = Airport({ code: args.to });
         if (!to) throw "unexistent airport code: " + args.to;
         
-        db.applyLater(this.description, 'setFrom', from.airport);
-        db.applyLater(this.description, 'setTo', to.airport);
+        // FIXME update at airport side? Should be more efficient
+        db.applyLater(this.description, 'setFrom', from.getDO());
+        db.applyLater(this.description, 'setTo', to.getDO());
         
         airline = Airline({ code: args.airline });
         if (!airline) throw "unexistent airline code: " + args.airline;
-        model = airline.AircraftLayout({name: args.aircraftLayout});
-        if (!model) throw "unexistent aircraft model " + args.aircraftLayout + " for airline " + args.airline;
+        db.applyLater(this.description, 'setAirline', airline.getDO())
         
-        db.applyLater(this.description, 'setAircraftLayout', model.model);
-        
-        print("description for flight " + args.flightNumber + " loaded from database");
+        print("description for flight " + args.flightNumber + " created");
         
         this._from = from; this._to = to;
-        this._airline = airline; this._layout = model;
+        this._airline = airline;
     }
     
     flightDescriptions.push(this);
@@ -452,10 +468,6 @@ FlightDescriptionCreator.prototype.checkDO = function (args) {
     if (args.to && args.to !== this._to.getDO().code) {
         throw "arrival airports don't match for flight description " + this;
     }
-    
-    if (args.aircraftLayout && args.aircraftLayout !== this._layout.getDO().name) {
-        throw "aircraft layout doesn't match for flight description " + this;
-    }
 }
 
 FlightDescriptionCreator.prototype.toString = function () {
@@ -488,7 +500,7 @@ FlightDescriptionCreator.prototype.finishLine = function () {
     );
 }
 
-FlightDescriptionCreator.prototype.Period = function (args) {
+FlightDescriptionCreator.prototype.Period = function (args, pLayout) {
     if (typeof args.datePattern === 'string') {
         args.datePattern = Utils.parseDatePattern(args.datePattern);
     }
@@ -499,7 +511,7 @@ FlightDescriptionCreator.prototype.Period = function (args) {
         return period;
     }
     
-    period = new PeriodCreator(args, this);
+    period = new PeriodCreator(args, this, pLayout);
     this.periods.push(period);
     
     this._changed |= !(args.FlightDescriptionId && args.FlightDescriptionId === this.description.id);
@@ -555,7 +567,7 @@ var flightDescriptions = new Utils.MultiIndexedSet(
     ]
 );
 
-module.exports.FlightDescription = function (args, from, to, airline, layout) {
+module.exports.FlightDescription = function (args, from, to, airline) {
     if (airline) args._airline = airline;
     var desc = flightDescriptions.get(args);
     
@@ -564,7 +576,7 @@ module.exports.FlightDescription = function (args, from, to, airline, layout) {
         return desc;
     }
     
-    return new FlightDescriptionCreator(args, from, to, airline, layout);
+    return new FlightDescriptionCreator(args, from, to, airline);
 }
 
 module.exports.Flight = function (args) {
