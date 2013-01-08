@@ -86,7 +86,7 @@ public class SeatmapParser {
         for(String classCode : classMap.keySet()) {
             System.out.println(".SeatClass{ code: \"" + classCode + "\", name: \"" + classMap.get(classCode) + "\" }");
             for(String seat : seatMap.get(classCode)) {
-                System.out.println("    .Seat{" + seat + "}");
+                System.out.println("    .Seat" + seat);
             }
         }
     }

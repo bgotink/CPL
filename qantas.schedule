@@ -1,0 +1,99 @@
+FlightDescription{ from: "YPAD", to: "YBAS" number: "0723" }
+	.Period{ departure: "1045", arrival: "1150", from: "2012-12-17", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat" }
+	.Period{ departure: "1105", arrival: "1210", from: "2012-12-03", to: "2012-12-15", on: "mon,tue,wed,thu,fri,sat" }
+	.Period{ departure: "1105", arrival: "1210", from: "2012-12-03", to: "2013-01-04", on: "sun" }
+
+FlightDescription{ from: "YPAD", to: "YBBN" number: "0660" }
+	.Period{ departure: "0615", arrival: "", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri" }
+	.Period{ departure: "0710", arrival: "", from: "2012-12-03", to: "2013-01-04", on: "sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YBBN" number: "0662" }
+	.Period{ departure: "1255", arrival: "1450", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri" }
+
+FlightDescription{ from: "YPAD", to: "YBBN" number: "0664" }
+	.Period{ departure: "1515", arrival: "1710", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YBBN" number: "0656" }
+	.Period{ departure: "1945", arrival: "2140", from: "2012-12-03", to: "2013-01-04", on: "mon,wed,thu,fri,sun" }
+	.Period{ departure: "1945", arrival: "2140", from: "2012-12-04", to: "2012-12-18", on: "tue" }
+	.Period{ departure: "1945", arrival: "2140", from: "2013-01-01", to: "2013-01-04", on: "tue" }
+	
+FlightDescription{ from: "YPAD", to: "YSCB" number: "0706" }
+	.Period{ departure: "0640", arrival: "0850", from: "2012-12-03", to: "2012-12-21", on: "mon,thu,fri,sat,sun" }
+	
+FlightDescription{ from: "YPAD", to: "YSCB" number: "2092" }
+	.Period{ departure: "1310", arrival: "1540", from: "2012-12-03", to: "2012-12-03", on: "mon" }
+	.Period{ departure: "1310", arrival: "1540", from: "2012-12-04", to: "2012-12-11", on: "tue" }
+	.Period{ departure: "1310", arrival: "1540", from: "2012-12-03", to: "2013-01-04", on: "wed,thu,fri" }
+	.Period{ departure: "1310", arrival: "1540", from: "2012-12-17", to: "2013-01-04", on: "mon" }
+	
+FlightDescription{ from: "YPAD", to: "YSCB" number: "0708" }
+	.Period{ departure: "1900", arrival: "2110", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sun" }
+
+FlightDescription{ from: "YPAD", to: "YPDN" number: "0754" }
+	.Period{ departure: "0840", arrival: "1115", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YPKG" number: "1879" }
+	.Period{ departure: "1740", arrival: "1750", from: "2012-12-03", to: "2013-01-04", on: "wedsun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0670" }
+	.Period{ departure: "0605", arrival: "0755", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0674" }
+	.Period{ departure: "0730", arrival: "0920", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0676" }
+	.Period{ departure: "", arrival: "", from: "2012-12-17", to: "2012-12-20", on: "mon,tue,thu" }
+	
+FlightDescription{ from: "YPAD", to: "YMML" number: "0678" }
+	.Period{ departure: "0935", arrival: "1125", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0680" }
+	.Period{ departure: "1035", arrival: "1225", from: "2012-12-03", to: "2013-01-04", on: "sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "2066" }
+	.Period{ departure: "1050", arrival: "1245", from: "2012-12-03", to: "2013-01-04", on: "tue,wed,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0682" }
+	.Period{ departure: "1135", arrival: "1325", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0686" }
+	.Period{ departure: "1340", arrival: "1530", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0684" }
+	.Period{ departure: "1435", arrival: "1625", from: "2012-12-03", to: "2013-01-04", on: "wed" }
+	.Period{ departure: "1435", arrival: "1625", from: "2012-12-06", to: "2012-12-27", on: "thu,fri" }
+
+FlightDescription{ from: "YPAD", to: "YMML" number: "0690" }
+	.Period{ departure: "1535", arrival: "1725", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+	
+FlightDescription{ from: "YPAD", to: "YMML" number: "0688" }
+	.Period{ departure: "1630", arrival: "1820", from: "2012-12-07", to: "2012-12-28", on: "fri" }
+	.Period{ departure: "1640", arrival: "1830", from: "2012-12-09", to: "2012-12-23", on: "sun" }
+	
+FlightDescription{ from: "YPAD", to: "YMML" number: "0692" }
+	.Period{ departure: "1725", arrival: "1915", from: "2012-12-03", to: "2013-01-04", on: "mon,wed,thu,fri,sat,sun" }
+	.Period{ departure: "1725", arrival: "1915", from: "2012-12-04", to: "2012-12-18", on: "tue" }
+	.Period{ departure: "1725", arrival: "1915", from: "2013-01-01", to: "2013-01-04", on: "tue" }
+	
+FlightDescription{ from: "YPAD", to: "YMML" number: "0694" }
+	.Period{ departure: "1805", arrival: "1955", from: "2012-12-03", to: "2013-01-04", on: "mon,wed" }
+	.Period{ departure: "1805", arrival: "1955", from: "2012-12-04", to: "2012-12-28", on: "tue,thu,fri,sun" }
+	
+FlightDescription{ from: "YPAD", to: "YMML" number: "0696" }
+	.Period{ departure: "1435", arrival: "1625", from: "2012-12-03", to: "2013-01-04", on: "mon,wed,thu,fri,sun" }
+	.Period{ departure: "1945", arrival: "2135", from: "2012-12-04", to: "2012-12-18", on: "tue" }
+	.Period{ departure: "1945", arrival: "2135", from: "2013-01-01", to: "2013-01-04", on: "tue" }
+
+
+
+
+
+
+
+	
+// Template	
+FlightDescription{ from: "", to: "" number: "" }
+	.Period{ departure: "", arrival: "", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+	.Period{ departure: "", arrival: "", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
+	.Period{ departure: "", arrival: "", from: "2012-12-03", to: "2013-01-04", on: "mon,tue,wed,thu,fri,sat,sun" }
