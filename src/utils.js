@@ -1,3 +1,5 @@
+var NodeUtil = require('util');
+
 if (!Array.prototype.contains) {
     Object.defineProperty(
         Array.prototype,
@@ -96,6 +98,16 @@ MultiIndexedSet.prototype.map = function(fun) {
     return this._v.map(fun);
 }
 
+Object.defineProperty(
+    MultiIndexedSet.prototype,
+    "length",
+    {
+        enumerable: false,
+        configurable: false,
+        get: function(e) { return this._v.length; }
+    }
+);
+
 module.exports.MultiIndexedSet = MultiIndexedSet;
 
 /**********************
@@ -112,11 +124,7 @@ var DBCollection = function (rootObj, setFunc, applyLater, indices) {
     this.applyLater = applyLater;
 }
 
-DBCollection.prototype.add = MultiIndexedSet.prototype.add;
-DBCollection.prototype.push = MultiIndexedSet.prototype.push;
-DBCollection.prototype.get = MultiIndexedSet.prototype.get;
-DBCollection.prototype.forEach = MultiIndexedSet.prototype.forEach;
-DBCollection.prototype.map = MultiIndexedSet.prototype.map;
+NodeUtil.inherits(DBCollection, MultiIndexedSet);
 
 DBCollection.prototype.store = function () {
     if (this.__stored) return;

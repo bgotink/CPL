@@ -1,4 +1,10 @@
-var Sequelize = require('sequelize');
+var Sequelize = require('sequelize')
+  , FileSystem = require('fs')
+  , Path = require('path')
+  , Log = require('./log');
+
+// Log config
+Log.LogSettings.DEBUG = true;
 
 // SQLite Config
 var dbFile = __dirname + '/../data/db.sqlite';
@@ -6,10 +12,11 @@ var dbFile = __dirname + '/../data/db.sqlite';
 if (!FileSystem.existsSync(Path.dirname(dbFile))) {
     FileSystem.mkdirSync(Path.dirname(dbFile));
 }
+
 module.exports = new Sequelize('cpl', 'cpl', null, {
     dialect: 'sqlite',
     storage: dbFile,
-    logging: false
+    logging: Log.sql // also possible is value false, to disable logging the SQL queries
 });
 
 /*

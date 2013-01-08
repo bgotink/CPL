@@ -3,10 +3,11 @@ var fs        = require('fs')
   , db        = require('./db')
   , scope     = require('./scope')
   , Sequelize = require('sequelize')
-  , Utils     = require('./utils');
+  , Utils     = require('./utils')
+  , Log       = require('./log');
 
 if (typeof print === 'undefined') {
-  print = console.log;
+  print = Log.debug;
 }
 
 Object.defineProperty(
@@ -36,7 +37,7 @@ var DSLRunner = function(callback) {
 };
 
 if (process.argv.length < 2) {
-    print("Error: please provide an argument");
+    Log.error("Error: please provide an argument");
 }
 
 var execChainer = new Utils.Chainer(false);
@@ -47,11 +48,11 @@ execChainer.applyLater(db, 'sync');
 // Load the database
 var tmp = {};
 execChainer.applyLater(null, function () {
-    print('Database Schema successfully synced.');
+    Log.info('Database Schema successfully synced.');
     return db.Country.findAll();
 });
 execChainer.applyLater(null, function (c) {
-    print('Found ' + c.length + ' countries in the database');
+    Log.info('Found ' + c.length + ' countries in the database');
     tmp.countries = {};
     c.forEach(function(country) {
         tmp.countries[country.id] = scope.Country(country);
@@ -59,7 +60,7 @@ execChainer.applyLater(null, function (c) {
     return db.City.findAll();
 });
 execChainer.applyLater(null, function (c) {
-    print('Found ' + c.length + ' cities in the database');
+    Log.info('Found ' + c.length + ' cities in the database');
     tmp.cities = {};
     c.forEach(function(city) {
         var country = tmp.countries[city.CountryId];
@@ -69,7 +70,7 @@ execChainer.applyLater(null, function (c) {
     return db.Airport.findAll();
 });
 execChainer.applyLater(null, function (a) {
-    print('Found ' + a.length + ' airports in the database');
+    Log.info('Found ' + a.length + ' airports in the database');
     tmp.airports = {};
     a.forEach(function (airport) {
         var city = tmp.cities[airport.CityId];
@@ -79,7 +80,7 @@ execChainer.applyLater(null, function (a) {
     return db.AircraftModel.findAll();
 });
 execChainer.applyLater(null, function (a) {
-    print('Found ' + a.length + ' aircraft models in the database');
+    Log.info('Found ' + a.length + ' aircraft models in the database');
     tmp.aircraftModels = {};
     a.forEach(function (model) {
         tmp.aircraftModels[model.id] = scope.AircraftModel(model);
@@ -87,7 +88,7 @@ execChainer.applyLater(null, function (a) {
     return db.Airline.findAll();
 });
 execChainer.applyLater(null, function (a) {
-    print('Found ' + a.length + ' airlines in the database');
+    Log.info('Found ' + a.length + ' airlines in the database');
     tmp.airlines = {};
     a.forEach(function (airline) {
         tmp.airlines[airline.id] = scope.Airline(airline);
@@ -95,7 +96,7 @@ execChainer.applyLater(null, function (a) {
     return db.AircraftLayout.findAll();
 });
 execChainer.applyLater(null, function (l) {
-    print('Found ' + l.length + ' aircraft layouts in the database');
+    Log.info('Found ' + l.length + ' aircraft layouts in the database');
     tmp.aircraftLayouts = {};
     l.forEach(function (layout) {
         var airline = tmp.airlines[layout.AirlineId];
@@ -105,7 +106,7 @@ execChainer.applyLater(null, function (l) {
     return db.SeatClass.findAll();
 });
 execChainer.applyLater(null, function (s) {
-    print('Found ' + s.length + ' seat classes in the database');
+    Log.info('Found ' + s.length + ' seat classes in the database');
     tmp.seatClasses = {};
     s.forEach(function (seatClass) {
         var layout = tmp.aircraftLayouts[seatClass.AircraftLayoutId];
@@ -114,7 +115,7 @@ execChainer.applyLater(null, function (s) {
     return db.Seat.findAll();
 });
 execChainer.applyLater(null, function (s) {
-    print('Found ' + s.length + ' seats in the database');
+    Log.info('Found ' + s.length + ' seats in the database');
     tmp.seats = {};
     s.forEach(function (seat) {
         var seatClass = tmp.seatClasses[seat.SeatClassId];
@@ -123,7 +124,7 @@ execChainer.applyLater(null, function (s) {
     return db.FlightDescription.findAll();
 });
 execChainer.applyLater(null, function (flightDesc) {
-    print('Found ' + flightDesc.length + ' flight descriptions in the database');
+    Log.info('Found ' + flightDesc.length + ' flight descriptions in the database');
     tmp.flightDescriptions = {};
     flightDesc.forEach(function (description) {
         var from    = tmp.airports[description.FromId]
@@ -136,7 +137,7 @@ execChainer.applyLater(null, function (flightDesc) {
     return db.FlightDescriptionPeriod.findAll();
 });
 execChainer.applyLater(null, function (periods) {
-    print('Found ' + periods.length + ' flight description periods in the database');
+    Log.info('Found ' + periods.length + ' flight description periods in the database');
     tmp.flightDescriptionPeriods = {};
     periods.forEach(function (period) {
         var description = tmp.flightDescriptions[period.FlightDescriptionId];
@@ -145,7 +146,7 @@ execChainer.applyLater(null, function (periods) {
     return db.DateException.findAll();
 });
 execChainer.applyLater(null, function (dateExceptions) {
-    print('Found ' + dateExceptions.length + ' date exceptions in the database');
+    Log.info('Found ' + dateExceptions.length + ' date exceptions in the database');
     dateExceptions.forEach(function (dateException) {
         var period = tmp.flightDescriptionPeriods[dateException.FlightDescriptionPeriodId];
         period.DateException(dateException);
@@ -153,7 +154,7 @@ execChainer.applyLater(null, function (dateExceptions) {
     return db.Price.findAll();
 });
 execChainer.applyLater(null, function (prices) {
-    print('Found ' + prices.length + ' prices in the database');
+    Log.info('Found ' + prices.length + ' prices in the database');
     prices.forEach(function (price) {
         var period = tmp.flightDescriptionPeriods[price.FlightDescriptionPeriodId]
           , seatClass = tmp.seatClasses[price.SeatClassId];
@@ -164,7 +165,19 @@ execChainer.applyLater(null, function (prices) {
 
 // Execute the DSL
 var start;
-execChainer.applyLater(null, function() {
+execChainer.applyLater(null, function(flights) {
+    // first store the flights
+    Log.info('Found ' + flights.length + ' flights in the database');
+    flights.forEach(function (flight) {
+        var period = tmp.flightDescriptionPeriods[flight.FlightDescriptionPeriodId];
+        period._Flight(flight);
+    });
+    
+    // Check validity of _ALL_ flightDescriptionPeriods
+    Object.keys(tmp.flightDescriptions).forEach(function (descId) {
+        tmp.flightDescriptions[descId].finishLine();
+    });
+    
     // Unleash the beast!
     start = +new Date;
     DSLRunner(
@@ -174,16 +187,16 @@ execChainer.applyLater(null, function() {
             .replace(/}\)(\s*[^\s.])/g, '}).finishLine();$1')
             .replace(/}\)\s*$/, '}).finishLine();')
     );
-    print("Created structure in " + ((+new Date) - start) + 'ms');
+    Log.info("Created structure in " + ((+new Date) - start) + 'ms');
     start = +new Date;
     
-    print("Storing all entries");
+    Log.info("Storing all entries");
     return db.runAll();
 });
 
 // Run, Forrest, Run!
 execChainer.runAll().success(function() {
-    print("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
+    Log.info("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {
-    print('Database Schema synchronization failed (' + error + ').');
+    Log.error('Database Schema synchronization failed (' + error + ').');
 });

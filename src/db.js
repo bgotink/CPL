@@ -1,6 +1,7 @@
 var Sequelize   = require('sequelize')
   , FileSystem  = require('fs')
   , Path        = require('path')
+  , Utils       = require('./utils')
   , sequelize   = require('./config');
 
 /*******************

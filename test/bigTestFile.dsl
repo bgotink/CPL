@@ -155,16 +155,8 @@ FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", ar
         .Price{ price: 1000, seatClass: "B" }
         .Price{ price: 400, seatClass: "A" }
 
-/*FlightDescription{flight_number: "2", distance: 2000, departure_time: "tododeptime", arrival_time: "todoarrtime"}
-	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}
-		.Price{price: 1500, seatClass: "airbusS"}
-		.Price{price: 700, seatClass: "airbusB"}
-		.Price{price: 200, seatClass: "airbusE"}
-
-FlightDescription{flight_number: "3", distance: 3000, departure_time: "tododeptime", arrival_time: "todoarrtime"}
-	.FlightDescriptionPeriod{validFrom: "todovalidfrom", validTo: "todovalidto", dayOfMonth: "tododayofmonth", dayOfWeek:"tododayofweek"}
-		.Price{price: 200, seatClass: "boeingE"}
-		.DateException{day: "tododay", month: "todomonth"}
-		.DateException{day: "tododay", month: "todomonth"}
-		.Price{price: 700, seatClass: "boeingF"}
-*/
+// One notation to alter the actual times of a flight:
+FlightDescription{ flightNumber: "1", airline: "BEL" }
+    .Flight{ date: "7 jan 1991", actualDepartureTime: "11:00", actualArrivalTime: "12h05" }
+// Alternative notation:
+Flight{ airline: "BEL", flightNumber: "1", date: "8 jan 1991", actualArrivalTime: "11:31" }

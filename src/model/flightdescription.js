@@ -195,6 +195,20 @@ PeriodCreator.prototype.finishLine = function () {
     return this.description.finishLine();
 }
 
+var DOWrapper = function (DO) {
+    this.DO = DO;
+};
+
+DOWrapper.prototype.getDO = function() {
+    return this.DO;
+};
+
+PeriodCreator.prototype._Flight = function (args) {
+    var flight = new DOWrapper(args);
+    this.flights.push(flight);
+    this.description.flights.push(flight);
+}
+
 PeriodCreator.prototype.store = function () {
     var seatClasses = this.description._layout.seatClasses.map(
         function (sC) {
@@ -225,7 +239,62 @@ PeriodCreator.prototype.store = function () {
                 return dE.getDO().date;
             }
         )
+    ).map(
+        function (date) {
+            return date.getTime();
+        }
     );
+    
+    var self = this;
+    if (this.flights.length) {
+        var flightDates = this.flights.map(
+            function (flight) {
+                return flight.getDO().date.getTime();
+            }
+        );
+        
+        this.allDates.forEach(
+            function (date) {
+                if (!flightDates.contains(date)) {
+                    throw "Flight with date " + new Date(date) + " doesn't exist for flight period " + self;
+                }
+            }
+        );
+        
+        flightDates.forEach(
+            function (date) {
+                if (!self.allDates.contains(date)) {
+                    throw "Flight with date " + new Date(date) + " not created, but it should've been, flight period " + self;
+                }
+            }
+        );
+    } else {
+        var departure = this.description.getDO().departureTime
+          , arrival = this.description.getDO().arrivalTime;
+
+        self.allDates.forEach(
+            function (date) {
+                var flightDO = db.Flight.build({ 
+                    date: new Date(date),
+                    actualDepartureTime: departure,
+                    actualArrivalTime: arrival,
+                });
+                db.applyLater(flightDO, 'save', []);
+                var flight = new DOWrapper(flightDO);
+                self.flights.push(flight);
+                self.description.flights.push(flight);
+            }
+        );
+        
+        self.flights.store();
+    }
+    
+    var self = this;
+    this.allDates.forEach(
+        function (date) {
+            var flight = db.Flight.build()
+        }
+    )
     
     if (this._dchanged) {
         this.dateExceptions.store();
@@ -281,7 +350,7 @@ PeriodCreator.prototype.Price = function (args, pSeatClass) {
 PeriodCreator.prototype.toString = function () {
     return this.description + " [from: " + this.period.validFrom
                             + ", to: " + this.period.validTo
-                            + ", pattern: " + this.period.pattern + "]";
+                            + ", pattern: " + this.period.datePattern + "]";
 }
 
 var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLayout) {
@@ -343,6 +412,14 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline, pAircraftLay
         }
         ]
     );
+    
+    this.flights = new Utils.MultiIndexedSet(
+        [
+        function (flight) {
+            return flight.date.getTime();
+        }
+        ]
+    );
 }
 
 FlightDescriptionCreator.prototype.getDO = function () {
@@ -401,10 +478,10 @@ FlightDescriptionCreator.prototype.finishLine = function () {
             
             periodDates.forEach(
                 function (date) {
-                    if (allDates.contains(date.getTime())) {
-                        throw "date " + date + " occurs in multiple periods for flight " + self;
+                    if (allDates.contains(date)) {
+                        throw "date " + new Date(date) + " occurs in multiple periods for flight " + self;
                     }
-                    allDates.push(date.getTime());
+                    allDates.push(date);
                 }
             );
         }
@@ -430,6 +507,42 @@ FlightDescriptionCreator.prototype.Period = function (args) {
     return period;
 }
 
+FlightDescriptionCreator.prototype.Flight = function (args) {
+    if (typeof args.date === 'string') {
+        args.date = Utils.parseDate(args.date);
+    }
+    if (typeof args.actualDepartureTime === 'string') {
+        args.actualDepartureTime = Utils.parseTime(args.actualDepartureTime);
+    }
+    if (typeof args.actualArrivalTime === 'string') {
+        args.actualArrivalTime = Utils.parseTime(args.actualArrivalTime);
+    }
+    
+    var flight = this.flights.get(args);
+    
+    if (!flight) {
+        throw "Illegal flight date " + args.date + "for FlightDescription " + this;
+    }
+    
+    var flightDO = flight.getDO();
+
+    var updated = false;
+    if (args.actualDepartureTime && args.actualDepartureTime.getTime() !== flightDO.actualDepartureTime.getTime()) {
+        flightDO.actualDepartureTime = args.actualDepartureTime;
+        updated = true;
+    }
+    if (args.actualArrivalTime && args.actualArrivalTime.getTime() !== flightDO.actualArrivalTime.getTime()) {
+        flightDO.actualArrivalTime = args.actualArrivalTime;
+        updated = true;
+    }
+    
+    if (updated) {
+        db.applyLater(flightDO, 'save', [['actualArrivalTime', 'actualDepartureTime']]);
+    }
+    
+    return this;
+}
+
 var flightDescriptions = new Utils.MultiIndexedSet(
     [
     function (desc) {
@@ -452,4 +565,8 @@ module.exports.FlightDescription = function (args, from, to, airline, layout) {
     }
     
     return new FlightDescriptionCreator(args, from, to, airline, layout);
+}
+
+module.exports.Flight = function (args) {
+    return module.exports.FlightDescription(args).Flight(args);
 }
