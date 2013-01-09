@@ -3,6 +3,7 @@
   "description": "CPL DSL",
   "version": "0.0.1",
   "private": true,
+  "readmeFilename": "README.md",
   "dependencies": {
     "sequelize": "1.x",
     "sqlite3": "2.x",
