@@ -97,7 +97,7 @@ var Airline = sequelize.define('Airline', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{2-3}"]
+            is: ["[A-Z]{3}"]
         }
     }
 	// AircraftLayouts, see "ASSOCIATIONS" block
