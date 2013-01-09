@@ -198,6 +198,13 @@ execChainer.runAll().success(function() {
     Log.info("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {
     Log.error("An error occured during execution:");
+    
+    if (!error.stack) {
+        Log.error(error);
+        
+        process.exit(-1);
+        return;
+    }
     var stack = error.stack.split(/\n/);
 
     Log.error(stack[0]);
@@ -212,4 +219,5 @@ execChainer.runAll().success(function() {
             }
         }
     );
+    process.exit(-1);
 });
