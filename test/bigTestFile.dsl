@@ -139,17 +139,20 @@ Airline{ code: "BEL" }
 	.Seat{row: 14, letter: "F"}
 	.Seat{row: 15, letter: "F"}
 
-FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", arrivalTime: "11:20+1", from: "BRUS", to: "HEAT", airline: "BEL" }
-    .Period{ validFrom: "7 jan 1991", validTo: "23 mar 1991", datePattern: "mon,tue,thu", aircraftLayout: "A380-2Classed" }
+FlightDescription{ flightNumber: "1", distance: 1000, from: "BRUS", to: "HEAT", airline: "BEL" }
+    .Period{ validFrom: "7 jan 1991", validTo: "23 mar 1991", datePattern: "mon,tue,thu",
+            departureTime: "10:35", arrivalTime: "11:20+1", aircraftLayout: "A380-2Classed" }
 		.DateException{ date: "2 mar 1991" }
         .Price{price: 200, currency: 'USD', seatClass: "A"}
 		.Price{price: 700, currency: 'USD', seatClass: "B"}
-	.Period{ validFrom: "24 mar 1991", validTo: "6 jan 1992", datePattern: "mon,wed,fri", aircraftLayout: "A380-2Classed" }
+	.Period{ validFrom: "24 mar 1991", validTo: "6 jan 1992", datePattern: "mon,wed,fri",
+            departureTime: "10:35", arrivalTime: "11:20+1", aircraftLayout: "A380-2Classed" }
 		.Price{price: 1500, currency: 'USD', seatClass: "B"}
 		.DateException{ date: "24 dec 1991" }
         .DateException{ date: "25 dec 1991" }
 		.Price{price: 700, currency: 'USD', seatClass: "A"}
-    .Period{ validFrom: "7 jan 1991", validTo: "6 jan 1992", datePattern: "sat,sun", aircraftLayout: "A380-2Classed" }
+    .Period{ validFrom: "7 jan 1991", validTo: "6 jan 1992", datePattern: "sat,sun",
+            departureTime: "10:35", arrivalTime: "11:20+1", aircraftLayout: "A380-2Classed" }
         .DateException{ date: "24 dec 1991" }
         .DateException{ date: "25 dec 1991" }
         .Price{ price: 1000, currency: 'USD', seatClass: "B" }

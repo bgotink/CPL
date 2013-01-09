@@ -209,18 +209,6 @@ var FlightDescription = sequelize.define('FlightDescription', {
             isFloat: true,
             min: 0
         }
-    },
-    departureTime: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
-    },
-	arrivalTime: {
-        type: Sequelize.DATE,
-        validate: {
-            isDate: true
-        }
     }
     // Airline, see "ASSOCIATIONS" block
     // From, see "ASSOCIATIONS" block
@@ -251,7 +239,19 @@ var FlightDescriptionPeriod = sequelize.define('FlightDescriptionPeriod', {
 			isInt: true,
             min: 0
 		}
-	}
+	},
+    departureTime: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    },
+	arrivalTime: {
+        type: Sequelize.DATE,
+        validate: {
+            isDate: true
+        }
+    }
     // FlightDescription, see "ASSOCIATIONS" block
 	// Flights, see "ASSOCIATIONS" block
 	// DateExceptions, see "ASSOCIATIONS" block
