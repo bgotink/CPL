@@ -62,7 +62,7 @@ function CityCreator(city, country) {
         this._changed = false;
         print("City " + city.name + " loaded from database");
     } else {
-        this.city = db.City.build(city, ['name']);
+        this.city = db.City.build(city, ['name', 'timezone']);
         db.applyLater(this.city, 'save', []);
         this._changed = true;
         print("City " + city.name + " created in " + country.country.name);
