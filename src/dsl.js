@@ -200,13 +200,13 @@ execChainer.runAll().success(function() {
     Log.error("An error occured during execution:");
     var stack = error.stack.split(/\n/);
 
-    console.error(stack[0]);
+    Log.error(stack[0]);
     stack.splice(0, 1);
 
     stack.forEach(
         function (line) {
             if (line.match(/\.dsl:/)) {
-                console.error(line);
+                Log.error(line);
             }
         }
     );
