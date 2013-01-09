@@ -215,11 +215,11 @@ AircraftLayoutCreator.prototype.checkDO = function(args) {
 }
 
 AircraftLayoutCreator.prototype.Layout = function(args) {
-    this.airline.Layout(args);
+    return this.airline.Layout(args);
 }
 
 AircraftLayoutCreator.prototype.AircraftLayout = function(args) {
-    this.airline.AircraftLayout(args);
+    return this.airline.AircraftLayout(args);
 }
 
 AircraftLayoutCreator.prototype.SeatClass = function(args) {
