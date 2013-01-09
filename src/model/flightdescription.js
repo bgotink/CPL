@@ -147,7 +147,6 @@ var PeriodCreator = function (args, description, pLayout) {
                     + args.airline);
         }
         
-        // FIXME this is inefficient, change to layout._FDPeriod or something
         db.applyLater(this.period, 'setAircraftLayout', layout.getDO());
         
         print("Created FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo);
@@ -407,7 +406,6 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline) {
         to = Airport({ code: args.to });
         if (!to) throw new Errors.InvalidArgument("unexistent airport code: " + args.to);
         
-        // FIXME update at airport side? Should be more efficient
         db.applyLater(this.description, 'setFrom', from.getDO());
         db.applyLater(this.description, 'setTo', to.getDO());
         
