@@ -4,7 +4,8 @@ var Sequelize = require('sequelize')
   , Log = require('./log');
 
 // Log config
-Log.LogSettings.DEBUG = true;
+// uncomment the following line to enable debugging
+//Log.LogSettings.DEBUG = true;
 
 // SQLite Config
 var dbFile = __dirname + '/../data/db.sqlite';
@@ -16,7 +17,7 @@ if (!FileSystem.existsSync(Path.dirname(dbFile))) {
 module.exports = new Sequelize('cpl', 'cpl', null, {
     dialect: 'sqlite',
     storage: dbFile,
-    logging: Log.sql // also possible is value false, to disable logging the SQL queries
+    logging: false // use value Log.sql to enable logging the SQL queries
 });
 
 /*

@@ -2,7 +2,7 @@ var NodeUtil = require('util');
 
 var settings = 
 module.exports.LogSettings = {
-    DEBUG: true,
+    DEBUG: false,
     INFO: true,
     ERROR: true
 }
