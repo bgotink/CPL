@@ -4,7 +4,8 @@ var fs        = require('fs')
   , scope     = require('./scope')
   , Sequelize = require('sequelize')
   , Utils     = require('./utils')
-  , Log       = require('./log');
+  , Log       = require('./log')
+  , vm        = require('vm');
 
 if (typeof print === 'undefined') {
   print = Log.debug;
@@ -21,18 +22,20 @@ Object.defineProperty(
     }
 );
 
-var DSLRunner = function(callback) {
-    var fArgs = Object.keys(scope)
-      , f     = new Function(fArgs.join(', '), callback);
-    
-    //print("f: " + f.toString());
-    return f.apply(
-        null,
-        fArgs.map(
-            function(a) {
-                return scope[a];
-            }
-        )
+var DSLRunner = function(filename) {
+    var code = fs.readFileSync(filename).toString()
+            // add parentheses around {...}
+            .replace(/{/g, '({')
+            .replace(/}/g, '})')
+            // append a finishLine to every line ending,
+            // that is, a '})' followed by a '.'
+            .replace(/}\)(\s*[^\s.])/g, '}).finishLine();$1')
+            .replace(/}\)\s*$/, '}).finishLine();');
+
+    return vm.runInNewContext(
+        code,
+        scope,
+        filename
     );
 };
 
@@ -181,11 +184,7 @@ execChainer.applyLater(null, function(flights) {
     // Unleash the beast!
     start = +new Date;
     DSLRunner(
-        fs.readFileSync(process.argv[2]).toString()
-            .replace(/{/g, '({')
-            .replace(/}/g, '})')
-            .replace(/}\)(\s*[^\s.])/g, '}).finishLine();$1')
-            .replace(/}\)\s*$/, '}).finishLine();')
+        process.argv[2]
     );
     Log.info("Created structure in " + ((+new Date) - start) + 'ms');
     start = +new Date;
@@ -199,5 +198,6 @@ execChainer.runAll().success(function() {
     Log.info("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {
     Log.error("An error occured during execution:");
+    Log.error(error.stack);
     throw error;
 });
