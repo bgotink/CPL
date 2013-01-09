@@ -129,6 +129,7 @@ SeatClassCreator.prototype.Seat = function(args) {
     
     seat = new SeatCreator(args, this);
     this.seats.push(seat);
+    this.aircraftLayout.seats.push(seat);
     
     this._changed |= !(args.SeatClassId && args.SeatClassId === this.seatClass.id);
     
@@ -180,6 +181,8 @@ var AircraftLayoutCreator = function(layout, airline, pModel) {
         db.applyLater,
         ['code']
     );
+    
+    this.seats = new Utils.MultiIndexedSet([function(seat) { return seat.letter + seat.row; }]);
 }
 
 AircraftLayoutCreator.prototype.finishLine = function() {
