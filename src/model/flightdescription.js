@@ -6,6 +6,7 @@ var db              = require('../db')
 
 var PriceCreator = function (args, period, pSeatClass) {
     if (!args.price) throw new Errors.MissingAttribute("price not set for Price");
+    if (!args.currency) throw new Errors.MissingAttribute("currency not set for Price");
     if (!args.SeatClassId && !args.seatClass) throw new Errors.MissingAttribute("seat class not set for Price");
     
     if (args.id) {
@@ -33,8 +34,11 @@ PriceCreator.prototype.getDO = function () {
 }
 
 PriceCreator.prototype.checkDO = function (args) {
-    if (args.price !== this.price.price) {
+    if (args.price && args.price !== this.price.price) {
         throw new Errors.NoMatch("prices not equal");
+    }
+    if (args.currency && args.currency !== this.price.currency) {
+        throw new Errors.NoMatch("currency not equal");
     }
 }
 

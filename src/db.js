@@ -303,6 +303,12 @@ var Price = sequelize.define('Price', {
             isFloat: true,
             min: 0
         }
+    },
+    currency: {
+        type: Sequelize.STRING,
+        validate: {
+            isAlpha: true
+        }
     }
 	// FlightDescriptionPeriod, see "ASSOCIATIONS" block
 	// SeatClass, see "ASSOCIATIONS" block

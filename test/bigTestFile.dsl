@@ -142,18 +142,18 @@ Airline{ code: "BEL" }
 FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", arrivalTime: "11:20", from: "BRU", to: "LHR", airline: "BEL" }
     .Period{ validFrom: "7 jan 1991", validTo: "23 mar 1991", datePattern: "mon,tue,thu", aircraftLayout: "A380-2Classed" }
 		.DateException{ date: "2 mar 1991" }
-        .Price{price: 200, seatClass: "A"}
-		.Price{price: 700, seatClass: "B"}
+        .Price{price: 200, currency: 'USD', seatClass: "A"}
+		.Price{price: 700, currency: 'USD', seatClass: "B"}
 	.Period{ validFrom: "24 mar 1991", validTo: "6 jan 1992", datePattern: "mon,wed,fri", aircraftLayout: "A380-2Classed" }
-		.Price{price: 1500, seatClass: "B"}
+		.Price{price: 1500, currency: 'USD', seatClass: "B"}
 		.DateException{ date: "24 dec 1991" }
         .DateException{ date: "25 dec 1991" }
-		.Price{price: 700, seatClass: "A"}
+		.Price{price: 700, currency: 'USD', seatClass: "A"}
     .Period{ validFrom: "7 jan 1991", validTo: "6 jan 1992", datePattern: "sat,sun", aircraftLayout: "A380-2Classed" }
         .DateException{ date: "24 dec 1991" }
         .DateException{ date: "25 dec 1991" }
-        .Price{ price: 1000, seatClass: "B" }
-        .Price{ price: 400, seatClass: "A" }
+        .Price{ price: 1000, currency: 'USD', seatClass: "B" }
+        .Price{ price: 400, currency: 'USD', seatClass: "A" }
 
 // One notation to alter the actual times of a flight:
 FlightDescription{ flightNumber: "1", airline: "BEL" }
