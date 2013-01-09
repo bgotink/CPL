@@ -198,6 +198,16 @@ execChainer.runAll().success(function() {
     Log.info("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {
     Log.error("An error occured during execution:");
-    Log.error(error.stack);
-    throw error;
+    var stack = error.stack.split(/\n/);
+
+    console.error(stack[0]);
+    stack.splice(0, 1);
+
+    stack.forEach(
+        function (line) {
+            if (line.match(/\.dsl:/)) {
+                console.error(line);
+            }
+        }
+    );
 });
