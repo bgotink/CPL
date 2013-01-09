@@ -1,0 +1,55 @@
+FlightDescription{ from: "YSSY", to: "KLAX", distance: 13996, airline: "QFA", number: 11 }
+	.Period{ departure: "1500", arrival: "0940", from: "2012-12-03", to: "2013-01-04", layout: "QF-A388-1", on: "mon,wed,thu,fri,sat,sun" }
+		.Price{ price: 733 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1951 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4229 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9049 currency: "AUD" seatClass: "P" }
+	.Period{ departure: "1500", arrival: "0940", from: "2012-12-04", to: "2012-12-18", layout: "QF-A388-1", on: "tue" }
+		.Price{ price: 733 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1951 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4229 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9049 currency: "AUD" seatClass: "P" }
+	.Period{ departure: "1500", arrival: "0940", from: "2013-01-01", to: "2013-01-04", layout: "QF-A388-1", on: "tue" }
+		.Price{ price: 733 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1951 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4229 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9049 currency: "AUD" seatClass: "P" }
+
+FlightDescription{ from: "KLAX", to: "YSSY", distance: 14296, airline: "QFA", number: 12 }
+	.Period{ departure: "2220", arrival: "0820+2", from: "2012-12-03", to: "2013-01-04", layout: "QF-A388-1", on: "mon,wed,thu,fri,sat,sun" }
+		.Price{ price: 733 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1951 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4229 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9049 currency: "AUD" seatClass: "P" }
+	.Period{ departure: "2220", arrival: "0820+2", from: "2012-12-04", to: "2012-12-18", layout: "QF-A388-1", on: "tue" }
+		.Price{ price: 733 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1951 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4229 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9049 currency: "AUD" seatClass: "P" }
+	.Period{ departure: "2220", arrival: "0820+2", from: "2013-01-01", to: "2013-01-04", layout: "QF-A388-1", on: "tue" }
+		.Price{ price: 733 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1951 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4229 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9049 currency: "AUD" seatClass: "P" }
+
+FlightDescription{ from: "YMML", to: "KLAX", distance: 14846, airline: "QFA", number: 93 }
+	.Period{ departure: "1120", arrival: "0645", from: "2012-12-03", to: "2013-01-04", layout: "QF-A388-2", on: "mon,tue,wed,thu,fri,sat,sun" }
+		.Price{ price: 725 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1943 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4221 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9041 currency: "AUD" seatClass: "P" }
+						
+FlightDescription{ from: "KLAX", to: "YMML", distance: 15136, airline: "QFA", number: 94 }
+	.Period{ departure: "2330", arrival: "1020+2", from: "2012-12-03", to: "2013-01-04", layout: "QF-A388-2", on: "mon,tue,wed,thu,fri,sat,sun" }
+		.Price{ price: 725 currency: "AUD" seatClass: "Y" }
+		.Price{ price: 1943 currency: "AUD" seatClass: "W" }
+		.Price{ price: 4221 currency: "AUD" seatClass: "J" }
+		.Price{ price: 9041 currency: "AUD" seatClass: "P" }		
+
+/*	
+Template:
+FlightDescription{ from: "", to: "", distance: 0, airline: "QFA", number: "" }
+	.Period{ departure: "", arrival: "", from: "2012-12-03", to: "2013-01-04", layout: "", on: "mon,tue,wed,thu,fri,sat,sun" }
+	.Period{ departure: "", arrival: "", from: "2012-12-03", to: "2013-01-04", layout: "", on: "mon,tue,wed,thu,fri,sat,sun" }
+	.Period{ departure: "", arrival: "", from: "2012-12-03", to: "2013-01-04", layout: "", on: "mon,tue,wed,thu,fri,sat,sun" }
+*/
