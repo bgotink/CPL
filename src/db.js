@@ -33,6 +33,12 @@ var City = sequelize.define('City', {
         validate: {
             notEmpty: true
         }
+    },
+    timezone: {
+        type: Sequelize.STRING,
+        validate: {
+            isAlpha: true
+        }
     }
     // Country, see "ASSOCIATIONS" block
     // Airports, see "ASSOCIATIONS" block

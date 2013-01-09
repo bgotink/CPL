@@ -55,6 +55,7 @@ AirportCreator.prototype.checkDO = function(airport) {
 
 function CityCreator(city, country) {
 	if(!city.name) throw new Errors.MissingAttribute("name attribute of city missing");
+    if(!city.timezone) throw new Errors.MissingAttribute("timezone attribute of city is missing");
 
     if (city.id) {
         this.city = city;
@@ -123,6 +124,9 @@ CityCreator.prototype.getDO = function() {
 CityCreator.prototype.checkDO = function (args) {
     if (args.name !== this.city.name) {
         throw new Errors.NoMatch("City name doesn't match");
+    }
+    if (args.timezone && args.timezone !== this.city.timezone) {
+        throw new Errors.NoMatch("City timezones don't match");
     }
 }
 
