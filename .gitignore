@@ -1,5 +1,6 @@
 # Node Modules, run npm install in src instead # 
 src/node_modules/*
+src/.installed
 node_modules/*
 
 # WebStorm Project Meta # 
