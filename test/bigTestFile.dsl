@@ -89,7 +89,7 @@ Airline{ code: "BEL" }
 	.Seat{row: 13, letter: "B"}
 	.Seat{row: 14, letter: "B"}
 	.Seat{row: 15, letter: "B"}
-   .SeatClass{ code: "A" }
+   .SeatClass{ name: "Economy", code: "A2" }
 	.Seat{row: 7, letter: "C"}
 	.Seat{row: 8, letter: "C"}
 	.Seat{row: 9, letter: "C"}

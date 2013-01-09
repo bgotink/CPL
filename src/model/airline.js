@@ -178,7 +178,7 @@ var AircraftLayoutCreator = function(layout, airline, pModel) {
         this.layout,
         'setSeatClasses',
         db.applyLater,
-        ['code', 'name']
+        ['code']
     );
 }
 
