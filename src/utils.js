@@ -59,7 +59,7 @@ MultiIndexedSet.prototype.add = function(obj) {
                     throw new Errors.InvalidArgument("index " + idx + " of object not set");
                 }
                 if (typeof self.values[idx][objDO[idx]] !== "undefined") {
-                    throw new Erorrs.Duplicate("set already contains an object where " + idx + " = " + objDO[idx]);
+                    throw new Errors.Duplicate("set already contains an object where " + idx + " = " + objDO[idx]);
                 }
                 
                 self.values[idx][objDO[idx]] = obj;
@@ -231,18 +231,26 @@ module.exports.Chainer = Chainer;
 var __now = 0;
 var TimeParser = function (string) {
     if (typeof string === 'string') {
-        var parts = string.match(/(\d{1,2})[: .uh](\d{2})m?/);
+        var parts = string.match(/^\s*(\d{1,2})[: .uh]?\s*(\d{2})m?\s*(\+\d)?\s*$/);
         if (parts.length === 0) {
             throw new Errors.InvalidArgument("Invalid date: " + string);
         }
         var date = new Date(__now);
         date.setHours(parts[1]);
         date.setMinutes(parts[2]);
+        if (parts[3]) {
+            var days = +(parts[3].replace(/^\+/, ''));
+            if (days > 3) {
+                throw new Errors.InvalidArgument("Flights can't take " + days + "days, fuel problems will ensue");
+            }
+            date.setDate(date.getDate() + days);
+        }
         return date;    
     } else {
         var date = new Date(__now);
         date.setHours(string.getHours());
         date.setMinutes(string.getMinutes());
+        date.setDate(string.getDate());
         return date;
     }
 }

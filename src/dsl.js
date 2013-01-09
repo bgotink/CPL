@@ -206,7 +206,9 @@ execChainer.runAll().success(function() {
     stack.forEach(
         function (line) {
             if (line.match(/\.dsl:/)) {
-                Log.error(line);
+                Log.error(line.replace(/:(\d+):\d+/, ':$1'));
+            } else {
+                Log.debug(line);
             }
         }
     );

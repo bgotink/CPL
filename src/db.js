@@ -33,6 +33,12 @@ var City = sequelize.define('City', {
         validate: {
             notEmpty: true
         }
+    },
+    timezone: {
+        type: Sequelize.STRING,
+        validate: {
+            isAlpha: true
+        }
     }
     // Country, see "ASSOCIATIONS" block
     // Airports, see "ASSOCIATIONS" block
@@ -52,7 +58,7 @@ var Airport = sequelize.define('Airport', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{3-4}"]
+            is: ["[A-Z]{4}"]
         }
     },
     latitude: {
@@ -91,7 +97,7 @@ var Airline = sequelize.define('Airline', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{2-3}"]
+            is: ["[A-Z]{3}"]
         }
     }
 	// AircraftLayouts, see "ASSOCIATIONS" block
