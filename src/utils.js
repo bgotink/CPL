@@ -1,4 +1,5 @@
-var NodeUtil = require('util');
+var NodeUtil = require('util')
+  , Errors   = require('./error');
 
 if (!Array.prototype.contains) {
     Object.defineProperty(
@@ -45,20 +46,20 @@ MultiIndexedSet.prototype.add = function(obj) {
                 var objIdx = idx.call(objDO, objDO);
                 
                 if (typeof objIdx === "undefined") {
-                    throw "function index " + idx + " gives illegal result.";
+                    throw new Errors.InvalidArgument("function index " + idx + " gives illegal result.");
                 }
                 if (typeof self.values[idx._idx_id][objIdx] !== "undefined") {
-                    throw "collection already contains an object where function index "
-                        + idx + " = " + objIdx;
+                    throw new Errors.Duplicate("set already contains an object where function index "
+                        + idx + " = " + objIdx);
                 }
                 
                 self.values[idx._idx_id][objIdx] = obj;
             } else {
                 if (typeof objDO[idx] === "undefined") {
-                    throw "index " + idx + " of object not set";
+                    throw new Errors.InvalidArgument("index " + idx + " of object not set");
                 }
                 if (typeof self.values[idx][objDO[idx]] !== "undefined") {
-                    throw "collection already contains an object where " + idx + " = " + objDO[idx];
+                    throw new Erorrs.Duplicate("set already contains an object where " + idx + " = " + objDO[idx]);
                 }
                 
                 self.values[idx][objDO[idx]] = obj;
@@ -228,7 +229,7 @@ var TimeParser = function (string) {
     if (typeof string === 'string') {
         var parts = string.match(/(\d{1,2})[: .uh](\d{2})m?/);
         if (parts.length === 0) {
-            throw "Invalid date: " + string;
+            throw new Errors.InvalidArgument("Invalid date: " + string);
         }
         var date = new Date(__now);
         date.setHours(parts[1]);
@@ -250,7 +251,7 @@ module.exports.parseTime = TimeParser;
 var DateParser = function(str) {
     var date = new Date(str);
     if (date.toString() === 'Invalid Date') {
-        throw "Invalid date: " + str;
+        throw new Errors.InvalidArgument("Invalid date: " + str);
     }
     date.setHours(0);
     date.setMinutes(0);
@@ -305,7 +306,7 @@ var DatePatternParser = function (string) {
 				sunday = 1;
 				break;
             default:
-                throw "Unkonwn day of the week: " + part;
+                throw new Error.InvalidArgument("Unkonwn day of the week: " + part);
 		}
 	});
 	var result = (1 << 0)*sunday
@@ -326,7 +327,7 @@ module.exports.parseDatePattern = DatePatternParser;
 
 var DatesBetweenExcept = function(from, to, pattern, exceptions){
 	if(from > to){
-		throw "from is later than to";
+		throw new Error.InvalidArgument("from is later than to");
 	}
     if (typeof pattern === 'string') {
         pattern = DatePatternParser(pattern);

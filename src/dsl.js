@@ -38,6 +38,7 @@ var DSLRunner = function(callback) {
 
 if (process.argv.length < 2) {
     Log.error("Error: please provide an argument");
+    process.exit(1);
 }
 
 var execChainer = new Utils.Chainer(false);
@@ -197,5 +198,6 @@ execChainer.applyLater(null, function(flights) {
 execChainer.runAll().success(function() {
     Log.info("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
 }).error(function(error) {
-    Log.error('Database Schema synchronization failed (' + error + ').');
+    Log.error("An error occured during execution:");
+    throw error;
 });

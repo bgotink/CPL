@@ -1,10 +1,11 @@
-var db = require('../db')
-  , Utils = require('../utils');
+var db      = require('../db')
+  , Utils   = require('../utils')
+  , Errors  = require('../error');
 
 var AircraftModelCreator = function(args) {
-    if (!args.manufacturer) throw "aircraft model manufacturer not set";
-    if (!args.code) throw "aircraft model code not set";
-    if (!args.name) throw "aircraft model name not set";
+    if (!args.manufacturer) throw new Errors.MissingAttribute("aircraft model manufacturer not set");
+    if (!args.code) throw new Errors.MissingAttribute("aircraft model code not set");
+    if (!args.name) throw new Errors.MissingAttribute("aircraft model name not set");
     
     if (args.id) {
         this.aircraftModel = args;
@@ -37,13 +38,13 @@ AircraftModelCreator.prototype.getDO = function () {
 
 AircraftModelCreator.prototype.checkDO = function(args) {
     if (args.code !== this.aircraftModel.code) {
-        throw "Aircraft model codes don't match";
+        throw new Errors.NoMatch("Aircraft model codes don't match");
     }
     if (args.name && args.name !== this.aircraftModel.name) {
-        throw "Aircraft model names don't match for code " + args.code;
+        throw new Errors.NoMatch("Aircraft model names don't match for code " + args.code);
     }
     if (args.manufacturer && args.manufacturer !== this.aircraftModel.manufacturer) {
-        throw "Aircraft model manufacturer doesn't match for code " + args.code;
+        throw new Errors.NoMatch("Aircraft model manufacturer doesn't match for code " + args.code);
     }
 }
 

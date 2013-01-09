@@ -1,10 +1,11 @@
 var db            = require('../db')
   , Utils         = require('../utils')
-  , AircraftModel = require('./aircraftmodel').AircraftModel.get;
+  , AircraftModel = require('./aircraftmodel').AircraftModel.get
+  , Errors        = require('../error');
   
 var SeatCreator = function(seat, seatClass) {
-    if (!seat.row) throw "row not set for seat";
-    if (!seat.letter) throw "letter not set for seat";
+    if (!seat.row) throw new Errors.MissingAttribute("row not set for seat");
+    if (!seat.letter) throw new Errors.MissingAttribute("letter not set for seat");
     
     if (seat.id) {
         this.seat = seat;
@@ -28,10 +29,10 @@ SeatCreator.prototype.getDO = function() {
 
 SeatCreator.prototype.checkDO = function(args) {
     if (args.row !== this.seat.row) {
-        throw "rows don't match for seat";
+        throw new Errors.NoMatch("rows don't match for seat");
     }
     if (args.letter !== this.seat.letter) {
-        throw "letters don't match for seat";
+        throw new Errors.NoMatch("letters don't match for seat");
     }
 }
 
@@ -52,8 +53,8 @@ SeatCreator.prototype.AircraftLayout = function(args) {
 }
 
 var SeatClassCreator = function(seatClass, aircraftLayout) {
-    if (!seatClass.name) throw "name not set for seat class";
-    if (!seatClass.code) throw "code not set for seat class";
+    if (!seatClass.name) throw new Errors.MissingAttribute("name not set for seat class");
+    if (!seatClass.code) throw new Errors.MissingAttribute("code not set for seat class");
     
     if (seatClass.id) {
         this.seatClass = seatClass;
@@ -99,10 +100,10 @@ SeatClassCreator.prototype.getDO = function() {
 
 SeatClassCreator.prototype.checkDO = function(args) {
     if (args.code && args.code !== this.seatClass.code) {
-        throw "code doesn't match for seat class";
+        throw new Errors.NoMatch("code doesn't match for seat class");
     }
     if (args.name && args.name !== this.seatClass.name) {
-        throw "name doesn't match for seat class";
+        throw new Errors.NoMatch("name doesn't match for seat class");
     }
 }
 
@@ -148,8 +149,8 @@ SeatClassCreator.prototype._Price = function (args) {
 }
 
 var AircraftLayoutCreator = function(layout, airline, pModel) {
-    if (!layout.name) throw "name not set for AircraftLayout";
-    if (!layout.modelCode && !layout.AircraftModelId) throw "modelcode not set for AircraftLayout";
+    if (!layout.name) throw new Errors.MissingAttribute("name not set for AircraftLayout");
+    if (!layout.modelCode && !layout.AircraftModelId) throw new Errors.MissingAttribute("modelcode not set for AircraftLayout");
     
     if (layout.id) {
         this.layout = layout;
@@ -164,7 +165,7 @@ var AircraftLayoutCreator = function(layout, airline, pModel) {
         var model = AircraftModel({ code: layout.modelCode });
         
         if (!model) {
-            throw "aircraft model with code  " + layout.modelCode + " doesn't exist";
+            throw new Error.InvalidArgument("aircraft model with code  " + layout.modelCode + " doesn't exist");
         }
         
         this._model = model;
@@ -203,10 +204,10 @@ AircraftLayoutCreator.prototype.getDO = function() {
 
 AircraftLayoutCreator.prototype.checkDO = function(args) {
     if (args.name !== this.layout.name) {
-        throw "Aircraft layout names don't match";
+        throw new Errors.NoMatch("Aircraft layout names don't match");
     }
     if (args.modelCode && args.modelCode !== this._model.getDO().code) {
-        throw "Aircraft models don't match";
+        throw new Errors.NoMatch("Aircraft models don't match");
     }
 }
 
@@ -235,8 +236,8 @@ AircraftLayoutCreator.prototype.SeatClass = function(args) {
 }
 
 var AirlineCreator = function(airline) {
-	if(!airline.name) throw "name attribute of airline missing";
-	if(!airline.code) throw "code attribute of airline missing";
+	if(!airline.name) throw new Errors.MissingAttribute("name attribute of airline missing");
+	if(!airline.code) throw new Errors.MissingAttribute("code attribute of airline missing");
 
     if (airline.id) {
         this.airline = airline;
@@ -264,10 +265,10 @@ AirlineCreator.prototype.getDO = function () {
 
 AirlineCreator.prototype.checkDO = function(args) {
     if (args.code !== this.airline.code) {
-        throw "Airline codes don't match";
+        throw new Errors.NoMatch("Airline codes don't match");
     }
     if (args.name && args.name !== this.airline.name) {
-        throw "Airline names don't match for code " + args.code;
+        throw new Errors.NoMatch("Airline names don't match for code " + args.code);
     }
 }
 
