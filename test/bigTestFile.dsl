@@ -1,17 +1,17 @@
 Country{ name: "Belgium", code: "BEL" }
-	.City{ name: "Brussels", timezone: "CET" }
+	.City{ name: "Brussels", timezone: "Europe/Brussels" }
 		.Airport{ name: "Brussels Airport", code: "BRUS", latitude: 50.901389, longitude: 4.484444 }
-	.City{ name: "Charleroi", timezone: "CET" }
+	.City{ name: "Charleroi", timezone: "Europe/Brussels" }
 		.Airport{ name: "Brussels South Charleroi Airport", code: "CHRL", latitude: 50.46, longitude: 4.452778}
 
 Country{ name: "United Kingdom", code: "UK"}
-	.City{ name: "London", timezone: "GMT" }
+	.City{ name: "London", timezone: "Europe/London" }
 		.Airport{ name: "London City Airport", code: "LOND", latitude: 51.505278, longitude: 0.055278}
 		.Airport{ name: "London Gatwick Airport", code: "GATW", latitude: 51.148056, longitude: -0.190278}
 		.Airport{ name: "London Heathrow Airport", code: "HEAT", latitude: 51.4775, longitude:  -0.461389}	
 
 Country{ name: "Netherlands", code: "NL"}
-	.City{ name: "Amsterdam", timezone: "CET" }
+	.City{ name: "Amsterdam", timezone: "Europe/Amsterdam" }
 		.Airport{ name: "Amsterdam Airport Schiphol", code: "AMST", latitude: 52.308056, longitude: 4.764167}
 
 Airline{ name: "Brussels Airlines", code: "BEL"}

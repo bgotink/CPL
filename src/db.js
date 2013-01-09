@@ -37,7 +37,8 @@ var City = sequelize.define('City', {
     timezone: {
         type: Sequelize.STRING,
         validate: {
-            isAlpha: true
+            isAlpha: true,
+            is: [ ["[a-z]+/[a-z]+", "i"] ]
         }
     }
     // Country, see "ASSOCIATIONS" block
