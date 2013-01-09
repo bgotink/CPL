@@ -6,6 +6,7 @@
   "dependencies": {
     "sequelize": "1.x",
     "sqlite3": "2.x",
-    "pg": "0.6.x"
+    "pg": "0.6.x",
+    "mysql": "2.0.0-alpha5"
   }
 }
