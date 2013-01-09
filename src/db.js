@@ -58,7 +58,7 @@ var Airport = sequelize.define('Airport', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{3-4}"]
+            is: ["[A-Z]{4}"]
         }
     },
     latitude: {
