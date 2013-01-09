@@ -26,7 +26,7 @@ module.exports.info = function () {
 }
 
 module.exports.error = function () {
-    if (!settings.error) return;
+    if (!settings.ERROR) return;
     
     NodeUtil.log(
         "[ERROR] - " +

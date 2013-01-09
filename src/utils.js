@@ -201,15 +201,19 @@ Chainer.prototype.runAll = function() {
                 params = arguments;
             }
             
-            toCall.apply(func.obj, params).success(
-                function() {
-                    exec.apply(null, arguments);
-                }
-            ).error(
-                function(e) {
-                    eventEmitter.emit('error', e);
-                }
-            )
+            try {
+                toCall.apply(func.obj, params).success(
+                    function() {
+                        exec.apply(null, arguments);
+                    }
+                ).error(
+                    function(e) {
+                        eventEmitter.emit('error', e);
+                    }
+                )
+            } catch (e) {
+                eventEmitter.emit('error', e);
+            }
         } else {
             eventEmitter.emit('success');
         }
