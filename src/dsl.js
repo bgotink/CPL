@@ -39,8 +39,8 @@ var DSLRunner = function(filename) {
     );
 };
 
-if (process.argv.length < 2) {
-    Log.error("Error: please provide an argument");
+if (process.argv.length < 3) {
+    console.error("Usage: %s %s <file> [file...]", process.argv[0], process.argv[1]);
     process.exit(1);
 }
 
@@ -182,20 +182,22 @@ execChainer.applyLater(null, function(flights) {
     });
     
     // Unleash the beast!
-    start = +new Date;
-    DSLRunner(
-        process.argv[2]
-    );
-    Log.info("Created structure in " + ((+new Date) - start) + 'ms');
-    start = +new Date;
+    for(var i = 2; i < process.argv.length; i++) {
+        start = +new Date;
+        DSLRunner(
+            process.argv[2]
+        );
+        Log.info("Loaded DSL file %s in %d ms", process.argv[2], ((+new Date) - start));
+    }
     
+    start = +new Date;    
     Log.info("Storing all entries");
     return db.runAll();
 });
 
 // Run, Forrest, Run!
 execChainer.runAll().success(function() {
-    Log.info("Successfully stored everything in de db in " + ((+new Date) - start) + "ms");
+    Log.info("Successfully stored everything in de db in %dms", ((+new Date) - start));
 }).error(function(error) {
     Log.error("An error occured during execution:");
     
