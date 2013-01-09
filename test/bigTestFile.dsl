@@ -1,4 +1,4 @@
-Country{ name: "Belgium", code: "BE" }
+Country{ name: "Belgium", code: "BEL" }
 	.City{ name: "Brussels", timezone: "CET" }
 		.Airport{ name: "Brussels Airport", code: "BRU", latitude: 50.901389, longitude: 4.484444 }
 	.City{ name: "Charleroi", timezone: "CET" }
@@ -139,7 +139,7 @@ Airline{ code: "BEL" }
 	.Seat{row: 14, letter: "F"}
 	.Seat{row: 15, letter: "F"}
 
-FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", arrivalTime: "11:20", from: "BRU", to: "LHR", airline: "BEL" }
+FlightDescription{ flightNumber: "1", distance: 1000, departureTime: "10:35", arrivalTime: "11:20+1", from: "BRU", to: "LHR", airline: "BEL" }
     .Period{ validFrom: "7 jan 1991", validTo: "23 mar 1991", datePattern: "mon,tue,thu", aircraftLayout: "A380-2Classed" }
 		.DateException{ date: "2 mar 1991" }
         .Price{price: 200, currency: 'USD', seatClass: "A"}

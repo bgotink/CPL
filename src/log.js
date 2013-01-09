@@ -2,13 +2,13 @@ var NodeUtil = require('util');
 
 var settings = 
 module.exports.LogSettings = {
-    DEBUG: false,
+    DEBUG: (process.env.ENVIRONMENT == 'debug'),
     INFO: true,
     ERROR: true
 }
 
 module.exports.debug = function () {
-    if (!settings.DEBUG) return;
+    if (!settings.DEBUG && (process.env.ENVIRONMENT != 'debug')) return;
     
     NodeUtil.log(
         "[DEBUG] - " +
