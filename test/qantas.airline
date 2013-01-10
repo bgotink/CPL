@@ -1,5 +1,5 @@
-Airline{ code: "QF", name: "Qantas Airways" }
-	.Layout{ code: "QF-A388-1", aircraft: "A380-800" }
+Airline{ code: "QFA", name: "Qantas Airways" }
+	.Layout{ name: "QFA-A388-1", modelCode: "A388" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 34, letter: "A" }
 		    .Seat{ row: 34, letter: "B" }
@@ -454,7 +454,7 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 25, letter: "F" }
 		    .Seat{ row: 25, letter: "J" }
 		    .Seat{ row: 25, letter: "K" }
-	.Layout{ code: "QF-A388-2", aircraft: "A380-800" }
+	.Layout{ name: "QFA-A388-2", modelCode: "A388" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 24, letter: "A" }
 		    .Seat{ row: 24, letter: "B" }
@@ -940,7 +940,7 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 22, letter: "F" }
 		    .Seat{ row: 22, letter: "J" }
 		    .Seat{ row: 22, letter: "K" }
-	.Layout{ code: "QF-B744W-1" aircraft: "B747-438ER" }
+	.Layout{ name: "QFA-B744W-1", modelCode: "B744" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 34, letter: "A" }
 		    .Seat{ row: 34, letter: "B" }
@@ -1273,7 +1273,7 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 30, letter: "F" }
 		    .Seat{ row: 30, letter: "J" }
 		    .Seat{ row: 30, letter: "K" }
-	.Layout{ code: "QF-B744W-2", aircraft: "B747-438ER" }
+	.Layout{ name: "QFA-B744W-2", modelCode: "B744" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 34, letter: "A" }
 		    .Seat{ row: 34, letter: "B" }
@@ -1641,7 +1641,7 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 15, letter: "K" }
 		    .Seat{ row: 16, letter: "J" }
 		    .Seat{ row: 16, letter: "K" }
-	.Layout{ code: "QF-B744-1", aircraft: "B747-438" }
+	.Layout{ name: "QFA-B744-1", modelCode: "B744" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 34, letter: "A" }
 		    .Seat{ row: 34, letter: "B" }
@@ -2028,7 +2028,7 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 30, letter: "F" }
 		    .Seat{ row: 30, letter: "J" }
 		    .Seat{ row: 30, letter: "K" }
-	.Layout{ code: "QF-B744-1", aircraft: "B747-438" }
+	.Layout{ name: "QFA-B744-1", modelCode: "B744" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 34, letter: "A" }
 		    .Seat{ row: 34, letter: "B" }
@@ -2352,8 +2352,8 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 30, letter: "F" }
 		    .Seat{ row: 30, letter: "J" }
 		    .Seat{ row: 30, letter: "K" }
-	.Layout{ code: "QF-B744-3", aircraft: "B747-438" }
-			.SeatClass{ code: "W", name: "Premium Economy Class" }
+	.Layout{ name: "QFA-B744-3", modelCode: "B744" }
+		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 34, letter: "A" }
 		    .Seat{ row: 34, letter: "B" }
 		    .Seat{ row: 35, letter: "A" }
@@ -2720,7 +2720,7 @@ Airline{ code: "QF", name: "Qantas Airways" }
 		    .Seat{ row: 15, letter: "K" }
 		    .Seat{ row: 16, letter: "J" }
 		    .Seat{ row: 16, letter: "K" }
-	.Layout{ code: "QF-744-4", aircraft: "B747-438" }
+	.Layout{ name: "QFA-744-4", modelCode: "B744" }
 		.SeatClass{ code: "W", name: "Premium Economy Class" }
 		    .Seat{ row: 29, letter: "A" }
 		    .Seat{ row: 29, letter: "B" }

@@ -73,7 +73,7 @@ function CityCreator(city, country) {
         this.city,
         'setAirports',
         db.applyLater,
-        ['code', 'name']
+        ['code']
     );
     
     var self = this;
