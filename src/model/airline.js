@@ -261,8 +261,8 @@ var AirlineCreator = function(airline) {
         ['name']
     );
     
-    var self = this
-    this.AircraftLayout =
+    var self = this;
+    this.AircraftLayout.get =
     this.Layout.get = function(args) {
         var layout = self.layouts.get(args);
         if (layout) {
