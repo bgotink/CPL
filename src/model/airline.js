@@ -166,7 +166,7 @@ var AircraftLayoutCreator = function(layout, airline, pModel) {
         var model = AircraftModel({ code: layout.modelCode });
         
         if (!model) {
-            throw new Error.InvalidArgument("aircraft model with code  " + layout.modelCode + " doesn't exist");
+            throw new Errors.InvalidArgument("aircraft model with code  " + layout.modelCode + " doesn't exist");
         }
         
         this._model = model;
