@@ -185,9 +185,9 @@ execChainer.applyLater(null, function(flights) {
     for(var i = 2; i < process.argv.length; i++) {
         start = +new Date;
         DSLRunner(
-            process.argv[2]
+            process.argv[i]
         );
-        Log.info("Loaded DSL file %s in %d ms", process.argv[2], ((+new Date) - start));
+        Log.info("Loaded DSL file %s in %d ms", process.argv[i], ((+new Date) - start));
     }
     
     start = +new Date;    
