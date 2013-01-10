@@ -260,6 +260,16 @@ var AirlineCreator = function(airline) {
         db.applyLater,
         ['name']
     );
+    
+    var self = this
+    this.AircraftLayout =
+    this.Layout.get = function(args) {
+        var layout = self.layouts.get(args);
+        if (layout) {
+            layout.checkDO(args);
+        }
+        return layout;
+    }
 }
 
 AirlineCreator.prototype.getDO = function () {
@@ -301,14 +311,6 @@ AirlineCreator.prototype.Layout = function(args, model) {
     
     this._changed |= !(args.AirlineId && args.AirlineId === this.airline.id);
     
-    return layout;
-}
-
-AirlineCreator.prototype.Layout.get = function(args) {
-    var layout = this.layouts.get(args);
-    if (layout) {
-        layout.checkDO(args);
-    }
     return layout;
 }
 
