@@ -15,6 +15,20 @@ data/db.sqlite
 # Config File #
 src/config.js
 
+# TexPad #
+report/.texpadtmp
+
+# LaTeX #
+report/report.pdf
+report/report.aux
+report/report.bbl
+report/report.blg
+report/report.log
+report/report.out
+report/report.synctex.gz
+report/report.toc
+
+
 # OS generated files #
 ######################
 .DS_Store
