@@ -37,7 +37,7 @@
 \begin{document}
 
 \title{CPL assignment 2}
-\author{ Stijnd Adams \\ Bram Gotink \\ Michiel Staessen \\ Geert Van Campenhout }
+\author{ Stijn Adams \\ Bram Gotink \\ Michiel Staessen \\ Geert Van Campenhout }
 
 \maketitle
 
@@ -263,5 +263,201 @@ node src/dsl.js <inputfile> [inputfile …]
 \clearpage
 \appendix
 \section{DSL API}
+In this section, we'll give an overview of all the language constructs of our DSL.
+
+\subsection*{Country - City - Airport}
+Here, the language constructs and the sequence of these constructs for adding an airport to a certain city will be shown. First, the sequence of these constructs will be shown by using an abbreviated notation of the constructs. Thereafter, each language construct will be shown in full (with all his parameters).
+
+\subsubsection*{Add an airport to a certain city}
+\begin{tabbing}
+Country \= \{\ldots \} \\
+\> .City \= \{ \ldots \} \\
+\> \> .Airport \= \{ \ldots \} \\
+\end{tabbing}
+
+\subsubsection*{Add a country}
+\begin{tabbing}
+Country \= \{ \= name: "\textit{name of the country}", \\
+	\> \> code: "\textit{code of the country}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a city}
+\begin{tabbing}
+.City \= \{ \= name: "\textit{name of the city}", \\
+	\> \> timezone: "\textit{timezone of the city}" (See:\renewcommand\refname{} \refname{Timezone}) \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add an airport}
+\begin{tabbing}
+.Airport \= \{ \= name: "\textit{name of the airport}", \\
+	\> \> code: "\textit{code of the airport}", \\
+	\> \> longitude: "\textit{longitude of the airport}", \\
+	\> \> latitude: "\textit{latitude of the airport}" \\
+\> \} \\
+\end{tabbing}
+
+\subsection*{Airline - AircraftModel - AircrafLayout - SeatClass - Seat}
+Here, the language constructs and the sequence of these constructs for adding a seat of certain seat class in an aircraft layout of an airline will be shown. First, the sequence of these constructs will be shown by using an abbreviated notation of the constructs. Thereafter, each language construct will be shown in full (with all his parameters).
+
+\subsubsection*{Add a seat of a certain seat class to the aircraft layout of an airline}
+\begin{tabbing}
+AircraftModel \= \{\ldots \} \\
+
+Airline \= \{\ldots \} \\
+\> .AircraftLayout \= \{ \ldots \} \\
+\> \> .SeatClass \= \{ \ldots \} \\
+\> \> \> .Seat \= \{ \ldots \} \\
+\end{tabbing}
+
+\subsubsection*{Add an AircraftModel}
+\begin{tabbing}
+AircraftModel \= \{ \= name: "\textit{name of the aircraft model}", \\
+	\> \> manufacturer: "\textit{manufacturer of the aircraft model}", \\
+	\> \> code: "\textit{code of the aircraft model}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add an Airline}
+\begin{tabbing}
+Airline \= \{ \= name: "\textit{name of the airline}", \\
+	\> \> code: "\textit{code of the airline}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add an AircraftLayout}
+\begin{tabbing}
+.AircraftLayout \= \{ \= name: "\textit{name of the aircraft layout}", \\
+	\> \> modelCode: "\textit{code of the aircraft model}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a SeatClass}
+\begin{tabbing}
+.SeatClass \= \{ \= name: "\textit{name of the seat class}", \\
+	\> \> code: "\textit{code of the seat class}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a Seat}
+\begin{tabbing}
+.Seat \= \{ \= row: "\textit{row of the seat}", \\
+	\> \> letter: "\textit{letter of the seat}" \\
+\> \} \\
+\end{tabbing}
+
+
+\subsection*{FlightDescription - FlightDescriptionPeriod - DateException - Price}
+Here, the language constructs and the sequence of these constructs for adding a flight template (consisting of a flight descprition, a period with exceptions and prices) will be shown. First, the sequence of these constructs will be shown by using an abbreviated notation of the constructs. Thereafter, each language construct will be shown in full (with all his parameters).
+
+\subsubsection*{Add a flight template}
+\begin{tabbing}
+FlightDescription \= \{\ldots \} \\
+\> .FlightDescriptionPeriod \= \{ \ldots \} \\
+\> \> .DateException \= \{ \ldots \} \\
+\> \> .Price \= \{ \ldots \} \\
+\> \> .Price \= \{ \ldots \} \\
+\> \> .DateException \= \{ \ldots \} \\
+\end{tabbing}
+
+Note that the language constructs \dsltype{DateException} and \dsltype{Price} both operate on a certain \dsltype{FlightDescriptionPeriod} and are interchangeable.
+
+\subsubsection*{Add a FlightDescription}
+\begin{tabbing}
+FlightDescription \= \{ \= flightNumber: "\textit{number of the flight descprtion}", \\
+	\> \> distance: \textit{distance between departure and arrival airport}, \\
+	\> \> from: "\textit{code of the departure airport}", \\
+	\> \> to: "\textit{code of the destination airport}", \\
+	\> \> airline: "\textit{code of the airline}", \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a FlightDescriptionPeriod}
+\begin{tabbing}
+.FlightDescriptionPeriod \= \{ \= validFrom: \= "\textit{startdate of period}", \\
+		\> \> \>(See:\renewcommand\refname{} \refname{Date}) \\
+	\> \> validTo: \= "\textit{enddate of period}", \\
+		\> \> \> (See:\renewcommand\refname{} \refname{Date}) \\
+	\> \> datePattern: \= "\textit{date pattern of the period}", \\
+		\> \> \> (See:\renewcommand\refname{} \refname{Datepattern}) \\
+	\> \> departureTime: \= "\textit{theoretical departure time of the flight in this period}", \\
+		\> \> \> (See:\renewcommand\refname{} \refname{Time}) \\
+	\> \> arrivalTime: \= "\textit{theoretical arrival time of the flight in this period}", \\
+		\> \> \> 	(See:\renewcommand\refname{} \refname{Time}) \\
+	\> \> aircraftLayout: "\textit{name of the aircraft layout}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a DateException}
+\begin{tabbing}
+.DateException \= \{ \= date: "\textit{date of the date exception}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a Price}
+\begin{tabbing}
+.Price \= \{ \= price: "\textit{amount of the price}", \\
+	\> \> currency: "\textit{currency of the price}", \\
+	\> \> currency: "\textit{seat class for this price}" \\
+\> \} \\
+\end{tabbing}
+
+\subsubsection*{Add a Seat}
+\begin{tabbing}
+.Seat \= \{ \= row: "\textit{row of the seat}", \\
+	\> \> letter: "\textit{letter of the seat}" \\
+\> \} \\
+\end{tabbing}
+
+\subsection*{Flight}
+Flight is an exceptional concept because it is automatically generated and thus users can not add Flights themselves. The constructs that are given below only update the flight data in the database but don’t create new flights.
+There are two ways to update flight data:
+
+\begin{tabbing}
+Flight \= \{ \= airline: "\textit{the code of the airline}", \\
+	\> \> flightNumber: "\textit{flightNumber}" \\
+	\> \> date: "\textit{date of the flight}", \\
+	\> \> actualDepartureTime: "\textit{new departure time of the flight}", \\
+	\> \> actualArrivalTime: "\textit{new departure time of the flight}" \\
+\> \} \\
+
+or
+\end{tabbing}
+
+\begin{tabbing}
+FlightDescriptionPeriod \= \{ \= flightNumber: "\textit{flightNumber}", \\
+	\> \> airline: "\textit{the code of the airline}" \\
+\> \} \\
+\> .Flight \= \{ \= date: "\textit{date of the flight}", \\
+	\> \> actualDepartureTime: "\textit{new departure time of the flight}", \\
+	\> \> actualArrivalTime: "\textit{new departure time of the flight}" \\
+\> \} \\
+\end{tabbing}
+
+
+\subsection*{Usage of non-trivial attributes}
+\subsubsection*{Timezone: [String]}
+\label{Timezone}
+A timezone has to be given as a valid tz timezone, all the valid timezones can be found here: \href{http://en.wikipedia.org/wiki/List_of_tz_database_time_zones}{ http://en.wikipedia.org/wiki/List\_of\_tz\_database\_time\_zones}.
+
+\subsubsection*{Date: [Date]}
+\label{Date}
+A normal date has to be given as a string in the following format: “dd mmm yyyy”. \newline
+	For example: “07 jan 1997”
+	
+\subsubsection*{Date pattern: [String]}
+\label{Datepattern}
+A date pattern has to be given as a comma separated sequence of days. Days can be given with their full name (e.g. monday) or with the abbreviation (e.g. mon) using either upper case or lower case. The list of possible entries is: "monday, tuesday, wednesday, thursday, friday, saturday, sunday" or "mon, tue, wed, thu, fri, sat, sun". \newline
+For example: “mon, wed, fri”
+
+
+\subsubsection*{Time: [String]}
+\label{Time}
+A normal time has to be given as a string in the following format: “hh:mm + d” with d being the difference in days between the departure date and the arrival date. \newline
+For example: “01:30 +1”
+
+\todo{verwijzingen updaten; hoe best weergeven?} \newline
+\todo{zorg dat het duidelijk is hoe je een DatePattern moet ingeven} -> Fixed?
 
 \end{document}
