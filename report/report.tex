@@ -1,0 +1,267 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{graphicx}
+
+\usepackage{courier}
+
+\usepackage{color}
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage[normalem]{ulem}
+
+% this does the same as \usepackage{a4wide}, but is supposed to be better
+\usepackage{geometry}
+\geometry{
+  includeheadfoot,
+  margin=2.54cm
+}
+
+\usepackage[english]{babel}
+
+\newcommand{\npar}{\par \vspace{2.3ex plus 0.3ex minus 0.3ex} \noindent}
+\newcommand{\spar}{\par \noindent}
+
+\usepackage[numbers,square]{natbib}
+\bibliographystyle{plainnat}
+
+\usepackage{hyperref}
+
+\newcommand{\dslcode}[1]{\texttt{#1}}
+\newcommand{\dsltype}[1]{\textit{#1}}
+\newcommand{\dslattr}[1]{\uline{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{\(\langle\) \textbf{TODO} #1 \(\rangle\) }}
+
+\begin{document}
+
+\title{CPL assignment 2}
+\author{ Stijnd Adams \\ Bram Gotink \\ Michiel Staessen \\ Geert Van Campenhout }
+
+\maketitle
+
+\tableofcontents
+
+\clearpage
+
+\section{Domain description}
+
+\todo{insert domain model}
+
+\subsection{Additions to the domain}
+\begin{itemize}
+\item The concept \dsltype{AircraftLayout} is added to the domain because an \dsltype{Airline} is free to customize the seat layout of a certain \dsltype{Aircraft}. For example, one airline can make all the seats at the second level of the Airbus A380 business class while another airline can make only half of the seats at the second level business class and the other half economy class. To make this possible in our domain, the addition of the \dsltype{AircraftLayout} concept was a necessity.
+
+\item As information about every seat, we keep record of the row and the letter of a seat, as used in standard airplane seating. Furthermore, we’ve made a seat class to denote to which class a certain seat belongs. The concept \dsltype{Seat} doesn’t have a price attribute itself. Instead, the price of a seat is determined by its \dsltype{SeatClass} and \dsltype{FlightDescriptionPeriod}.
+
+\item An \dsltype{Airline} is free to specify its own \dsltype{AircraftLayouts}, which in turn can have its own \dsltype{SeatClasses}, but every \dsltype{SeatClass} needs to have a unique identifier within this \dsltype{AircraftLayout}. Thanks to this concept, any kind of distinction between seats can be made. For example, a specific \dsltype{SeatClass} for seats near emergency exits can be made. Typically, an \dsltype{Airline} will want to assign a higher price to these seats, since these seats have more leg space. The opposite holds for seats near the lavatories, since a lot of people will pass by and disturb the peace. This type of fine grained price setting wasn’t possible if airlines were only allowed to classify seats to “economy class”, “business class” or “first class”.
+
+\item Since certain \dsltype{Airlines} don’t operate flights on certains days, like for example Christmas, we needed the \dsltype{DateException} concept. In a \dsltype{DateException}, the user can specify a date on which a certain \dsltype{Flight} won’t fly.
+
+\item Each \dsltype{Airport} has a 4 capital letter code, the ICAO \citep{icao_airport} code is globally accepted as the code to use for Airports which consists of 4 capital letters. Codes consisting of 3 capital letters like the IATA \citep{iata_airport} code for Airports which accounts only for Airports outside the United States and the FAA \citep{faa_airport} code which accounts for Airports inside the United States can contain doubles which is not desirable as the code field should be unique. This is the reason why we use the ICAO code for the airports.
+
+\item The \dsltype{FlightDescription} and \dsltype{FlightDescriptionPeriod} concepts are our implementation of a flight template. \dsltype{FlightDescription} contains the following data: which \dsltype{Airline} flies from which to which \dsltype{Airport}, what flight number is attached to it and what the distance of the flight is.
+\spar \dsltype{FlightDescriptionPeriod} on the other hand contains the following data: in what period flights exist for this \dsltype{FlightDescription}, what \dsltype{AircraftLayout} is used for these flights, which \dsltype{Prices} are attached to the seats of the \dsltype{AircraftLayout} for these flights and at what time of the day do these flights leave and arrive. The reason why we divided the flight template into these two concepts is that flights can have the same flight code and be handled by the same \dsltype{Airline} but still occur in a different period, leave and arrive at a different time, flying at different days in the week, with a different \dsltype{AircraftLayout} or with the same \dsltype{AircraftLayout} but different \dsltype{Prices}.
+
+\item Although the distance between \dsltype{Airports} can be calculated based on their latitude and longitude, the user needs to manually insert the distance for a certain \dsltype{FlightDescription}. This is necessary because not all the flights will fly in a straight line.
+\end{itemize}
+
+\subsection{Assumptions}
+
+We assume that a flight number will not be reused at a later time for a flight that has a different route than the original flight that was associated with this flight number. In other words, once a certain flight number has been dedicated to a flight with a certain route, that flight number can never be dedicated to another flight with a different route.
+
+\npar We assume all dates and times are given by the users in local time, the timezone is saved in the City concept. This means that the length of a flight is recorded implicitly, it can be calculated based on the given departure and arrival time and the timezones of the arrival and departure airports, obtained through its city.
+
+\section{Domain Analysis}
+
+\todo{dus als data kunnen afwijken van epoch, vermeld
+dit is zo bijvoorbeeld bij arrival time om aan te duiden dat je pas de dag erna aankomt}
+\spar\todo{hoe datePattern opgeslagen wordt.>}
+
+\begin{description}
+\item[Country]
+A \dsltype{Country} has a \dslattr{name} and a unique ISO-\dslattr{code} of 2 letters \citep{iso_country}. A \dsltype{Country} can have any number of \dsltype{Cities}.
+
+\item[City]
+A \dsltype{City} has a \dslattr{name} and \dslattr{timezone}. As said above, the timezone attribute is needed to calculate the duration of a \dsltype{Flight}. \dsltype{Cities} are located in a \dsltype{Country} and can have any number of \dsltype{Airports}.
+
+\item[Airport]
+An \dsltype{Airport} has a \dslattr{name}, a unique 4-letter ICAO-\dslattr{code}, a \dslattr{latitude} and \dslattr{longitude} attribute.
+\spar The latitude and longitude attributes are used to specify the exact location of the \dsltype{Airport}, but are not used to calculate the distance between airports because flights usually don’t fly in a straight line. An \dsltype{Airport} can have any number of \dsltype{FlightDescriptions} using the \dsltype{Airport} as departure or destination \dsltype{Airport}.
+
+\item[AircraftModel]
+An \dsltype{AircraftModel} has a \dslattr{name}, a \dslattr{manufacturer} and a unique ICAO-\dslattr{code}. An \dsltype{AircraftModel} can have any number of \dsltype{AircraftLayouts}.
+
+\item[Airline]
+An \dsltype{Airline} has a \dslattr{name} and a unique 3-letter ICAO-\dslattr{code} attribute. An \dsltype{Airline} can have any number of \dsltype{AircraftLayouts} and serve any number of \dsltype{FlightDescriptions}. 
+
+\item[AircraftLayout]
+An \dsltype{AircraftLayout} has a \dslattr{name} which has to be unique for the \dsltype{Airline} it belongs to. \dsltype{AircraftLayout} also references its \dsltype{Airline} (by its ICAO-code) and its \dsltype{AircraftModel} (its ICAO-code). An \dsltype{AircraftLayout} contains a number of \dsltype{SeatClasses} and can serve any number of \dsltype{FlightDescriptionPeriods}.
+
+\npar As said in the domain description, an \dsltype{AircraftLayout} describes the seating layout for a specific \dsltype{AircraftModel} and \dsltype{Airline} because not every \dsltype{AircraftModel} has the exact same layout.
+
+\item[SeatClass]
+A \dsltype{SeatClass} has a \dslattr{name} and a self-chosen \dslattr{code} that has to be unique for its \dsltype{AircraftLayout} but not globally unique. A \dsltype{SeatClass} references its \dsltype{AircraftLayout} and can have any number of \dsltype{Prices} and \dsltype{Seats}.
+
+\item[Seat]
+A \dsltype{Seat} is determined by a \dslattr{row} and a \dslattr{letter}. The combination these two has to be unique for each \dsltype{AircraftLayout}. A \dsltype{Seat} contains references its \dsltype{SeatClass} (by its code).
+
+\item[FlightDescription]
+A \dsltype{FlightDescription} has a \dslattr{flight number} and a \dslattr{distance}. A \dsltype{FlightDescription} references the \dsltype{Airline} (ICAO-code) which serves flights generated from this description and two \dsltype{Airport} identifiers (ICAO-codes), representing the departure and the arrival \dsltype{Airport}. A \dsltype{FlightDescription} can also have any number of \dsltype{FlightDescriptionPeriods}. The combination of the \dsltype{Airline} identifier and the flight number has to be unique.
+
+\item[FlightDescriptionPeriod]
+A \dsltype{FlightDescriptionPeriod} describes a period in which a certain \dsltype{FlightDescription} is valid. It has start date (\dslattr{valid from}), end date (\dslattr{valid to}), a \dslattr{datePattern} and the \dslattr{arrival time} and \dslattr{departure time} in that period. A \dsltype{FlightDescriptionPeriod} references an \dsltype{AircraftLayout} which will serve the flights described by this period. A \dsltype{FlightDescriptionPeriod} can also have any number of \dsltype{Prices}, \dsltype{DateExceptions} and \dsltype{Flights}.
+
+\npar The time of the start date and end date is set to midnight. The datePattern is a pattern that contains a boolean for every day of the week, these specify whether a flight exists on that day. These seven booleans are saved as an integer in the database. The arrival time and departure time are saved as date objects as well with the date of the objects set to epoch. The date of the arrival time can be different from epoch when the flight arrives a day (or two days maximum) after the flight left (this difference exists because these times are all saved as local times as mentioned before).
+
+\begin{center}
+\begin{tabular}{l|l}
+If this is true & this day of the week is included \\
+\hline
+(datePattern \& (1 << 0)) != 0 & Sunday \\
+(datePattern \& (1 << 1)) != 0 & Monday \\
+(datePattern \& (1 << 2)) != 0 & Tuesday \\
+(datePattern \& (1 << 3)) != 0 & Wednesday \\
+(datePattern \& (1 << 4)) != 0 & Thursday \\
+(datePattern \& (1 << 5)) != 0 & Friday \\
+(datePattern \& (1 << 6)) != 0 & Saturday \\
+\end{tabular}
+\end{center}
+
+
+\item[Flight]
+The \dsltype{Flight} concept is the domain element that resembles to a real flight. It has a \dslattr{date}, an \dslattr{actualDepartureTime} and an \dslattr{actualArrivalTime} attribute. A \dsltype{Flight} contains the identifier of a \dsltype{FlightDescriptionPeriod}.
+
+\npar In the actualDepartureTime and the actualArrivalTime attributes of \dsltype{Flight}, the theoretical departure time and arrival time of FlightDescriptionPeriod are overridden to represent, respectively, the actual departure and arrival time. The date of actualDepartureTime is set to epoch but can deviate from it when for example the flight was planned at 23:50 but it had 20 minutes of delay, then the actualDepartureTime will be 2 january 1970 00:10. The date of actualArrivalTime is set to epoch as well but can deviate from it when the flight had a delay or the plane arrives a day (or two days maximum) after it left.
+
+\item[DateException]
+The \dsltype{DateException} concept contains a \dslattr{date} attribute. Via the \dsltype{DateException} concept, \dsltype{Airlines} can specify a date on which a flight won’t fly even if it was part of the datePattern of \dsltype{FlightDescriptionPeriod}.
+
+\item[Price]
+The \dsltype{Price} concept contains the \dslattr{price} and the \dslattr{currency} of this price for a certain \dsltype{Seat} on a certain \dsltype{FlightDescriptionPeriod}.
+\end{description}
+
+\section{Design description}
+The syntax of the DSL is the following:
+\begin{quote}
+\begin{verbatim}	
+Type{ arguments }.SubType{ arguments }		
+Type{ arguments }
+\end{verbatim}
+\end{quote}
+We’ve decided to name all arguments. This means that the order of the arguments doesn’t matter. \dslcode{Country\{ name: “Belgium”, code: “BE” \}} is the same as \dslcode{Country\{ code: “BE”, name: “Belgium” \}}. The way the parameters are named is the same as in JSON, apart from the fact that the parameter names don’t have to be quoted.
+The different subtypes can be chained, e.g.
+\begin{quote}\begin{verbatim}
+Type{ args }.SubType{ args }.SubSubType{ args }
+\end{verbatim}\end{quote}
+Chaining also allows going back to a type mentioned before, e.g.
+\begin{quote}\begin{verbatim}
+Type{ args}
+    .SubType{ args }
+        .SubSubType{ args }
+    .SubType{ args }
+\end{verbatim}\end{quote}
+This is possible everywhere but the flights (see below).
+An example of the DSL:
+\begin{quote}\begin{verbatim}
+Country{ name: “Belgium”, code: “BE” }
+    .City{ name: “Brussels”, timezone: “Europe/Brussels” }
+        .Airport{ name: “Zaventem”, … }
+    .City{ name: “Charleroi”, timezone: “Europe/Brussels” }
+        .Airport{ name: “Charleroi (Brussels South)”, … }
+\end{verbatim}\end{quote}
+This small DSL describes the country Belgium with two cities, Brussels and Charleroi, which each have one airport, respectively Brussels and Charleroi (Brussels South).
+
+\npar The DSL can be commented, using the same syntax as all C-based languages:
+\begin{quote}\begin{verbatim}
+// a single line of comment
+Country{ name: “Belgium”, code: “BE” } // comment after code
+/* this
+is
+a
+multiline
+comment */
+\end{verbatim}\end{quote}
+
+
+\section{Implementation overview}
+
+We have implemented the DSL in javascript, using node.js.  We’ve chosen node because it has a powerful code evaluator which allows us to actually run the files the user has given us.
+\par To run, we create a scope and run the DSL sandboxed in this scope. To be able to run the DSL, the program uses a couple of regular expressions to create valid javascript code.
+\par We use an Object-Relational Mapper (ORM) and DataBase Abstraction Layer (DBAL) to communicate with the database. This allows us to work with objects instead of creating the SQL ourselves and make abstraction of which kind of database is used. The user can use whichever type of database he or she prefers, as long as the DBAL supports it.
+
+In general, one javascript object will be created and persisted per \dslcode{Type\{ arguments \}} call in the DSL. The only exception is the \dsltype{Flight} object. These objects are automatically generated when the line describing the \dsltype{FlightDescriptionPeriod} they belong to is created.
+The \dslcode{Flight\{ arguments \}} calls are only allowed to follow a \dslcode{FlightDescription\{ arguments \}} call, a previous \dslcode{Flight\{ arguments \}} call, or they can be a starting call.
+This implies that \dslcode{Flight\{ arguments \}} calls are only permitted in lines below the one where they’re created, as a \dsltype{FlightDescriptionPeriod} is required before \dsltype{Flights} are created.
+
+\begin{quote}\begin{verbatim}
+// Lets assume flight BRU0001 has already been created before.
+// This works
+FlightDescription{ airline: “BRU”, flightNumber: 0001 }
+    .Flight{ date: “11 jan 2013”, actualArrivalTime: “00:20+1” }
+    .Flight{ date: “12 jan 2013”, actualArrivalTime: “00:21+1”
+Flight{ airline: “BRU”, flightNumber: 0002 }
+    .Flight{ date: “13 jan 2013”, actualArrivalTime: “00:22+1” }
+// This doesn’t work
+FlightDescription{ airline: “BRU”, flightNumber: 0001 }
+    .Period{ \ldots }
+    .Flight{ \ldots }
+\end{verbatim}\end{quote}
+
+A call to \dslcode{Type\{ arguments \}} is not guaranteed to create an object. If the object it describes already exists, that object is returned instead. This enables the user to re-use defined objects by simply calling \dslcode{Type\{ idArgument: value \}}, where \dslattr{idArgument} is an identifying argument.
+\spar Examples:
+\begin{quote}\begin{verbatim}
+// Create the country Belgium
+Country{ name: “Belgium”, code: “BE” }
+Country{ code: “BE” } // is the same country as above
+Country{ name: “Belgium” } // is the same country as above
+\end{verbatim}\end{quote}
+
+Using this with only the identifying variable given is supported, but will result in an error if the object does not exist yet.
+\spar Any extra arguments will be verified when the object exists already. This is because the program doesn’t know which country the user wants in the second line of this example:
+\begin{quote}\begin{verbatim}
+Country{ name: “Belgium”, code: “BE” }
+Country{ name: “France”, code: “BE” }
+\end{verbatim}\end{quote}
+Both \dslattr{name} and \dslattr{code} are identifiers of a \dsltype{Country}. The second line in the previous example results in two different \dsltype{Countries} depending on which id is checked first. Because of that, the program will return an error.
+\par When a non-identifying property is given and differs from the value of the already existing object with the same identifier(s), the program will also return an error. We’ve opted to not silently ignore this, because we don’t know if the user made a mistake or wants to update. Updates are not supported, and if the user makes a mistake, we don’t know if the mistake was made in the identifying variable or in the other variable.
+\par The only exception to this rule is the \dslcode{Flight\{ arguments \}} call. This does update the \dslattr{actualArrivalTime} and \dslattr{actualDepartureTime} arguments if they’re given. This is because the \dsltype{Flight} objects are not created because the user called \dslcode{Flight\{ arguments \}}. Upon creation of a \dsltype{FlightDescriptionPeriod} object, all \dsltype{Flight} objects for that period are created with the theoretical departure and arrival times. The user can change this times by giving another time.
+
+\section{DSL implementation}
+
+Our DSL implementation depends on a couple of libraries, depending on which database is used. An obvious dependency is node.js version 0.8.x. We developped using version 0.8.16, that is the target version, but later 0.8.x versions should work as well.
+We use a ORM/DBAL, cf supra. We’ve decided to use Sequelize \citep{sequelize}. We’ve used version 1.6.0-beta4, but later 1.6.x versions should work as well.
+Depending on which database is actually used, the program depends on the sqlite, pg or mysql node modules and the corresponding packages on the computer itself.
+
+\npar The code of the program works in three steps, loading the database, creating the object structure for the DSL and storing the data.
+\par The main reason for the split between evaluating the DSL and storing the data is two-fold. We don’t use any transactions in the ORM, so if an error occurs when half of the data has been saved, we don’t have a way to rollback.
+\par The other reason is also the reason why we first load the database. All interactions with the database are asynchronous. This results in unforseen and unpredictable problems. One example is the following: Country A is created, and city \(C_A\) is added. Then, country B is created and city \(C_B\) is added. After running this DSL, the database will list both \(C_A\) and \(C_B\) as being cities in country B. This is because of the way Sequelize adds elements in a one-to-many relation. Another example is simply that the DSL could require a country to exist in the database, but the database is still being read.
+
+\npar We decided to load the preexisting data from the database, to allow the user to add new elements to existing data. It is also possible to run the program with multiple DSL files. The program will then load the database, then it will run all the DSL files one by one in the order given and finally it stores the result. This means that nothing will be stored if e.g. the third contains an error.
+
+\section{User guide}
+
+\subsection{Installation}
+Install node and npm (the node package manager). Download the source from the git repository or extract the tarball found with this report.
+\npar Decide which database to use. The simplest to use is SQLite, but this is extremely slow on hard disks. A run time of one hundred seconds is to be expected even for pretty small files, while a solid state disk results in a run time of one second.
+\par Edit src/package.json, remove the database dependencies for the databases you won’t use. The three types are: sqlite3, pg and mysql. You don’t have to remove the unneeded libraries, but trying to install the node packages could result in errors if the real programs and their libraries are not installed on the computer.
+\npar Next, run \texttt{npm install} in the src-directory of the dsl. This will install all dependencies described in the package.json file.
+
+\subsection{Configuration}
+The file src/config.js must be created to configure the program. This file tells the program what to log and which database to use. The file src/config.js.dist contains all the options the user can change, and shows how to create every type of database. Simply copying this file to src/config.js will make the program use a SQLite database in data/db.sqlite.
+
+\subsection{Execution}
+First, open a terminal and go to the main directory of the program (containing subdirectories src, test, data …). Once there, you can start the program using:
+\begin{quote}\begin{verbatim}
+node src/dsl.js <inputfile> [inputfile …]
+\end{verbatim}\end{quote}
+
+\clearpage
+\bibliography{report}
+
+\clearpage
+\appendix
+\section{DSL API}
+
+\end{document}
