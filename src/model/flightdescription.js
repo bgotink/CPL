@@ -153,9 +153,9 @@ var PeriodCreator = function (args, description, pLayout) {
         this._dchanged = this._pchanged = true;
         
         var layout =
-        this._layout = description._airline.AircraftLayout({name: args.aircraftLayout});
+        this._layout = description._airline.AircraftLayout.get({name: args.aircraftLayout});
         if (!layout) {
-            throw new Errors.InvalidArgument("unexistent aircraft model "
+            throw new Errors.InvalidArgument("unexistent aircraft layout "
                     + args.aircraftLayout
                     + " for airline "
                     + args.airline);

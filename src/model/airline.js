@@ -287,6 +287,7 @@ AirlineCreator.prototype.finishLine = function() {
     )
 }
 
+AirlineCreator.prototype.AircraftLayout =
 AirlineCreator.prototype.Layout = function(args, model) {
     var layout = this.layouts.get(args);
     
@@ -303,7 +304,13 @@ AirlineCreator.prototype.Layout = function(args, model) {
     return layout;
 }
 
-AirlineCreator.prototype.AircraftLayout = AirlineCreator.prototype.Layout;
+AirlineCreator.prototype.Layout.get = function(args) {
+    var layout = this.layouts.get(args);
+    if (layout) {
+        layout.checkDO(args);
+    }
+    return layout;
+}
 
 var airlines = new Utils.MultiIndexedSet(['code']);
 
