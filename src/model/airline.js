@@ -15,6 +15,7 @@ var SeatCreator = function(seat, seatClass) {
         db.applyLater(this.seat, 'save', []);
         print("Seat " + seat.row + "" + seat.letter + " created");
     }
+    Utils.validate(this, 'Seat');
     
     this.seatClass = seatClass;
 }
@@ -66,6 +67,7 @@ var SeatClassCreator = function(seatClass, aircraftLayout) {
         this._changed = true;
         print("Seat class " + seatClass.name + " created");
     }
+    Utils.validate(this, 'SeatClass');
     
     this.aircraftLayout = aircraftLayout;
     
@@ -171,6 +173,7 @@ var AircraftLayoutCreator = function(layout, airline, pModel) {
         
         this._model = model;
     }
+    Utils.validate(this, 'AircraftLayout');
     
     this._model._Layout(this);
     
@@ -252,6 +255,7 @@ var AirlineCreator = function(airline) {
         print("Airline with name: " + airline.name + " and code: " + airline.code + " created");
         this._changed = true;
     }
+    Utils.validate(this, 'Airline');
     airlines.push(this);
     
     this.layouts = new Utils.DBCollection(

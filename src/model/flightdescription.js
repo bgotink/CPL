@@ -32,6 +32,7 @@ var PriceCreator = function (args, period, pSeatClass) {
         var layout = period._layout;
         this.seatClass = layout.SeatClass({ code: args.seatClass });
     }
+    Utils.validate(this, 'Price');
     
     this.price.__SeatClassId = this.seatClass.getDO().code;
     this.period = period;
@@ -87,6 +88,7 @@ var DateExceptionCreator = function (args, period) {
         db.applyLater(this.dateException, 'save', []);
         print("Date exception " + args.date + " created");
     }
+    Utils.validate(this, 'DateException');
     
     this.period = period;
 }
@@ -165,6 +167,7 @@ var PeriodCreator = function (args, description, pLayout) {
         
         print("Created FlightDescriptionPeriod with pattern " + args.datePattern +" from " + args.validFrom + " to " + args.validTo);
     }
+    Utils.validate(this, 'FlightDescriptionPeriod');
     
     this.description = description;
     
@@ -429,6 +432,7 @@ var FlightDescriptionCreator = function(args, pFrom, pTo, pAirline) {
         this._from = from; this._to = to;
         this._airline = airline;
     }
+    Utils.validate(this, 'FlightDescription');
     
     flightDescriptions.push(this);
     

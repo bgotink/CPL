@@ -1,4 +1,4 @@
-Country{ name: "Belgium", code: "BEL" }
+Country{ name: "Belgium", code: "BE" }
 	.City{ name: "Brussels", timezone: "Europe/Brussels" }
 		.Airport{ name: "Brussels Airport", code: "BRUS", latitude: 50.901389, longitude: 4.484444 }
 	.City{ name: "Charleroi", timezone: "Europe/Brussels" }

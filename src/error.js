@@ -22,10 +22,10 @@
     
     module.exports = {
         InvalidArgument: InvalidArgument,
-        NotFound: createError('NotFoundError', InvalidArgument),
         Duplicate: createError('DuplicateError', InvalidArgument),
         NoMatch: createError('DataMismatchError', InvalidArgument),
-        MissingAttribute: createError('MissingAttributeError', InvalidArgument)
+        MissingAttribute: createError('MissingAttributeError', InvalidArgument),
+        Validate: createError('ValidationError', InvalidArgument)
     }
     
 })();

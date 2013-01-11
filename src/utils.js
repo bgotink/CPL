@@ -1,5 +1,6 @@
 var NodeUtil = require('util')
-  , Errors   = require('./error');
+  , Errors   = require('./error')
+  , Log      = require('./log');
 
 if (!Array.prototype.contains) {
     Object.defineProperty(
@@ -379,3 +380,29 @@ var isNoException = function(date, exceptions){
 }
 
 module.exports.datesBetweenExcept = DatesBetweenExcept;
+
+/*******************
+ **** Validator ****
+ *******************/
+
+var Validator = function (obj, type) {
+    var res = obj.getDO().validate();
+    if (res === null) return;
+    
+    Object.keys(res).forEach(function (field) {
+        var printedHeader = false;
+        res[field].forEach(function (err) {
+            if (err === '') return;
+            
+            if (!printedHeader) {
+                printedHeader = true;
+                Log.error("The following validations of attribute %s failed:", field);
+            }
+            
+            Log.error("\t%s", err);
+        });
+    });
+    throw new Errors.Validate("Validation of " + (type ? type : obj) + " failed");
+}
+
+module.exports.validate = Validator;

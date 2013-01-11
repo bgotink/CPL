@@ -18,7 +18,8 @@ var Country = sequelize.define('Country', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{2}"]
+            isAlpha: true,
+            len: [2, 2]
         }
     }
     // Cities, see "ASSOCIATIONS" block
@@ -37,8 +38,7 @@ var City = sequelize.define('City', {
     timezone: {
         type: Sequelize.STRING,
         validate: {
-            isAlpha: true,
-            is: [ ["[a-z]+/[a-z]+", "i"] ]
+            regex: [ /[a-z]+\/[a-z]+/gi ]
         }
     }
     // Country, see "ASSOCIATIONS" block
@@ -59,7 +59,8 @@ var Airport = sequelize.define('Airport', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{4}"]
+            isAlpha: true,
+            len: [4, 4]
         }
     },
     latitude: {
@@ -67,7 +68,7 @@ var Airport = sequelize.define('Airport', {
         validate: {
             // Geen idee of dit automatisch gaat voor float types...
             isFloat: true,
-            isEmpty: true
+            notNull: true
         }
     },
     longitude: {
@@ -75,7 +76,7 @@ var Airport = sequelize.define('Airport', {
         validate: {
             // Geen idee of dit automatisch gaat voor float types...
             isFloat: true,
-            isEmpty: true
+            notNull: true
         }
     }
     // City, see "ASSOCIATIONS" block
@@ -98,7 +99,8 @@ var Airline = sequelize.define('Airline', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            is: ["[A-Z]{3}"]
+            isAlpha: true,
+            len: [3, 3]
         }
     }
 	// AircraftLayouts, see "ASSOCIATIONS" block
@@ -147,6 +149,8 @@ var SeatClass = sequelize.define('SeatClass', {
  ****  AIRCRAFTMODEL  ****
  ************************/
 
+var tmp = ["[A-Z0-9-]*"];
+tmp.msg = "Invalid character, only alphanumerical and '-' allowed";
 var AircraftModel = sequelize.define('AircraftModel', {
     manufacturer: {
         type: Sequelize.STRING,
@@ -164,7 +168,8 @@ var AircraftModel = sequelize.define('AircraftModel', {
         type: Sequelize.STRING,
 		unique: true,
         validate: {
-            is: ["[A-Z0-9-]*"]
+            notEmpty: true,
+            is: tmp
         }
     }
 	// AircraftLayouts, see "ASSOCIATIONS" block
@@ -179,13 +184,14 @@ var Seat = sequelize.define('Seat', {
         type: Sequelize.INTEGER,
         validate: {
             isInt: true,
-            min: 0
+            min: 0,
         }
     },
     letter: {
         type: Sequelize.STRING,
         validate: {
-            is: ["[A-Z]"]
+            isAlpha: true,
+            isUppercase: true
         }
     }
 	// SeatClass, see "ASSOCIATIONS" block

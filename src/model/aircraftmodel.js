@@ -16,10 +16,12 @@ var AircraftModelCreator = function(args) {
             args,
             ['manufacturer', 'code', 'name']
         );
+        
         db.applyLater(this.aircraftModel, 'save', []);
         this._changed = true;
         print("Aircraft model " + args.name + " created");
     }
+    Utils.validate(this, 'AircraftModel');
     
     this.aircraftLayouts = new Utils.DBCollection(
         this.aircraftModel,

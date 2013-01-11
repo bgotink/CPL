@@ -16,6 +16,7 @@ function AirportCreator(airport, city) {
         db.applyLater(this.airport, 'save', []);
         print("Airport " + airport.name + " created in " + city.city.name);
     }
+    Utils.validate(this, 'Airport');
     
     airports.push(this);
     
@@ -67,6 +68,7 @@ function CityCreator(city, country) {
         this._changed = true;
         print("City " + city.name + " created in " + country.country.name);
     }
+    Utils.validate(this, 'City');
     
     this.country = country;
     this.airports = new Utils.DBCollection(
@@ -144,6 +146,7 @@ function CountryCreator(country) {
         this._changed = true;
         print("Country " + country.name + " created");
     }
+    Utils.validate(this, 'Country');
     countries.push(this);
     
     this.cities = new Utils.DBCollection(
