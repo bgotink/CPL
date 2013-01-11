@@ -1,11 +1,11 @@
-Country{ name: "Belgium", code: "BEL" }
-	.City{ name: "Brussels" }
+Country{ name: "Belgium", code: "BE" }
+	.City{ name: "Brussels", timezone: "Europe/Brussels" }
 
-Country.get{ code: "BEL" }.City{ name: "Charleroi" }
+Country{ code: "BE" }.City{ name: "Charleroi", timezone: "Europe/Brussels" }
 
-Country{ name: "United Kingdom", code: "UNK" }
-	.City{ name: "London" }
-		.Airport{ name: "Charles De Gaulle", code: "CDG", latitude: 23, longitude: 40 }
+Country{ name: "United Kingdom", code: "UN" }
+	.City{ name: "London", timezone: "Europe/London" }
+		.Airport{ name: "Charles De Gaulle", code: "CDGA", latitude: 23, longitude: 40 }
 
-Country.get{ code: "UNK" }.City.get{ name: "London"}
-		.Airport{ name: "Heathrow", code: "HEA", latitude: 0.1, longitude: 55 }
+Country{ code: "UN" }.City{ name: "London"}
+		.Airport{ name: "Heathrow", code: "HEAT", latitude: 0.1, longitude: 55 }

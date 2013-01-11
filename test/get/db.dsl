@@ -1,3 +1,3 @@
-Country{ code: "BEL" }
-	.City{ name: "Antwerpen" }
+Country{ code: "BE" }
+	.City{ name: "Antwerpen", timezone: "Europe/Brussels" }
 	.City{ name: "Charleroi" }
