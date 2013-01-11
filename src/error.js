@@ -18,15 +18,9 @@
         return errFunc;
     };
     
-    var DSLError = createError('DSLError')
-      , InvalidArgument = createError('InvalidArgument', DSLError);
+    var InvalidArgument = createError('InvalidArgumentError');
     
     module.exports = {
-        DSLError: DSLError,
-        
-        Syntax: createError('SyntaxError', DSLError),
-        Database: createError('DatabaseError', DSLError),
-        
         InvalidArgument: InvalidArgument,
         NotFound: createError('NotFoundError', InvalidArgument),
         Duplicate: createError('DuplicateError', InvalidArgument),
