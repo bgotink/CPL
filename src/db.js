@@ -28,6 +28,8 @@ var Country = sequelize.define('Country', {
 /****************
  ****  CITY  ****
  ****************/
+var timezoneRegex = [ /[a-z]+\/[a-z]+/gi ];
+timezoneRegex.msg = "The timezone doesn't match the format Zone/Location, e.g. Europe/Brussels";
 var City = sequelize.define('City', {
     name: {
         type: Sequelize.STRING,
@@ -38,7 +40,7 @@ var City = sequelize.define('City', {
     timezone: {
         type: Sequelize.STRING,
         validate: {
-            regex: [ /[a-z]+\/[a-z]+/gi ]
+            regex: timezoneRegex
         }
     }
     // Country, see "ASSOCIATIONS" block
