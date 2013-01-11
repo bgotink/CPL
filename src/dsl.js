@@ -214,10 +214,10 @@ execChainer.runAll().success(function() {
 
     stack.forEach(
         function (line) {
-            if (line.match(/\.dsl:/)) {
-                Log.error(line.replace(/:(\d+):\d+/, ':$1'));
-            } else {
+            if (line.match(/\.js:\d+:\d+/)) {
                 Log.debug(line);
+            } else {
+                Log.error(line.replace(/:(\d+):\d+/, ':$1'));
             }
         }
     );
