@@ -2475,7 +2475,7 @@ Country{ name: "China", code: "CN" }
     .City{ name: "Beijing", timezone: "Asia/Shanghai" }
         .Airport{ name: "Capital Intl", code: "ZBAA", latitude: 40.080100, longitude: 116.585000, altitude: 116.000000 }
         .Airport{ name: "Beijing Nanyuan Airport", code: "ZBBB", latitude: 39.782500, longitude: 116.388000, altitude: 0.000000 }
-        .Airport{ name: "Yongning Air Base", code: "CN-0", latitude: 40.503100, longitude: 116.108000, altitude: 1677.000000 }
+        .Airport{ name: "Yongning Air Base", code: "CNN0", latitude: 40.503100, longitude: 116.108000, altitude: 1677.000000 }
     .City{ name: "Burqin", timezone: "Asia/Urumqi" }
         .Airport{ name: "Kanas Airport", code: "ZWKN", latitude: 48.221100, longitude: 86.998100, altitude: 3900.000000 }
     .City{ name: "Changcha", timezone: "Asia/Shanghai" }
@@ -6582,26 +6582,26 @@ Country{ name: "Marshall Islands", code: "MH" }
     .City{ name: "Eniwetok Atoll", timezone: "Pacific/Majuro" }
         .Airport{ name: "Eniwetok Airport", code: "PKMA", latitude: 11.340700, longitude: 162.328000, altitude: 13.000000 }
     .City{ name: "Jabor Jaluit Atoll", timezone: "Pacific/Majuro" }
-        .Airport{ name: "Jaluit Airport", code: "N55", latitude: 5.909240, longitude: 169.637000, altitude: 4.000000 }
+        .Airport{ name: "Jaluit Airport", code: "NA55", latitude: 5.909240, longitude: 169.637000, altitude: 4.000000 }
     .City{ name: "Kili Island", timezone: "Pacific/Majuro" }
-        .Airport{ name: "Kili Airport", code: "Q51", latitude: 5.644520, longitude: 169.120000, altitude: 5.000000 }
+        .Airport{ name: "Kili Airport", code: "QA51", latitude: 5.644520, longitude: 169.120000, altitude: 5.000000 }
     .City{ name: "Kwajalein", timezone: "Pacific/Kwajalein" }
         .Airport{ name: "Dyess Aaf", code: "PKRO", latitude: 9.396890, longitude: 167.471000, altitude: 9.000000 }
         .Airport{ name: "Bucholz Aaf", code: "PKWA", latitude: 8.720120, longitude: 167.732000, altitude: 9.000000 }
     .City{ name: "Majuro", timezone: "Pacific/Majuro" }
         .Airport{ name: "Marshall Islands Intl", code: "PKMJ", latitude: 7.064760, longitude: 171.272000, altitude: 6.000000 }
     .City{ name: "Mejit Atoll", timezone: "Pacific/Majuro" }
-        .Airport{ name: "Mejit Atoll Airport", code: "Q30", latitude: 10.283300, longitude: 170.883000, altitude: 5.000000 }
+        .Airport{ name: "Mejit Atoll Airport", code: "QA30", latitude: 10.283300, longitude: 170.883000, altitude: 5.000000 }
     .City{ name: "Mili Island", timezone: "Pacific/Majuro" }
         .Airport{ name: "Mili Island Airport", code: "MLIP", latitude: 6.083330, longitude: 171.733000, altitude: 4.000000 }
     .City{ name: "Namorik Atoll", timezone: "Pacific/Majuro" }
-        .Airport{ name: "Namorik Atoll Airport", code: "3N0", latitude: 5.631670, longitude: 168.125000, altitude: 15.000000 }
+        .Airport{ name: "Namorik Atoll Airport", code: "3NA0", latitude: 5.631670, longitude: 168.125000, altitude: 15.000000 }
     .City{ name: "Ujae Atoll", timezone: "Pacific/Majuro" }
         .Airport{ name: "Ujae Atoll Airport", code: "UJAP", latitude: 8.928060, longitude: 165.762000, altitude: 0.000000 }
     .City{ name: "Utirik Island", timezone: "Pacific/Majuro" }
-        .Airport{ name: "Utirik Airport", code: "03N", latitude: 11.222000, longitude: 169.852000, altitude: 4.000000 }
+        .Airport{ name: "Utirik Airport", code: "03NA", latitude: 11.222000, longitude: 169.852000, altitude: 4.000000 }
     .City{ name: "Wotje Atoll", timezone: "Pacific/Majuro" }
-        .Airport{ name: "Wotje Atoll Airport", code: "N36", latitude: 9.466670, longitude: 170.233000, altitude: 4.000000 }
+        .Airport{ name: "Wotje Atoll Airport", code: "NA36", latitude: 9.466670, longitude: 170.233000, altitude: 4.000000 }
 Country{ name: "Martinique", code: "MQ" }
     .City{ name: "Fort-de-france", timezone: "America/Martinique" }
         .Airport{ name: "Le Lamentin", code: "TFFF", latitude: 14.591000, longitude: -61.003200, altitude: 16.000000 }
@@ -8179,7 +8179,7 @@ Country{ name: "Russian Federation", code: "RU" }
     .City{ name: "Naryan-Mar", timezone: "Europe/Moscow" }
         .Airport{ name: "Naryan-Mar", code: "ULAM", latitude: 67.380500, longitude: 53.051000, altitude: 20.000000 }
     .City{ name: "Nazran", timezone: "Europe/Moscow" }
-        .Airport{ name: "Magas", code: "%u04", latitude: 43.323800, longitude: 45.017800, altitude: 1060.000000 }
+        .Airport{ name: "Magas", code: "MA04", latitude: 43.323800, longitude: 45.017800, altitude: 1060.000000 }
     .City{ name: "Nefteyugansk", timezone: "Asia/Yekaterinburg" }
         .Airport{ name: "Nefteyugansk Airport", code: "USRN", latitude: 61.108300, longitude: 72.650000, altitude: 115.000000 }
     .City{ name: "Neryungri", timezone: "Asia/Yakutsk" }
@@ -10112,7 +10112,7 @@ Country{ name: "United States", code: "US" }
         .Airport{ name: "Akron Fulton Intl", code: "KAKR", latitude: 41.037500, longitude: -81.466900, altitude: 1067.000000 }
         .Airport{ name: "Akron Canton Regional Airport", code: "KCAK", latitude: 40.916100, longitude: -81.442200, altitude: 1228.000000 }
     .City{ name: "Akutan", timezone: "America/Nome" }
-        .Airport{ name: "Akutan Seaplane Base", code: "KQA", latitude: 54.132500, longitude: -165.785000, altitude: 0.000000 }
+        .Airport{ name: "Akutan Seaplane Base", code: "KQBA", latitude: 54.132500, longitude: -165.785000, altitude: 0.000000 }
     .City{ name: "Alabaster", timezone: "America/Chicago" }
         .Airport{ name: "Shelby County Airport", code: "KEET", latitude: 33.177800, longitude: -86.783200, altitude: 586.000000 }
     .City{ name: "Alakanuk", timezone: "America/Nome" }
@@ -10128,11 +10128,11 @@ Country{ name: "United States", code: "US" }
     .City{ name: "Albuquerque", timezone: "America/Denver" }
         .Airport{ name: "Albuquerque International Sunport", code: "KABQ", latitude: 35.040200, longitude: -106.609000, altitude: 5355.000000 }
     .City{ name: "Aleknagik", timezone: "America/Anchorage" }
-        .Airport{ name: "Aleknagik Airport", code: "5A8", latitude: 59.282600, longitude: -158.618000, altitude: 66.000000 }
+        .Airport{ name: "Aleknagik Airport", code: "5A8A", latitude: 59.282600, longitude: -158.618000, altitude: 66.000000 }
     .City{ name: "Alexandria", timezone: "America/Chicago" }
         .Airport{ name: "Esler Rgnl", code: "KESF", latitude: 31.394900, longitude: -92.295800, altitude: 112.000000 }
         .Airport{ name: "Alexandria Intl", code: "KAEX", latitude: 31.327400, longitude: -92.549800, altitude: 89.000000 }
-        .Airport{ name: "Alexandria", code: "ALX_", latitude: 38.806300, longitude: -77.062100, altitude: 1.000000 }
+        .Airport{ name: "Alexandria", code: "ALXA", latitude: 38.806300, longitude: -77.062100, altitude: 1.000000 }
     .City{ name: "Alice", timezone: "America/Chicago" }
         .Airport{ name: "Alice Intl", code: "KALI", latitude: 27.740900, longitude: -98.026900, altitude: 178.000000 }
     .City{ name: "Allakaket", timezone: "America/Anchorage" }
@@ -10300,7 +10300,7 @@ Country{ name: "United States", code: "US" }
         .Airport{ name: "Central Illinois Rgnl", code: "KBMI", latitude: 40.477100, longitude: -88.915900, altitude: 871.000000 }
         .Airport{ name: "Monroe County Airport", code: "KBMG", latitude: 39.146000, longitude: -86.616700, altitude: 846.000000 }
     .City{ name: "Bluefield", timezone: "America/New_York" }
-        .Airport{ name: "Mercer County Airport", code: "BLF", latitude: 37.295800, longitude: -81.207700, altitude: 2857.000000 }
+        .Airport{ name: "Mercer County Airport", code: "BLFA", latitude: 37.295800, longitude: -81.207700, altitude: 2857.000000 }
     .City{ name: "Blythe", timezone: "America/Los_Angeles" }
         .Airport{ name: "Blythe Airport", code: "KBLH", latitude: 33.619200, longitude: -114.717000, altitude: 399.000000 }
     .City{ name: "Blytheville", timezone: "America/Chicago" }
@@ -10339,7 +10339,7 @@ Country{ name: "United States", code: "US" }
     .City{ name: "BRISTOL", timezone: "America/New_York" }
         .Airport{ name: "Tri-Cities Regional Airport", code: "KTRI", latitude: 36.475200, longitude: -82.407400, altitude: 1519.000000 }
     .City{ name: "Brookings", timezone: "America/Chicago" }
-        .Airport{ name: "Brookings Regional Airport", code: "BKX", latitude: 44.304800, longitude: -96.816900, altitude: 1648.000000 }
+        .Airport{ name: "Brookings Regional Airport", code: "BKXA", latitude: 44.304800, longitude: -96.816900, altitude: 1648.000000 }
     .City{ name: "Broomfield-CO", timezone: "America/Denver" }
         .Airport{ name: "Rocky Mountain Metropolitan Airport", code: "KBJC", latitude: 39.908900, longitude: -105.117000, altitude: 5670.000000 }
     .City{ name: "Brownsville", timezone: "America/Chicago" }
@@ -10361,7 +10361,7 @@ Country{ name: "United States", code: "US" }
         .Airport{ name: "Buffalo Niagara Intl", code: "KBUF", latitude: 42.940500, longitude: -78.732200, altitude: 724.000000 }
         .Airport{ name: "Buffalo Bus Terminal", code: "BBUF", latitude: 42.883500, longitude: -78.872000, altitude: 0.000000 }
     .City{ name: "Bullhead", timezone: "America/Phoenix" }
-        .Airport{ name: "Laughlin-Bullhead Intl", code: "IFP", latitude: 35.157400, longitude: -114.560000, altitude: 695.000000 }
+        .Airport{ name: "Laughlin-Bullhead Intl", code: "IFPA", latitude: 35.157400, longitude: -114.560000, altitude: 695.000000 }
     .City{ name: "Burbank", timezone: "America/Los_Angeles" }
         .Airport{ name: "Bob Hope", code: "KBUR", latitude: 34.200700, longitude: -118.359000, altitude: 778.000000 }
     .City{ name: "Burlington", timezone: "America/New_York" }
@@ -10891,7 +10891,7 @@ Country{ name: "United States", code: "US" }
         .Airport{ name: "Majors", code: "KGVT", latitude: 33.067800, longitude: -96.065300, altitude: 535.000000 }
     .City{ name: "Greenville", timezone: "America/New_York" }
         .Airport{ name: "Greenville-Spartanburg International", code: "KGSP", latitude: 34.895600, longitude: -82.218900, altitude: 964.000000 }
-        .Airport{ name: "Mid Delta Regional Airport", code: "GLH", latitude: 33.482900, longitude: -90.985600, altitude: 131.000000 }
+        .Airport{ name: "Mid Delta Regional Airport", code: "GLHA", latitude: 33.482900, longitude: -90.985600, altitude: 131.000000 }
         .Airport{ name: "Pitt-Greenville Airport", code: "KPGV", latitude: 35.635300, longitude: -77.385300, altitude: 27.000000 }
     .City{ name: "Greenwood", timezone: "America/Chicago" }
         .Airport{ name: "Greenwood Leflore", code: "KGWO", latitude: 33.494300, longitude: -90.084700, altitude: 162.000000 }
@@ -11107,7 +11107,7 @@ Country{ name: "United States", code: "US" }
     .City{ name: "Kasigluk", timezone: "America/Nome" }
         .Airport{ name: "Kasigluk Airport", code: "PFKA", latitude: 60.873300, longitude: -162.524000, altitude: 40.000000 }
     .City{ name: "Kearney", timezone: "America/Chicago" }
-        .Airport{ name: "Kearney Municipal Airport", code: "EAR", latitude: 40.727000, longitude: -99.006800, altitude: 2131.000000 }
+        .Airport{ name: "Kearney Municipal Airport", code: "EARA", latitude: 40.727000, longitude: -99.006800, altitude: 2131.000000 }
     .City{ name: "Kelso", timezone: "America/Los_Angeles" }
         .Airport{ name: "Kelso Longview", code: "KKLS", latitude: 46.118000, longitude: -122.898000, altitude: 20.000000 }
     .City{ name: "Kenai", timezone: "America/Anchorage" }
@@ -11135,7 +11135,7 @@ Country{ name: "United States", code: "US" }
     .City{ name: "King Salmon", timezone: "America/Anchorage" }
         .Airport{ name: "King Salmon", code: "PAKN", latitude: 58.676800, longitude: -156.649000, altitude: 68.000000 }
     .City{ name: "Kingman", timezone: "America/Phoenix" }
-        .Airport{ name: "Kingman Airport", code: "IGM", latitude: 35.259500, longitude: -113.938000, altitude: 3449.000000 }
+        .Airport{ name: "Kingman Airport", code: "IGMA", latitude: 35.259500, longitude: -113.938000, altitude: 3449.000000 }
     .City{ name: "Kingsville", timezone: "America/Chicago" }
         .Airport{ name: "Kingsville Nas", code: "KNQI", latitude: 27.507200, longitude: -97.809700, altitude: 50.000000 }
     .City{ name: "Kinston", timezone: "America/New_York" }
@@ -11293,7 +11293,7 @@ Country{ name: "United States", code: "US" }
     .City{ name: "Longview", timezone: "America/Chicago" }
         .Airport{ name: "East Texas Rgnl", code: "KGGG", latitude: 32.384000, longitude: -94.711500, altitude: 365.000000 }
     .City{ name: "Lopez", timezone: "America/Los_Angeles" }
-        .Airport{ name: "Lopez Island Airport", code: "S31", latitude: 48.483900, longitude: -122.938000, altitude: 209.000000 }
+        .Airport{ name: "Lopez Island Airport", code: "S31A", latitude: 48.483900, longitude: -122.938000, altitude: 209.000000 }
     .City{ name: "Lorain-Elyria", timezone: "America/New_York" }
         .Airport{ name: "Lorain County Regional Airport", code: "KLPR", latitude: 41.344300, longitude: -82.177600, altitude: 793.000000 }
     .City{ name: "Los Alamos", timezone: "America/Denver" }
@@ -11656,7 +11656,7 @@ Country{ name: "United States", code: "US" }
     .City{ name: "PARKERSBURG", timezone: "America/New_York" }
         .Airport{ name: "Mid-Ohio Valley Regional Airport", code: "KPKB", latitude: 39.345100, longitude: -81.439200, altitude: 858.000000 }
     .City{ name: "Pasco", timezone: "America/Los_Angeles" }
-        .Airport{ name: "Tri Cities Airport", code: "PSC", latitude: 46.264700, longitude: -119.119000, altitude: 410.000000 }
+        .Airport{ name: "Tri Cities Airport", code: "PSCA", latitude: 46.264700, longitude: -119.119000, altitude: 410.000000 }
     .City{ name: "Patuxent River", timezone: "America/New_York" }
         .Airport{ name: "Patuxent River Nas", code: "KNHK", latitude: 38.286000, longitude: -76.411800, altitude: 39.000000 }
     .City{ name: "Pellston", timezone: "America/Detroit" }
@@ -11986,7 +11986,7 @@ Country{ name: "United States", code: "US" }
         .Airport{ name: "Sidney-Richland Municipal Airport", code: "KSDY", latitude: 47.706900, longitude: -104.192000, altitude: 1984.000000 }
         .Airport{ name: "Sidney Muni Airport", code: "KSNY", latitude: 41.101700, longitude: -102.985000, altitude: 4313.000000 }
     .City{ name: "Silver City", timezone: "America/Denver" }
-        .Airport{ name: "Grant County Airport", code: "SVC", latitude: 32.636500, longitude: -108.156000, altitude: 5446.000000 }
+        .Airport{ name: "Grant County Airport", code: "SVCA", latitude: 32.636500, longitude: -108.156000, altitude: 5446.000000 }
     .City{ name: "Silver Springs", timezone: "America/Los_Angeles" }
         .Airport{ name: "Silver Springs Airport", code: "KSPZ", latitude: 39.403000, longitude: -119.251000, altitude: 4269.000000 }
     .City{ name: "Sioux City", timezone: "America/Chicago" }
