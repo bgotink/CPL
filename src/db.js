@@ -61,7 +61,7 @@ var Airport = sequelize.define('Airport', {
         type: Sequelize.STRING,
         unique: true,
         validate: {
-            isAlpha: true,
+            isAlphanumeric: true,
             len: [4, 4]
         }
     },

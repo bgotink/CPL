@@ -9,9 +9,12 @@ endif
 
 test: install test_all_pre test/bigTestFile test/get/local test/get/db \
 			test/qantas.airline test/qantas.schedule \
+			test/aircraft \
 		 	test/error/AirlineCode test/error/AirportCode \
 			test/error/CityTimezone test/error/CountryCode \
 			test/error/TooFewArguments test_all_post
+			
+test_long: test test_all_pre test/airports test_all_post
 			
 test_all_pre: 
 ifeq ($(wildcard src/config.js),src/config.js)
